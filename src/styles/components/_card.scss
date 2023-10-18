@@ -1,0 +1,15 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  max-width: 20rem;
+  height: 24rem;
+  width: 100%;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  border: 1.5px solid $border-color;
+  box-shadow: 16.54084px 20.76394px 99.24506px 0px rgba(0, 0, 0, 0.15);
+}
+
+.card__wrapper {
+  margin: 0 auto;
+}
