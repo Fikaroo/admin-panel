@@ -1,0 +1,12 @@
+.sidebar__container {
+  max-width: 16rem;
+  width: 100%;
+  padding: 1.5rem 2rem;
+  border-right: 1px solid #ccc;
+}
+
+.link__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
