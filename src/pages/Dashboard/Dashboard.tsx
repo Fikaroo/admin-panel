@@ -1,9 +1,5 @@
-import { Component, Fragment } from "react";
-
-export class Dashboard extends Component {
-  render() {
-    return <Fragment>Dashboard</Fragment>;
-  }
-}
+const Dashboard = () => {
+  return <div>Dashboard</div>;
+};
 
 export default Dashboard;
