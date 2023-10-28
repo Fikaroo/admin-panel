@@ -1,0 +1,37 @@
+.table-container {
+  border: 1px solid #d6d6d6;
+  border-radius: 8px;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow: auto;
+  position: relative;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: start;
+  color: var(--gray-900, #141414);
+  font-size: 16px;
+  font-style: normal;
+
+  .tr {
+    border-bottom: 1px solid #e5e5e5;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    .th {
+      padding: 8px 12px;
+      text-align: start;
+      font-weight: 600;
+    }
+
+    .td {
+      padding: 8px 12px;
+    }
+  }
+}

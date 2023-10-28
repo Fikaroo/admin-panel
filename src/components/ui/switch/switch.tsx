@@ -12,16 +12,14 @@ const Switch = ({ label }: SwitchProps) => {
 
   return (
     <div className="switch">
-      <label>
-        <button
-          data-state={isOpen ? "checked" : "unchecked"}
-          type="button"
-          onClick={handleSwitch}
-        >
-          <span data-state={isOpen ? "checked" : "unchecked"} />
-        </button>
-        {label}
-      </label>
+      <button
+        data-state={isOpen ? "checked" : "unchecked"}
+        type="button"
+        onClick={handleSwitch}
+      >
+        <span data-state={isOpen ? "checked" : "unchecked"} />
+      </button>
+      {label}
     </div>
   );
 };
