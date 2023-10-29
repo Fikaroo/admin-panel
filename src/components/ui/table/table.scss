@@ -20,18 +20,104 @@
   .tr {
     border-bottom: 1px solid #e5e5e5;
 
-    &:last-child {
-      border-bottom: 0;
-    }
-
     .th {
-      padding: 8px 12px;
+      padding: 20px;
       text-align: start;
+      font-size: 14px;
       font-weight: 600;
     }
 
     .td {
-      padding: 8px 12px;
+      padding: 20px;
+    }
+  }
+
+  .tfoot {
+    padding: 20px;
+    font-weight: 600;
+
+    td {
+      padding: 12px;
+
+      .pagination {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .left {
+        cursor: pointer;
+        padding: 4px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        color: #a3a3a3;
+
+        .leftIcon {
+          width: 16px;
+          height: 16px;
+          fill: #737373;
+        }
+
+        &[data-state="true"] {
+          color: #141414;
+          .leftIcon {
+            fill: #141414;
+          }
+        }
+      }
+
+      .center {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        font-weight: 500;
+        cursor: pointer;
+        .number {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          color: #737373;
+          border-radius: 9999px;
+          padding: 8px;
+
+          &[data-state="true"] {
+            background: #e5e5e5;
+            color: #141414;
+          }
+
+          &:hover {
+            color: #141414;
+          }
+        }
+      }
+
+      .right {
+        cursor: pointer;
+        padding: 4px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        color: #a3a3a3;
+
+        .rightIcon {
+          rotate: 180deg;
+          width: 16px;
+          height: 16px;
+          fill: #737373;
+        }
+        &[data-state="true"] {
+          color: #141414;
+          .rightIcon {
+            fill: #141414;
+          }
+        }
+      }
     }
   }
 }

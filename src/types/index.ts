@@ -21,3 +21,15 @@ export interface Catalog {
   nameEn: string;
   nameRu: string;
 }
+
+export type Pagination = {
+  total_records: number;
+  total_pages: number;
+  next_page: "true" | "false";
+  prev_page: "true" | "false";
+};
+
+export type DataWithPagination<D> = {
+  data: D;
+  pagination: Pagination;
+};

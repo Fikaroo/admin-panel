@@ -1,9 +1,11 @@
-import { getData } from "@/api";
-import { DataTable } from "@/components/ui/data-table";
-import useSWR from "swr";
-import { columns } from "./components/columns";
-import { Catalog } from "@/types";
 import { useState } from "react";
+import useSWR from "swr";
+import { DataTable } from "@/components/ui/data-table";
+import { columns } from "./components/columns";
+
+import { getDataWithPagination } from "@/api";
+
+import { Catalog, DataWithPagination } from "@/types";
 
 const Auto = () => {
   const [pageIndex, setPageIndex] = useState(1);
@@ -11,13 +13,10 @@ const Auto = () => {
     data: catalogData,
     isLoading,
     error,
-  } = useSWR<Catalog[]>(
-    `/catalog?localize=true&pageNum=${pageIndex}&pageSize=2`,
-    getData
+  } = useSWR<DataWithPagination<Catalog[]>>(
+    `/catalog?localize=true&pageNum=${pageIndex}&pageSize=3`,
+    getDataWithPagination
   );
-
-  console.log(catalogData);
-
   return (
     <div>
       Auto
@@ -26,7 +25,15 @@ const Auto = () => {
       ) : error ? (
         <>Error</>
       ) : (
-        catalogData && <DataTable data={catalogData} columns={columns} />
+        catalogData?.data && (
+          <DataTable
+            pageIndex={pageIndex}
+            setPageIndex={setPageIndex}
+            pagination={catalogData.pagination}
+            data={catalogData?.data}
+            columns={columns}
+          />
+        )
       )}
     </div>
   );

@@ -1,3 +1,4 @@
+import Switch from "@/components/ui/switch/switch";
 import { Catalog } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 
@@ -31,15 +32,15 @@ export const columns: ColumnDef<Catalog>[] = [
     header: "ПАССАЖИРЫ",
   },
   {
-    accessorKey: "yearOfManufacture",
-    header: "ГОД ВЫПУСКА",
-  },
-  {
     accessorKey: "luggageCount",
     header: "БАГАЖ",
   },
   {
     id: "actions",
     enableHiding: false,
+    cell: ({ row }) => {
+      const car = row.original;
+      return <Switch isAcive={car.isActive} />;
+    },
   },
 ];
