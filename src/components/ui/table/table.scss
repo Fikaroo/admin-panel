@@ -29,9 +29,20 @@
       }
     }
   }
+
   .tbody {
+    overflow-y: auto;
     .tr {
       border-bottom: 1px solid #e5e5e5;
+      &:hover {
+        background-color: rgba(255, 204, 0, 0.15);
+      }
+      .th {
+        padding: 20px;
+        text-align: start;
+        font-size: 14px;
+        font-weight: 600;
+      }
 
       .td {
         padding: 20px;

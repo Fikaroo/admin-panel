@@ -17,7 +17,7 @@ import {
 
 import ArrowLeft from "@/assets/arrow-narrow-left.svg?react";
 import { Pagination } from "@/types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -36,6 +36,8 @@ export function DataTable<TData, TValue>({
   setPageIndex,
   rowLink,
 }: DataTableProps<TData, TValue>) {
+  const navigate = useNavigate();
+
   const table = useReactTable({
     data,
     columns,
@@ -56,6 +58,7 @@ export function DataTable<TData, TValue>({
 
   const handleToPage = (index: number) => setPageIndex(index);
 
+  const handleRowNavigate = () => rowLink && navigate(rowLink);
   return (
     <div className="table-container">
       <Table>
@@ -83,19 +86,11 @@ export function DataTable<TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
+                onClick={handleRowNavigate}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    {rowLink ? (
-                      <Link to={rowLink}></Link>
-                    ) : (
-                      <>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </>
-                    )}
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>
