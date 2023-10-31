@@ -24,8 +24,8 @@ const routes: Routes[] = [
     icon: "",
   },
   {
-    name: "Link3",
-    path: "/dashboard",
+    name: "auto",
+    path: "/auto",
     icon: "",
   },
 ];

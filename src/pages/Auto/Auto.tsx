@@ -27,6 +27,7 @@ const Auto = () => {
       ) : (
         catalogData?.data && (
           <DataTable
+            rowLink="detail"
             pageIndex={pageIndex}
             setPageIndex={setPageIndex}
             pagination={catalogData.pagination}

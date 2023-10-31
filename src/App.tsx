@@ -3,6 +3,7 @@ import Layout from "./components/Layout/Layout";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import { Table } from "./components/ui/table/table";
 import Auto from "./pages/Auto/Auto";
+import AutoDetail from "./pages/Auto/Detail/AutoDetail";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,12 @@ const router = createBrowserRouter([
       {
         path: "auto",
         element: <Auto />,
+        children: [
+          {
+            path: "detail",
+            element: <AutoDetail />,
+          },
+        ],
       },
     ],
   },
