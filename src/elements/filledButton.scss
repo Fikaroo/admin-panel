@@ -1,0 +1,19 @@
+.filled {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    padding: 12px;
+    background-color: #fc0;
+    margin-left: 10px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.filled-text {
+    margin-left: 8px;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+}
