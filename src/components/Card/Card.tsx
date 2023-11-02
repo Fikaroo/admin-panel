@@ -151,24 +151,28 @@ const Card = (props: CardProps) => {
       return updatedData;
     });
   }, [props]);
-
+  console.log(props.carLogoImg);
   return (
     <div className="card">
       {/* {isPromo && <div className="card-promo">АКЦИЯ</div>} */}
       <div className="card-wrapper">
         <div className="card-header">
-          {/* <img className="card-logo" src={""} alt="card-logo" /> */}
-          <div className="car-logo">
-            <ImageIcon />
-          </div>
+          {props.carLogoImg ? (
+            <img className="car-logo" src={props.carLogoImg} alt="card-logo" />
+          ) : (
+            <div className="car-logo">
+              <ImageIcon />
+            </div>
+          )}
           <p className="card-title">{props.make || "Марка авто"}</p>
         </div>
-
-        <div className="car-image">
-          <ImageIcon />
-        </div>
-        {/* <img className="car-image" src={""} alt="car-image" /> */}
-
+        {props.carImg ? (
+          <img className="car-image" src={props.carImg} alt="car-image" />
+        ) : (
+          <div className="car-image">
+            <ImageIcon />
+          </div>
+        )}
         <div className="details">
           {details.map((detail, index) => (
             <div className="detail-container" key={index}>

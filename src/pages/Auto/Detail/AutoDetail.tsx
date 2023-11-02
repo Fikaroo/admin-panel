@@ -12,6 +12,7 @@ import { makeApis, getData, modelApis } from "@/api";
 import { BodyType, Make, Model, TransmissionType } from "@/types";
 import { enumToMap, getSelectAttr, yearsList } from "@/utils";
 import Switch from "@/components/ui/switch/switch";
+import ImageUpload from "@/components/ui/image-upload/image-upload";
 
 const schema = z.object({
   carLogoImg: z.string().min(1),
@@ -95,6 +96,21 @@ const AutoDetail = () => {
 
       <div className="form__container">
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
+          <div className="columns">
+            <ImageUpload
+              setValue={setValue}
+              name="carImg"
+              title="фото"
+              details="SVG, PNG, JPG or GIF (max. 464 x 240 px)"
+            />
+            <ImageUpload
+              setValue={setValue}
+              name="carLogoImg"
+              title="логотип"
+              details="SVG, PNG, JPG or GIF (max. 72 x 72 px)"
+            />
+          </div>
+
           <div className="columns">
             <Controller
               control={control}
