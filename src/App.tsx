@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "orders",
+        path: "analytics",
         children: [
           {
             index: true,

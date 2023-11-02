@@ -8,6 +8,7 @@ import { getDataWithPagination } from "@/api";
 import OutlinedButton from "@/elements/outlinedButton";
 import SearchElement from "@/elements/search";
 import filterUpLogo from "@/assets/filterIcon.svg";
+import calendarLogo from "@/assets/calendarIcon.svg";
 
 const Analytics = () => {
   const [pageIndex, setPageIndex] = useState(1);
@@ -19,14 +20,21 @@ const Analytics = () => {
     // `/catalog?localize=true&pageNum=${pageIndex}&pageSize=10`, Burda zakazlarin api-si olmalidir
     getDataWithPagination
   );
+  
+  const handleDateSelect = () => {};
   const handleFilterClick = () => {};
 
   return (
     <div>
-      <div className="headerTitle">Заказы</div>
+      <div className="headerTitle">Аналитика</div>
       <div className="subHeader">
         <SearchElement />
         <div style={{ display: "flex" }}>
+        <OutlinedButton
+            icon={calendarLogo}
+            text={"Выберите даты"}
+            onClick={handleDateSelect}
+          />
           <OutlinedButton
             icon={filterUpLogo}
             text={"Фильтры"}
