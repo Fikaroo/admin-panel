@@ -8,7 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useSWR from "swr";
-import { makesApis, getData, modelsApis } from "@/api";
+import { makeApis, getData, modelApis } from "@/api";
 import { BodyType, Make, Model, TransmissionType } from "@/types";
 import { enumToMap, getSelectAttr, yearsList } from "@/utils";
 import Switch from "@/components/ui/switch/switch";
@@ -65,12 +65,12 @@ const AutoDetail = () => {
     },
   });
 
-  const { data: makesData, isLoading: makesLoading } = useSWR<Make[]>(
-    makesApis.getAll,
+  const { data: makeData, isLoading: makesLoading } = useSWR<Make[]>(
+    makeApis.getAll,
     getData
   );
-  const { data: modelsData } = useSWR<Model[]>(
-    watch("makeId") ? modelsApis.search({ makeIds: watch("makeId") }) : null,
+  const { data: modelData } = useSWR<Model[]>(
+    watch("makeId") ? modelApis.search({ makeIds: watch("makeId") }) : null,
     getData
   );
 
@@ -114,7 +114,7 @@ const AutoDetail = () => {
                     <option value="" disabled selected hidden>
                       Марка
                     </option>
-                    {makesData?.map(({ id, name }) => (
+                    {makeData?.map(({ id, name }) => (
                       <option key={id} data-state={name} value={id}>
                         {name}
                       </option>
@@ -143,7 +143,7 @@ const AutoDetail = () => {
                     <option value="" disabled selected hidden>
                       Модель
                     </option>
-                    {modelsData?.map(({ id, name }) => (
+                    {modelData?.map(({ id, name }) => (
                       <option key={id} data-state={name} value={id}>
                         {name}
                       </option>

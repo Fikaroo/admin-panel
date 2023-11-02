@@ -1,34 +1,31 @@
 import { useState } from "react";
-import "./Auto.scss";
+import "./Orders.scss";
 import useSWR from "swr";
 import { DataTable } from "@/components/ui/data-table";
-import { columns } from "./components/columns";
-import { calatogApis, getDataWithPagination } from "@/api";
+import { ordersColumns } from "./components/ordersColumns";
 import { Catalog, DataWithPagination } from "@/types";
-import SearchElement from "@/elements/search";
 import OutlinedButton from "@/elements/outlinedButton";
-import FilledButton from "@/elements/filledButton";
+import SearchElement from "@/elements/search";
 import filterUpLogo from "@/assets/filterIcon.svg";
-import plusLogo from "@/assets/plusIcon.svg";
+import { getDataWithPagination } from "@/api";
 
-const Auto = () => {
-  const [pageNum, setPageNum] = useState(1);
+const Orders = () => {
+  const [pageIndex, setPageIndex] = useState(1);
   const {
-    data: catalogData,
+    data: orderData,
     isLoading,
     error,
   } = useSWR<DataWithPagination<Catalog[]>>(
-    calatogApis.search({ pageNum, pageSize: 10 }),
+    // Todo: Update with order api
+    // `/catalog?localize=true&pageNum=${pageIndex}&pageSize=10`,
+    "",
     getDataWithPagination
   );
-
   const handleFilterClick = () => {};
-
-  const handleNewAutoClick = () => {};
 
   return (
     <div>
-      <div className="headerTitle">Автомобили</div>
+      <div className="headerTitle">Заказы</div>
       <div className="subHeader">
         <SearchElement />
         <div style={{ display: "flex" }}>
@@ -37,27 +34,21 @@ const Auto = () => {
             text={"Фильтры"}
             onClick={handleFilterClick}
           />
-          <FilledButton
-            icon={plusLogo}
-            text={"Новое авто"}
-            onClick={handleNewAutoClick}
-          />
         </div>
       </div>
-
       {isLoading ? (
         <>Loading...</>
       ) : error ? (
         <>Error</>
       ) : (
-        catalogData?.data && (
+        orderData?.data && (
           <DataTable
             rowLink="detail"
-            pageNum={pageNum}
-            setPageNum={setPageNum}
-            pagination={catalogData.pagination}
-            data={catalogData?.data}
-            columns={columns}
+            pageIndex={pageIndex}
+            setPageIndex={setPageIndex}
+            pagination={orderData.pagination}
+            data={orderData?.data}
+            columns={ordersColumns}
           />
         )
       )}
@@ -65,4 +56,4 @@ const Auto = () => {
   );
 };
 
-export default Auto;
+export default Orders;
