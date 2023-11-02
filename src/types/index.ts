@@ -22,7 +22,6 @@ export interface Catalog {
   nameRu: string;
 }
 export interface Orders {
-
 }
 export type Pagination = {
   total_records: number;

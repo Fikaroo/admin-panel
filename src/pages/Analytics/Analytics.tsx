@@ -1,23 +1,23 @@
 import { useState } from "react";
-import "./Orders.scss";
+import "./Analytics.scss";
 import useSWR from "swr";
 import { DataTable } from "@/components/ui/data-table";
-import { ordersColumns } from "./components/ordersColumns";
-import { Orders, DataWithPagination } from "@/types";
-import { getOrdersDataWithPagination } from "@/api";
+import { analyticsColumns } from "./components/analyticsColumns";
+import { Catalog, DataWithPagination } from "@/types";
+import { getAnalyticsDataWithPagination } from "@/api";
 import OutlinedButton from "@/elements/outlinedButton";
 import SearchElement from "@/elements/search";
 import filterUpLogo from "@/assets/filterIcon.svg";
 
-const Orders = () => {
+const Analytics = () => {
   const [pageIndex, setPageIndex] = useState(1);
   const {
-    data: orderData,
+    data: analyticsData,
     isLoading,
     error,
-  } = useSWR<DataWithPagination<Orders[]>>(
+  } = useSWR<DataWithPagination<Catalog[]>>(
     // `/catalog?localize=true&pageNum=${pageIndex}&pageSize=10`, Burda zakazlarin api-si olmalidir
-    getOrdersDataWithPagination
+    getAnalyticsDataWithPagination
   );
   const handleFilterClick = () => {};
 
@@ -39,14 +39,14 @@ const Orders = () => {
       ) : error ? (
         <>Error</>
       ) : (
-        orderData?.data && (
+        analyticsData?.data && (
           <DataTable
             rowLink="detail"
             pageIndex={pageIndex}
             setPageIndex={setPageIndex}
-            pagination={orderData.pagination}
-            data={orderData?.data}
-            columns={ordersColumns}
+            pagination={analyticsData.pagination}
+            data={analyticsData?.data}
+            columns={analyticsColumns}
           />
         )
       )}
@@ -54,4 +54,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default Analytics;
