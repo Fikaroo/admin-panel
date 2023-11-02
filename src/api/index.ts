@@ -20,3 +20,43 @@ export const getDataWithPagination = async (path: string) => {
     pagination: { total_records, total_pages, next_page, prev_page },
   };
 };
+
+// export const searchDat
+
+type Params = {
+  searchString?: string;
+  isActive?: boolean;
+  pageNum?: number;
+  makeIds?: string;
+  bodyTypes?: number[];
+  gearTypes?: number[];
+  seatMaterialTypes?: number[];
+  seatCount?: number;
+  minSeatCount?: number;
+  maxSeatCount?: number;
+  luggageCount?: number;
+  minLuggageCount?: number;
+  maxLuggageCount?: number;
+};
+
+export const modelsApis = {
+  getById: (id: string) => `/models/${id}`,
+  getAll: "/models",
+  search: (params: Params) =>
+    `/models?${Object.entries(params).map(([key, value]) =>
+      value ? `${key}=${value}&` : ""
+    )}`,
+  create: "/models/save",
+  update: (id: string) => `/models/save/${id}`,
+};
+
+export const makesApis = {
+  getById: (id: string) => `/makes/${id}`,
+  getAll: "/makes",
+  search: (params: Params) =>
+    `/models?${Object.entries(params).map(([key, value]) =>
+      value ? `${key}=${value}&` : ""
+    )}`,
+  create: "/makes/save",
+  update: (id: string) => `/makes/save/${id}`,
+};

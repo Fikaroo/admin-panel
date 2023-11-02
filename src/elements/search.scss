@@ -1,24 +1,21 @@
 .search-element {
-    border: 1px solid #D6D6D6;
-    width: 280px;
-    height: 48px;
-    border-radius: 6px;
-    padding: 4px 16px;
-    display: flex;
-    align-items: center;
+  border: 1px solid #d6d6d6;
+  width: 280px;
+  height: 44px;
+  border-radius: 6px;
+  padding: 4px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .search {
-    outline: none;
-    border: none;
-    margin-left: 8px;
-    height: 27px;
-    font-size: 22px;
-    font-weight: 400;
+  outline: none;
+  border: none;
+  font-size: 16px;
 
-    &::placeholder {
-        color: #A3A3A3;
-        font-size: 18px;
-        font-weight: 400;
-    }
+  &::placeholder {
+    color: #a3a3a3;
+    font-weight: 400;
+  }
 }

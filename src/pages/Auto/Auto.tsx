@@ -21,8 +21,11 @@ const Auto = () => {
     `/catalog?localize=true&pageNum=${pageIndex}&pageSize=10`,
     getDataWithPagination
   );
+
   const handleFilterClick = () => {};
+
   const handleNewAutoClick = () => {};
+
   return (
     <div>
       <div className="headerTitle">Автомобили</div>

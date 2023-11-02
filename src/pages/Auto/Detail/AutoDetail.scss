@@ -1,0 +1,56 @@
+.auto__detail {
+  .back__btn {
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: #737373;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    .left__arrow {
+      width: 18px;
+      height: 18px;
+      fill: #737373;
+    }
+
+    p {
+      font-weight: 600;
+    }
+
+    &:hover {
+      color: #141414;
+      .left__arrow {
+        fill: #141414;
+      }
+    }
+  }
+
+  .header__title {
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  .form__container {
+    display: flex;
+    justify-content: space-between;
+    gap: 42px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 20px;
+
+    .columns {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+    }
+  }
+}
+
+.input__currency::after {
+  content: "₼";
+}

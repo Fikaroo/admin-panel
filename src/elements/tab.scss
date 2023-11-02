@@ -1,0 +1,27 @@
+.tabs {
+  width: 100%;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 20px;
+  display: flex;
+  .tab {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 500;
+
+    .tab__title {
+      padding: 8px 16px 0;
+    }
+
+    &[data-state="true"]::after {
+      content: "";
+      height: 2px;
+      width: 100%;
+      background: #fc0;
+    }
+  }
+}

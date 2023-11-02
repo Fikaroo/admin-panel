@@ -15,8 +15,12 @@ const router = createBrowserRouter([
       },
       {
         path: "auto",
-        element: <Auto />,
         children: [
+          {
+            index: true,
+            element: <Auto />,
+          },
+
           {
             path: "detail",
             element: <AutoDetail />,
