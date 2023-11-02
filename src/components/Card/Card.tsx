@@ -151,7 +151,6 @@ const Card = (props: CardProps) => {
       return updatedData;
     });
   }, [props]);
-  console.log(props.carLogoImg);
   return (
     <div className="card">
       {/* {isPromo && <div className="card-promo">АКЦИЯ</div>} */}

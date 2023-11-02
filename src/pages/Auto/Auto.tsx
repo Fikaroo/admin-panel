@@ -10,8 +10,10 @@ import OutlinedButton from "@/elements/outlinedButton";
 import FilledButton from "@/elements/filledButton";
 import filterUpLogo from "@/assets/filterIcon.svg";
 import plusLogo from "@/assets/plusIcon.svg";
+import { useNavigate } from "react-router-dom";
 
 const Auto = () => {
+  const navigate = useNavigate();
   const [pageNum, setPageNum] = useState(1);
   const {
     data: catalogData,
@@ -24,7 +26,9 @@ const Auto = () => {
 
   const handleFilterClick = () => {};
 
-  const handleNewAutoClick = () => {};
+  const handleNewAutoClick = () => {
+    navigate("detail");
+  };
 
   return (
     <div>

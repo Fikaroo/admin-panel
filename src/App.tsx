@@ -26,6 +26,10 @@ const router = createBrowserRouter([
             path: "detail",
             element: <AutoDetail />,
           },
+          {
+            path: "detail/:id",
+            element: <AutoDetail />,
+          },
         ],
       },
       {
