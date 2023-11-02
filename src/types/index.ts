@@ -21,7 +21,9 @@ export interface Catalog {
   nameEn: string;
   nameRu: string;
 }
+export interface Orders {
 
+}
 export type Pagination = {
   total_records: number;
   total_pages: number;

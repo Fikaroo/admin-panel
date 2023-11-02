@@ -17,6 +17,7 @@ import {
 
 import ArrowLeft from "@/assets/arrow-narrow-left.svg?react";
 import { Pagination } from "@/types";
+import { Link, useNavigate } from "react-router-dom";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -24,6 +25,7 @@ interface DataTableProps<TData, TValue> {
   pagination: Pagination;
   pageIndex: number;
   setPageIndex: React.Dispatch<React.SetStateAction<number>>;
+  rowLink?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -32,7 +34,10 @@ export function DataTable<TData, TValue>({
   pagination,
   pageIndex,
   setPageIndex,
+  rowLink,
 }: DataTableProps<TData, TValue>) {
+  const navigate = useNavigate();
+
   const table = useReactTable({
     data,
     columns,
@@ -44,13 +49,16 @@ export function DataTable<TData, TValue>({
       setPageIndex((prev) => (prev -= 1));
     }
   };
+
   const handleNextPage = () => {
     if (pagination?.next_page === "true") {
       setPageIndex((prev) => (prev += 1));
     }
   };
+
   const handleToPage = (index: number) => setPageIndex(index);
 
+  const handleRowNavigate = () => rowLink && navigate(rowLink);
   return (
     <div className="table-container">
       <Table>
@@ -78,6 +86,7 @@ export function DataTable<TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
+                onClick={handleRowNavigate}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
@@ -89,7 +98,7 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                No results.;
               </TableCell>
             </TableRow>
           )}

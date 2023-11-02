@@ -26,31 +26,31 @@ const routes: Routes[] = [
     name: "Заказы",
     path: "/",
     icon: zakaz,
-    iconBlack: zakazBlack
+    iconBlack: zakazBlack,
   },
   {
     name: "Авто",
     path: "/auto",
     icon: auto,
-    iconBlack: autoBlack
+    iconBlack: autoBlack,
   },
   {
     name: "Акции",
     path: "/stocks",
     icon: akcii,
-    iconBlack: akciiBlack
+    iconBlack: akciiBlack,
   },
   {
     name: "Инфо",
     path: "/info",
     icon: infocircle,
-    iconBlack: infocircleBlack
+    iconBlack: infocircleBlack,
   },
   {
     name: "Аналитика",
     path: "/analytics",
     icon: analitika,
-    iconBlack: analitikaBlack
+    iconBlack: analitikaBlack,
   },
 ];
 
@@ -80,8 +80,8 @@ const SideBar = () => {
                     }
               }
             >
-              <img src={pathName === path ? iconBlack : icon } alt=""/>
-              <span style={{marginLeft:10}}>{name}</span>
+              <img src={pathName === path ? iconBlack : icon} alt="" />
+              <span style={{ marginLeft: 10 }}>{name}</span>
             </Link>
           ))}
         </div>

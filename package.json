@@ -16,9 +16,11 @@
     "axios": "^1.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.47.0",
     "react-router-dom": "^6.17.0",
     "swr": "^2.2.4",
-    "vite-plugin-svgr": "^4.1.0"
+    "vite-plugin-svgr": "^4.1.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.8.7",
