@@ -3,7 +3,7 @@ import "./Auto.scss";
 import useSWR from "swr";
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./components/columns";
-import { getDataWithPagination } from "@/api";
+import { calatogApis, getDataWithPagination } from "@/api";
 import { Catalog, DataWithPagination } from "@/types";
 import SearchElement from "@/elements/search";
 import OutlinedButton from "@/elements/outlinedButton";
@@ -12,17 +12,20 @@ import filterUpLogo from "@/assets/filterIcon.svg";
 import plusLogo from "@/assets/plusIcon.svg";
 
 const Auto = () => {
-  const [pageIndex, setPageIndex] = useState(1);
+  const [pageNum, setPageNum] = useState(1);
   const {
     data: catalogData,
     isLoading,
     error,
   } = useSWR<DataWithPagination<Catalog[]>>(
-    `/catalog?localize=true&pageNum=${pageIndex}&pageSize=10`,
+    calatogApis.search({ pageNum, pageSize: 10 }),
     getDataWithPagination
   );
+
   const handleFilterClick = () => {};
+
   const handleNewAutoClick = () => {};
+
   return (
     <div>
       <div className="headerTitle">Автомобили</div>
@@ -50,8 +53,8 @@ const Auto = () => {
         catalogData?.data && (
           <DataTable
             rowLink="detail"
-            pageIndex={pageIndex}
-            setPageIndex={setPageIndex}
+            pageNum={pageNum}
+            setPageNum={setPageNum}
             pagination={catalogData.pagination}
             data={catalogData?.data}
             columns={columns}

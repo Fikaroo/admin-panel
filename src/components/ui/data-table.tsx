@@ -17,14 +17,14 @@ import {
 
 import ArrowLeft from "@/assets/arrow-narrow-left.svg?react";
 import { Pagination } from "@/types";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   pagination: Pagination;
-  pageIndex: number;
-  setPageIndex: React.Dispatch<React.SetStateAction<number>>;
+  pageNum: number;
+  setPageNum: React.Dispatch<React.SetStateAction<number>>;
   rowLink?: string;
 }
 
@@ -32,8 +32,8 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   pagination,
-  pageIndex,
-  setPageIndex,
+  pageNum,
+  setPageNum,
   rowLink,
 }: DataTableProps<TData, TValue>) {
   const navigate = useNavigate();
@@ -45,20 +45,21 @@ export function DataTable<TData, TValue>({
   });
 
   const handlePrevPage = () => {
-    if (pagination.prev_page === "true") {
-      setPageIndex((prev) => (prev -= 1));
+    if (pagination?.prev_page === "true") {
+      setPageNum((prev) => (prev -= 1));
     }
   };
 
   const handleNextPage = () => {
     if (pagination?.next_page === "true") {
-      setPageIndex((prev) => (prev += 1));
+      setPageNum((prev) => (prev += 1));
     }
   };
 
-  const handleToPage = (index: number) => setPageIndex(index);
+  const handleToPage = (index: number) => setPageNum(index);
 
   const handleRowNavigate = () => rowLink && navigate(rowLink);
+
   return (
     <div className="table-container">
       <Table>
@@ -105,7 +106,7 @@ export function DataTable<TData, TValue>({
         </TableBody>
         <TableFooter>
           <tr>
-            <td colSpan={columns.length - 1}>
+            <td colSpan={columns.length}>
               <div className="pagination">
                 <div
                   data-state={pagination.prev_page}
@@ -119,7 +120,7 @@ export function DataTable<TData, TValue>({
                   {Array.from({ length: pagination.total_pages }).map(
                     (_, index) => (
                       <div
-                        data-state={pageIndex === index + 1}
+                        data-state={pageNum === index + 1}
                         className="number"
                         key={index}
                         onClick={() => handleToPage(index + 1)}

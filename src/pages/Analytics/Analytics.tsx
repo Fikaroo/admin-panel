@@ -3,8 +3,8 @@ import "./Analytics.scss";
 import useSWR from "swr";
 import { DataTable } from "@/components/ui/data-table";
 import { analyticsColumns } from "./components/analyticsColumns";
-import { Catalog, DataWithPagination } from "@/types";
-import { getAnalyticsDataWithPagination } from "@/api";
+import { Analytic, DataWithPagination } from "@/types";
+import { getDataWithPagination } from "@/api";
 import OutlinedButton from "@/elements/outlinedButton";
 import SearchElement from "@/elements/search";
 import filterUpLogo from "@/assets/filterIcon.svg";
@@ -15,9 +15,9 @@ const Analytics = () => {
     data: analyticsData,
     isLoading,
     error,
-  } = useSWR<DataWithPagination<Catalog[]>>(
+  } = useSWR<DataWithPagination<Analytic[]>>(
     // `/catalog?localize=true&pageNum=${pageIndex}&pageSize=10`, Burda zakazlarin api-si olmalidir
-    getAnalyticsDataWithPagination
+    getDataWithPagination
   );
   const handleFilterClick = () => {};
 

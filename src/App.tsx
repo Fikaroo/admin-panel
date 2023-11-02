@@ -1,8 +1,9 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
-import Dashboard from "./pages/Orders/Orders";
+import Orders from "./pages/Orders/Orders";
 import Auto from "./pages/Auto/Auto";
 import AutoDetail from "./pages/Auto/Detail/AutoDetail";
+import Analytics from "./pages/Analytics/Analytics";
 
 const router = createBrowserRouter([
   {
@@ -11,15 +12,28 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Dashboard />,
+        element: <Orders />,
       },
       {
         path: "auto",
-        element: <Auto />,
         children: [
+          {
+            index: true,
+            element: <Auto />,
+          },
+
           {
             path: "detail",
             element: <AutoDetail />,
+          },
+        ],
+      },
+      {
+        path: "orders",
+        children: [
+          {
+            index: true,
+            element: <Analytics />,
           },
         ],
       },

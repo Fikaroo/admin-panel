@@ -21,8 +21,25 @@ export interface Catalog {
   nameEn: string;
   nameRu: string;
 }
-export interface Orders {
+export interface Order{
 }
+export interface Analytic{
+}
+export interface Make {
+  id: string;
+  name: string;
+  isActive: boolean;
+}
+
+export interface Model {
+  id: string;
+  name: string;
+  isActive: boolean;
+  makeId: string;
+  makeName: string;
+  imageBase64: string;
+}
+
 export type Pagination = {
   total_records: number;
   total_pages: number;

@@ -3,11 +3,11 @@ import "./Orders.scss";
 import useSWR from "swr";
 import { DataTable } from "@/components/ui/data-table";
 import { ordersColumns } from "./components/ordersColumns";
-import { Orders, DataWithPagination } from "@/types";
-import { getOrdersDataWithPagination } from "@/api";
+import { Order, DataWithPagination } from "@/types";
 import OutlinedButton from "@/elements/outlinedButton";
 import SearchElement from "@/elements/search";
 import filterUpLogo from "@/assets/filterIcon.svg";
+import { getDataWithPagination } from "@/api";
 
 const Orders = () => {
   const [pageIndex, setPageIndex] = useState(1);
@@ -15,9 +15,11 @@ const Orders = () => {
     data: orderData,
     isLoading,
     error,
-  } = useSWR<DataWithPagination<Orders[]>>(
-    // `/catalog?localize=true&pageNum=${pageIndex}&pageSize=10`, Burda zakazlarin api-si olmalidir
-    getOrdersDataWithPagination
+  } = useSWR<DataWithPagination<Order[]>>(
+    // Todo: Update with order api
+    // `/catalog?localize=true&pageNum=${pageIndex}&pageSize=10`,
+    "",
+    getDataWithPagination
   );
   const handleFilterClick = () => {};
 

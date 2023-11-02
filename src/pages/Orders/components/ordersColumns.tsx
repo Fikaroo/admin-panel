@@ -1,7 +1,7 @@
-import { Orders } from "@/types";
+import { Order } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 
-export const ordersColumns: ColumnDef<Orders>[] = [
+export const ordersColumns: ColumnDef<Order>[] = [
   {
     accessorKey: "сlientName",
     header: "КЛИЕНТ",
