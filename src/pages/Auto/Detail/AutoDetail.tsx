@@ -1,5 +1,11 @@
 import "./AutoDetail.scss";
-import { useNavigate } from "react-router-dom";
+import {
+  useLocation,
+  useMatch,
+  useNavigate,
+  useParams,
+  useRoutes,
+} from "react-router-dom";
 import ArrowLeft from "@/assets/arrow-narrow-left.svg?react";
 import Card from "@/components/Card/Card";
 
@@ -8,10 +14,12 @@ import { Controller, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useSWR from "swr";
-import { makeApis, getData, modelApis } from "@/api";
+import { makeApis, getData, modelApis, calatogApis } from "@/api";
 import { BodyType, Make, Model, TransmissionType } from "@/types";
 import { enumToMap, getSelectAttr, yearsList } from "@/utils";
 import Switch from "@/components/ui/switch/switch";
+import ImageUpload from "@/components/ui/image-upload/image-upload";
+import { useEffect } from "react";
 
 const schema = z.object({
   carLogoImg: z.string().min(1),
@@ -39,6 +47,8 @@ const schema = z.object({
 export type AutoDetailForm = z.infer<typeof schema>;
 
 const AutoDetail = () => {
+  const { id } = useParams();
+  const { data } = useSWR(id && calatogApis.getById(id), getData);
   const navigate = useNavigate();
   const { control, handleSubmit, watch, setValue } = useForm<AutoDetailForm>({
     resolver: zodResolver(schema),
@@ -63,7 +73,10 @@ const AutoDetail = () => {
       thirdPrice: 0,
       isActive: false,
     },
+    values: data,
   });
+
+  useEffect(() => {}, [data]);
 
   const { data: makeData, isLoading: makesLoading } = useSWR<Make[]>(
     makeApis.getAll,
@@ -95,6 +108,21 @@ const AutoDetail = () => {
 
       <div className="form__container">
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
+          <div className="columns">
+            <ImageUpload
+              setValue={setValue}
+              name="carImg"
+              title="фото"
+              details="SVG, PNG, JPG or GIF (max. 464 x 240 px)"
+            />
+            <ImageUpload
+              setValue={setValue}
+              name="carLogoImg"
+              title="логотип"
+              details="SVG, PNG, JPG or GIF (max. 72 x 72 px)"
+            />
+          </div>
+
           <div className="columns">
             <Controller
               control={control}

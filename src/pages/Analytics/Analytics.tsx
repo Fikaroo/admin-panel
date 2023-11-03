@@ -11,7 +11,7 @@ import filterUpLogo from "@/assets/filterIcon.svg";
 import calendarLogo from "@/assets/calendarIcon.svg";
 
 const Analytics = () => {
-  const [pageIndex, setPageIndex] = useState(1);
+  const [pageNum, setPageNum] = useState(1);
   const {
     data: analyticsData,
     isLoading,
@@ -31,7 +31,7 @@ const Analytics = () => {
       <div className="subHeader">
         <SearchElement />
         <div style={{ display: "flex" }}>
-        <OutlinedButton
+          <OutlinedButton
             icon={calendarLogo}
             text={"Выберите даты"}
             onClick={handleDateSelect}
@@ -51,8 +51,8 @@ const Analytics = () => {
         analyticsData?.data && (
           <DataTable
             rowLink="detail"
-            pageIndex={pageIndex}
-            setPageIndex={setPageIndex}
+            pageNum={pageNum}
+            setPageNum={setPageNum}
             pagination={analyticsData.pagination}
             data={analyticsData?.data}
             columns={analyticsColumns}

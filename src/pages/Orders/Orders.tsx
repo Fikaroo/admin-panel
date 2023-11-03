@@ -10,7 +10,7 @@ import filterUpLogo from "@/assets/filterIcon.svg";
 import { getDataWithPagination } from "@/api";
 
 const Orders = () => {
-  const [pageIndex, setPageIndex] = useState(1);
+  const [pageNum, setPageNum] = useState(1);
   const {
     data: orderData,
     isLoading,
@@ -44,8 +44,8 @@ const Orders = () => {
         orderData?.data && (
           <DataTable
             rowLink="detail"
-            pageIndex={pageIndex}
-            setPageIndex={setPageIndex}
+            pageNum={pageNum}
+            setPageNum={setPageNum}
             pagination={orderData.pagination}
             data={orderData?.data}
             columns={ordersColumns}

@@ -58,7 +58,8 @@ export function DataTable<TData, TValue>({
 
   const handleToPage = (index: number) => setPageNum(index);
 
-  const handleRowNavigate = () => rowLink && navigate(rowLink);
+  const handleRowNavigate = (id: string) =>
+    rowLink && navigate(`${rowLink}/${id}`);
 
   return (
     <div className="table-container">
@@ -87,7 +88,10 @@ export function DataTable<TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                onClick={handleRowNavigate}
+                onClick={() => {
+                  const { id } = row?.original as { id: string };
+                  handleRowNavigate(id);
+                }}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
