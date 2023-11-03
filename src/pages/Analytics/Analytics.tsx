@@ -17,10 +17,11 @@ const Analytics = () => {
     isLoading,
     error,
   } = useSWR<DataWithPagination<Analytic[]>>(
+    // Todo: Update with analytic api
     // `/catalog?localize=true&pageNum=${pageIndex}&pageSize=10`, Burda zakazlarin api-si olmalidir
     getDataWithPagination
   );
-  
+
   const handleDateSelect = () => {};
   const handleFilterClick = () => {};
 
