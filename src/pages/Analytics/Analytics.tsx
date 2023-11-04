@@ -4,7 +4,7 @@ import useSWR from "swr";
 import { DataTable } from "@/components/ui/data-table";
 import { analyticsColumns } from "./components/analyticsColumns";
 import { Analytic, DataWithPagination } from "@/types";
-import { getDataWithPagination } from "@/api";
+import {analyticsApis, getDataWithPagination } from "@/api";
 import OutlinedButton from "@/elements/outlinedButton";
 import SearchElement from "@/elements/search";
 import filterUpLogo from "@/assets/filterIcon.svg";
@@ -12,13 +12,14 @@ import calendarLogo from "@/assets/calendarIcon.svg";
 
 const Analytics = () => {
   const [pageNum, setPageNum] = useState(1);
+  const [minActionDate, setMinActionDate] = useState(1);
+  const [maxActionDate, setMaxActionDate] = useState(1);
   const {
     data: analyticsData,
     isLoading,
     error,
   } = useSWR<DataWithPagination<Analytic[]>>(
-    // Todo: Update with analytic api
-    // `/catalog?localize=true&pageNum=${pageIndex}&pageSize=10`, Burda zakazlarin api-si olmalidir
+    analyticsApis.search({ pageNum, pageSize: 10, minActionDate, maxActionDate }),
     getDataWithPagination
   );
 

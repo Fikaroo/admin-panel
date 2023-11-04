@@ -36,6 +36,9 @@ type Params = {
   luggageCount?: number;
   minLuggageCount?: number;
   maxLuggageCount?: number;
+  actionCode?: string;
+  minActionDate: Date;
+  maxActionDate: Date;
 };
 
 export const calatogApis = {
@@ -64,9 +67,19 @@ export const makeApis = {
   getById: (id: string) => `/makes/${id}`,
   getAll: "/makes",
   search: (params: Params) =>
-    `/models?${Object.entries(params)
+    `/makes?${Object.entries(params)
       .map(([key, value]) => (value ? `${key}=${value}&` : ""))
       .join("")}`,
   create: "/makes/save",
   update: (id: string) => `/makes/save/${id}`,
+};
+
+export const analyticsApis = {
+  getAll: "/analytics",
+  search: (params: Params) =>
+    `/analytics?${Object.entries(params)
+      .map(([key, value]) => (value ? `${key}=${value}&` : ""))
+      .join("")}`,
+  create: "/analytics/save",
+  delete: (id: string) => `/analytics/delete/${id}`,
 };
