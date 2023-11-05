@@ -4,13 +4,20 @@ import useSWR from "swr";
 import { DataTable } from "@/components/ui/data-table";
 import { analyticsColumns } from "./components/analyticsColumns";
 import { Analytic, DataWithPagination } from "@/types";
-import {analyticsApis, getDataWithPagination } from "@/api";
+import { analyticsApis, getDataWithPagination } from "@/api";
 import OutlinedButton from "@/elements/outlinedButton";
 import SearchElement from "@/elements/search";
 import filterUpLogo from "@/assets/filterIcon.svg";
 import calendarLogo from "@/assets/calendarIcon.svg";
 
+import dayjs, { Dayjs } from "dayjs";
+import { DateRange } from "@mui/x-date-pickers-pro";
+import DateRangePickerWithButtonField from "@/components/ui/calendar/calendar";
+
 const Analytics = () => {
+  const [value, setValue] = useState<DateRange<Dayjs>>([null, null]);
+  const [show, setShow] = useState(false);
+
   const [pageNum, setPageNum] = useState(1);
   const [minActionDate, setMinActionDate] = useState(1);
   const [maxActionDate, setMaxActionDate] = useState(1);
@@ -19,11 +26,23 @@ const Analytics = () => {
     isLoading,
     error,
   } = useSWR<DataWithPagination<Analytic[]>>(
-    analyticsApis.search({ pageNum, pageSize: 10, minActionDate, maxActionDate }),
+    analyticsApis.search({
+      pageNum,
+      pageSize: 10,
+      minActionDate,
+      maxActionDate,
+    }),
     getDataWithPagination
   );
 
-  const handleDateSelect = () => {};
+  const handleDateSelect = (newValue) => {
+    if (newValue[0] !== null && newValue[1] !== null) {
+      setMinActionDate(newValue[0]);
+      setMaxActionDate(newValue[1]);
+    }
+    setValue(newValue);
+  };
+
   const handleFilterClick = () => {};
 
   return (
@@ -32,11 +51,24 @@ const Analytics = () => {
       <div className="subHeader">
         <SearchElement />
         <div style={{ display: "flex" }}>
-          <OutlinedButton
+          {/* <OutlinedButton
             icon={calendarLogo}
             text={"Выберите даты"}
             onClick={handleDateSelect}
+          /> */}
+
+          <DateRangePickerWithButtonField
+            value={value}
+            onChange={(newValue) => handleDateSelect(newValue)}
           />
+          {/* {show ? <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateRangeCalendar
+              calendars={1}
+              value={value}
+              onChange={(newValue) => setValue(newValue)}
+            />
+          </LocalizationProvider> : null} */}
+
           <OutlinedButton
             icon={filterUpLogo}
             text={"Фильтры"}
