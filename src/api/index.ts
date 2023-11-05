@@ -37,8 +37,8 @@ type Params = {
   minLuggageCount?: number;
   maxLuggageCount?: number;
   actionCode?: string;
-  minActionDate: Date;
-  maxActionDate: Date;
+  minActionDate?: Date;
+  maxActionDate?: Date;
 };
 
 export const calatogApis = {
