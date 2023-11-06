@@ -8,10 +8,14 @@ import ImageIcon from "@/assets/image-icon.svg?react";
 import "./Card.scss";
 import { AutoDetailForm } from "@/pages/Auto/Detail/AutoDetail";
 import { useEffect, useState } from "react";
+import { Catalog } from "@/types";
 
-type CardProps = Partial<AutoDetailForm>;
+type CardProps = {
+  carForm: Partial<AutoDetailForm>;
+  carData: Catalog;
+};
 
-const Card = (props: CardProps) => {
+const Card = ({ carForm, carData }: CardProps) => {
   const [details, setDetails] = useState<
     { id: string; icon: string; title: string | number }[][]
   >([
@@ -61,12 +65,12 @@ const Card = (props: CardProps) => {
       title: 0,
     },
     {
-      id: "firstPrice",
+      id: "secondPrice",
       subtitle: "8-21 дней",
       title: 0,
     },
     {
-      id: "firstPrice",
+      id: "thirdPrice",
       subtitle: "22+ дней",
       title: 0,
     },
@@ -80,15 +84,17 @@ const Card = (props: CardProps) => {
             id: "yearOfManufacture",
             icon: calendartIcon,
             title:
-              (Number(props.yearOfManufacture) === -1 && "-") ||
-              props.yearOfManufacture ||
+              (Number(carForm.yearOfManufacture) === -1 && "-") ||
+              carForm.yearOfManufacture ||
               "-",
           },
           {
             id: "bodyType",
             icon: carIcon,
             title:
-              (Number(props.bodyType) === -1 && "-") || props.bodyType || "-",
+              (Number(carForm.bodyType) === -1 && "-") ||
+              carForm.bodyType ||
+              "-",
           },
         ],
         [
@@ -96,14 +102,16 @@ const Card = (props: CardProps) => {
             id: "seatCount",
             icon: userIcon,
             title:
-              (Number(props.seatCount) === -1 && "-") || props.seatCount || "-",
+              (Number(carForm.seatCount) === -1 && "-") ||
+              carForm.seatCount ||
+              "-",
           },
           {
             id: "luggageCount",
             icon: luggageIcon,
             title:
-              (Number(props.luggageCount) === -1 && "-") ||
-              props.luggageCount ||
+              (Number(carForm.luggageCount) === -1 && "-") ||
+              carForm.luggageCount ||
               "-",
           },
         ],
@@ -112,8 +120,8 @@ const Card = (props: CardProps) => {
             id: "seatMaterialType",
             icon: carSeatIcon,
             title:
-              (Number(props.seatMaterialType) === -1 && "-") ||
-              props.seatMaterialType ||
+              (Number(carForm.seatMaterialType) === -1 && "-") ||
+              carForm.seatMaterialType ||
               "-",
           },
 
@@ -121,7 +129,9 @@ const Card = (props: CardProps) => {
             id: "gearType",
             icon: transmissionIcon,
             title:
-              (Number(props.gearType) === -1 && "-") || props.gearType || "-",
+              (Number(carForm.gearType) === -1 && "-") ||
+              carForm.gearType ||
+              "-",
           },
         ],
       ];
@@ -133,40 +143,51 @@ const Card = (props: CardProps) => {
       const updatedData = [
         {
           id: "firstPrice",
-          subtitle: "2-7 дней",
-          title: props.firstPrice || 0,
+          subtitle: `${carData?.priceSettings?.[0].minDays || "2"}-${
+            carData?.priceSettings?.[0].maxDays || "7"
+          }  дней`,
+          title: carForm.firstPrice || 0,
         },
         {
-          id: "firstPrice",
-          subtitle: "8-21 дней",
-          title: props.secondPrice || 0,
+          id: "secondPrice",
+          subtitle: `${carData?.priceSettings?.[1].minDays || "2"}-${
+            carData?.priceSettings?.[1].maxDays || "7"
+          }  дней`,
+          title: carForm.secondPrice || 0,
         },
         {
-          id: "firstPrice",
-          subtitle: "22+ дней",
-          title: props.thirdPrice || 0,
+          id: "thirdPrice",
+          subtitle: `${carData?.priceSettings?.[2].minDays || "2"}-${
+            carData?.priceSettings?.[2].maxDays || "7"
+          }  дней`,
+          title: carForm.thirdPrice || 0,
         },
       ];
 
       return updatedData;
     });
-  }, [props]);
+  }, [carData?.priceSettings, carForm]);
+
   return (
     <div className="card">
       {/* {isPromo && <div className="card-promo">АКЦИЯ</div>} */}
       <div className="card-wrapper">
         <div className="card-header">
-          {props.carLogoImg ? (
-            <img className="car-logo" src={props.carLogoImg} alt="card-logo" />
+          {carForm.carLogoImg ? (
+            <img
+              className="car-logo"
+              src={carForm.carLogoImg}
+              alt="card-logo"
+            />
           ) : (
             <div className="car-logo">
               <ImageIcon />
             </div>
           )}
-          <p className="card-title">{props.make || "Марка авто"}</p>
+          <p className="card-title">{carForm.make || "Марка авто"}</p>
         </div>
-        {props.carImg ? (
-          <img className="car-image" src={props.carImg} alt="car-image" />
+        {carForm.carImg ? (
+          <img className="car-image" src={carForm.carImg} alt="car-image" />
         ) : (
           <div className="car-image">
             <ImageIcon />

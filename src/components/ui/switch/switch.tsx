@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./switch.scss";
 import { UseFormSetValue } from "react-hook-form";
 import { AutoDetailForm } from "@/pages/Auto/Detail/AutoDetail";
@@ -11,12 +11,11 @@ type SwitchProps = {
 
 const Switch = ({ label, isAcive, setValue }: SwitchProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(isAcive || false);
-
   const handleSwitch = () => {
     setIsOpen(!isOpen);
     setValue && setValue("isActive", isOpen);
   };
-
+  useEffect(() => setIsOpen(isAcive || false), [isAcive]);
   return (
     <div className="switch">
       <button

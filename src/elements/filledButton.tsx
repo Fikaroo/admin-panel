@@ -1,7 +1,7 @@
 import "./filledButton.scss";
 
 interface FilledButtonProps{
-  icon: string,
+  icon?: string,
   text: string,
   onClick: () => void,
 }

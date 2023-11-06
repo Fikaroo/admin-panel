@@ -1,11 +1,5 @@
 import "./AutoDetail.scss";
-import {
-  useLocation,
-  useMatch,
-  useNavigate,
-  useParams,
-  useRoutes,
-} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ArrowLeft from "@/assets/arrow-narrow-left.svg?react";
 import Card from "@/components/Card/Card";
 
@@ -19,7 +13,6 @@ import { BodyType, Make, Model, TransmissionType } from "@/types";
 import { enumToMap, getSelectAttr, yearsList } from "@/utils";
 import Switch from "@/components/ui/switch/switch";
 import ImageUpload from "@/components/ui/image-upload/image-upload";
-import { useEffect } from "react";
 
 const schema = z.object({
   carLogoImg: z.string().min(1),
@@ -50,6 +43,8 @@ const AutoDetail = () => {
   const { id } = useParams();
   const { data } = useSWR(id && calatogApis.getById(id), getData);
   const navigate = useNavigate();
+
+  // Todo create a logic for preview card details
   const { control, handleSubmit, watch, setValue } = useForm<AutoDetailForm>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -62,7 +57,7 @@ const AutoDetail = () => {
       gearType: "",
       gearTypeId: -1,
       bodyType: "",
-      bodyTypeId: -1,
+      bodyTypeId: 1,
       seatMaterialType: "",
       seatMaterialTypeId: -1,
       seatCount: -1,
@@ -73,10 +68,20 @@ const AutoDetail = () => {
       thirdPrice: 0,
       isActive: false,
     },
-    values: data,
+    values: {
+      ...data,
+      gearType: TransmissionType?.[data?.gearType],
+      gearTypeId: data?.gearType,
+      bodyType: BodyType?.[data?.bodyType],
+      bodyTypeId: data?.bodyType,
+      // need add seatMaterialtype enum
+      seatMaterialType: "Leather",
+      seatMaterialTypeId: data?.seatMaterialType,
+      firstPrice: data?.priceSettings?.at(0)?.pricePerDay,
+      secondPrice: data?.priceSettings?.at(1)?.pricePerDay,
+      thirdPrice: data?.priceSettings?.at(2)?.pricePerDay,
+    },
   });
-
-  useEffect(() => {}, [data]);
 
   const { data: makeData, isLoading: makesLoading } = useSWR<Make[]>(
     makeApis.getAll,
@@ -406,7 +411,7 @@ const AutoDetail = () => {
           <Switch isAcive={watch("isActive")} label="Активизировать карточку" />
           <DevTool control={control} />
         </form>
-        <Card {...watch()} />
+        <Card carForm={watch()} carData={data} />
       </div>
     </div>
   );

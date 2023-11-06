@@ -4,6 +4,11 @@ import Orders from "./pages/Orders/Orders";
 import Auto from "./pages/Auto/Auto";
 import AutoDetail from "./pages/Auto/Detail/AutoDetail";
 import Analytics from "./pages/Analytics/Analytics";
+import Info from "./pages/Info/Info";
+import InfoMain from "./pages/Info/InfoMain/InfoMain";
+import InfoAbout from "./pages/Info/InfoAbout/InfoAbout";
+import InfoFaq from "./pages/Info/InfoFaq/InfoFaq";
+import InfoPartners from "./pages/Info/InfoPartners/InfoPartners";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +34,28 @@ const router = createBrowserRouter([
           {
             path: "detail/:id",
             element: <AutoDetail />,
+          },
+        ],
+      },
+      {
+        path: "info",
+        element:<Info />,
+        children: [
+          {
+            index: true,
+            element: <InfoMain />,
+          },
+          {
+            path: "about",
+            element: <InfoAbout />,
+          },
+          {
+            path: "faq",
+            element: <InfoFaq />,
+          },
+          {
+            path: "partners",
+            element: <InfoPartners />,
           },
         ],
       },

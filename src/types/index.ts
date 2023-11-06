@@ -1,3 +1,9 @@
+export interface PriceSetting {
+  minDays: number;
+  maxDays?: number;
+  pricePerDay: number;
+}
+
 export interface Catalog {
   id: string;
   isActive: boolean;
@@ -12,6 +18,7 @@ export interface Catalog {
   seatMaterialType: number;
   gearType: number;
   imageBase64: string;
+  priceSettings: PriceSetting[];
   makeName: string;
   modelName: string;
   descriptionAz: string;
@@ -21,10 +28,9 @@ export interface Catalog {
   nameEn: string;
   nameRu: string;
 }
-export interface Order{
-}
-export interface Analytic{
-}
+
+export interface Order {}
+export interface Analytic {}
 export interface Make {
   id: string;
   name: string;
