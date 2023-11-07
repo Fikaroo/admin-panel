@@ -109,3 +109,12 @@ export enum BodyType {
   ConstructionEquipment = 25,
   Caravan = 26,
 }
+
+export enum SeatMaterialType {
+  Leather = 1,
+  Alcantara = 2,
+  Vinyl = 3,
+  Polyester = 4,
+  Nylon = 5,
+  Other = 6,
+}

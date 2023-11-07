@@ -1,6 +1,6 @@
+import "./InfoPartners.scss";
+
 const InfoPartners = () => {
-    return(
-        <p>bye bye</p>
-    )
-}
+  return <div>bye bye</div>;
+};
 export default InfoPartners;
