@@ -1,5 +1,4 @@
-import { useContext, useState } from "react";
-import { LocalizationContext } from "@/hooks/customLangHook";
+import { useState } from "react";
 import LaguageSwitcher from "@/elements/laguageSwitcher";
 import "./InfoFaq.scss";
 import Modal from "@/elements/modal";
@@ -63,15 +62,15 @@ const InfoFaq = () => {
 
   const handleModalOpen = () => setIsModalOpen(!isModalOpen);
 
-  const { currentLanguage, setCurrentLanguage, translate } =
-    useContext(LocalizationContext);
+  // const { currentLanguage, setCurrentLanguage, translate } =
+  //   useContext(LocalizationContext);
 
   const handleEditFaq = (data: FaqList) => {
     setFaq(data);
     handleModalOpen();
   };
 
-  const handleRemoveFaq = (data: FaqList) => {
+  const handleRemoveFaq = () => {
     // Todo: add remove faq api
   };
 
