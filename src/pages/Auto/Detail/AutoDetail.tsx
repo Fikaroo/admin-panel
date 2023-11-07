@@ -9,10 +9,17 @@ import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useSWR from "swr";
 import { makeApis, getData, modelApis, calatogApis } from "@/api";
-import { BodyType, Make, Model, TransmissionType } from "@/types";
+import {
+  BodyType,
+  Make,
+  Model,
+  TransmissionType,
+  SeatMaterialType,
+} from "@/types";
 import { enumToMap, getSelectAttr, yearsList } from "@/utils";
 import Switch from "@/components/ui/switch/switch";
 import ImageUpload from "@/components/ui/image-upload/image-upload";
+import { useEffect } from "react";
 
 const schema = z.object({
   carLogoImg: z.string().min(1),
@@ -45,7 +52,14 @@ const AutoDetail = () => {
   const navigate = useNavigate();
 
   // Todo create a logic for preview card details
-  const { control, handleSubmit, watch, setValue } = useForm<AutoDetailForm>({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, isDirty, isValid },
+  } = useForm<AutoDetailForm>({
+    mode: "onChange",
     resolver: zodResolver(schema),
     defaultValues: {
       carLogoImg: "",
@@ -57,7 +71,7 @@ const AutoDetail = () => {
       gearType: "",
       gearTypeId: -1,
       bodyType: "",
-      bodyTypeId: 1,
+      bodyTypeId: -1,
       seatMaterialType: "",
       seatMaterialTypeId: -1,
       seatCount: -1,
@@ -75,7 +89,7 @@ const AutoDetail = () => {
       bodyType: BodyType?.[data?.bodyType],
       bodyTypeId: data?.bodyType,
       // need add seatMaterialtype enum
-      seatMaterialType: "Leather",
+      seatMaterialType: SeatMaterialType?.[data?.seatMaterialType],
       seatMaterialTypeId: data?.seatMaterialType,
       firstPrice: data?.priceSettings?.at(0)?.pricePerDay,
       secondPrice: data?.priceSettings?.at(1)?.pricePerDay,
@@ -93,6 +107,16 @@ const AutoDetail = () => {
   );
 
   const handleBackNavigation = () => navigate(-1);
+
+  useEffect(() => {
+    if (id) {
+      const currentCar = modelData?.find(
+        ({ makeId }) => watch("makeId") === makeId
+      );
+      currentCar?.makeName && setValue("make", currentCar?.makeName);
+      currentCar?.name && setValue("model", currentCar?.name);
+    }
+  }, [modelData]);
 
   const customOnChange = (
     e: React.ChangeEvent<HTMLSelectElement>,
@@ -114,18 +138,29 @@ const AutoDetail = () => {
       <div className="form__container">
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <div className="columns">
-            <ImageUpload
-              setValue={setValue}
-              name="carImg"
-              title="фото"
-              details="SVG, PNG, JPG or GIF (max. 464 x 240 px)"
-            />
-            <ImageUpload
-              setValue={setValue}
-              name="carLogoImg"
-              title="логотип"
-              details="SVG, PNG, JPG or GIF (max. 72 x 72 px)"
-            />
+            <div className="columns_group">
+              <ImageUpload
+                setValue={setValue}
+                name="carImg"
+                title="фото"
+                details="SVG, PNG, JPG or GIF (max. 464 x 240 px)"
+              />
+              {errors?.carImg?.message && (
+                <span className="error">{errors?.carImg?.message}</span>
+              )}
+            </div>
+
+            <div className="columns_group">
+              <ImageUpload
+                setValue={setValue}
+                name="carLogoImg"
+                title="логотип"
+                details="SVG, PNG, JPG or GIF (max. 72 x 72 px)"
+              />
+              {errors?.carLogoImg?.message && (
+                <span className="error">{errors?.carLogoImg?.message}</span>
+              )}
+            </div>
           </div>
 
           <div className="columns">
@@ -194,7 +229,12 @@ const AutoDetail = () => {
               render={({ field }) => (
                 <div className="select__group">
                   <label>Год выпуска</label>
-                  <select className="select" {...field} required>
+                  <select
+                    className="select"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    required
+                  >
                     <option value={-1} disabled selected hidden>
                       Год выпуска
                     </option>
@@ -207,6 +247,7 @@ const AutoDetail = () => {
                 </div>
               )}
             />
+
             <Controller
               control={control}
               name="gearTypeId"
@@ -217,7 +258,7 @@ const AutoDetail = () => {
                     className="select"
                     {...field}
                     onChange={(e) => {
-                      field.onChange(e);
+                      field.onChange(Number(e.target.value));
                       customOnChange(e, "gearType");
                     }}
                     required
@@ -247,7 +288,8 @@ const AutoDetail = () => {
                     className="select"
                     {...field}
                     onChange={(e) => {
-                      field.onChange(e);
+                      field.onChange(Number(e.target.value));
+
                       customOnChange(e, "bodyType");
                     }}
                     required
@@ -274,7 +316,7 @@ const AutoDetail = () => {
                     className="select"
                     {...field}
                     onChange={(e) => {
-                      field.onChange(e);
+                      field.onChange(Number(e.target.value));
                       customOnChange(e, "seatMaterialType");
                     }}
                     required
@@ -282,10 +324,11 @@ const AutoDetail = () => {
                     <option value={-1} disabled selected hidden>
                       Салон
                     </option>
-                    {/* //Todo need update with dynamic data */}
-                    <option data-state="Leather" value={0}>
-                      Leather
-                    </option>
+                    {enumToMap(SeatMaterialType)?.map(([key, value]) => (
+                      <option key={key} data-state={value} value={key}>
+                        {value}
+                      </option>
+                    ))}
                   </select>
                 </div>
               )}
@@ -318,6 +361,10 @@ const AutoDetail = () => {
                 </div>
               )}
             />
+
+            {errors?.seatCount?.message && (
+              <span className="error">{errors?.seatCount?.message}</span>
+            )}
             <Controller
               control={control}
               name="luggageCount"
@@ -410,6 +457,25 @@ const AutoDetail = () => {
 
           <Switch isAcive={watch("isActive")} label="Активизировать карточку" />
           <DevTool control={control} />
+
+          {id ? (
+            <button
+              type="submit"
+              className="btn btn_primary"
+              disabled={!isDirty || !isValid}
+            >
+              Сохранить изменения
+            </button>
+          ) : (
+            <div className="btn_group">
+              <button type="submit" className="btn btn_outline">
+                Удалить
+              </button>
+              <button type="submit" className="btn btn_primary">
+                Сохранить изменения
+              </button>
+            </div>
+          )}
         </form>
         <Card carForm={watch()} carData={data} />
       </div>

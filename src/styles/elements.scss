@@ -65,3 +65,19 @@
 label {
   font-weight: 500;
 }
+
+.textarea {
+  border-radius: 6px;
+  border: 1px solid var(--gray-300, #d6d6d6);
+  background: var(--White, #fff);
+  display: flex;
+  padding: 8px 16px;
+  gap: 10px;
+  height: 160px;
+  resize: none;
+  font-size: 16px;
+  &:focus {
+    outline: none;
+    border: 1px solid #fc0;
+  }
+}

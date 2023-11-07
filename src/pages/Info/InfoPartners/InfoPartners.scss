@@ -1,16 +1,68 @@
-.info_faq {
+.info_partners {
+  gap: 32px;
+  display: flex;
+  flex-direction: column;
+
   .lists {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 4px;
     max-height: 500px;
     overflow-y: auto;
+    width: 60%;
 
+    .partner {
+      color: var(--gray-900, #141414);
+
+      /* Body text xl/Semibold */
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 30px; /* 150% */
+    }
+    .list-icons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+    }
+    .icons {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+
+      .upload_img {
+        display: flex;
+        cursor: pointer;
+        padding: 8px;
+        height: 100%;
+        background: var(--gray-200, #e5e5e5);
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        border-radius: 9999px;
+      }
+
+      .edit_icon {
+        display: none;
+      }
+
+      .remove_icon {
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 9999px;
+        background: rgba(255, 75, 60, 0.14);
+        padding: 8px;
+      }
+    }
     .list {
       display: flex;
       gap: 10px;
-      padding: 18px 32px;
+      padding: 10px 16px;
       border-radius: 12px;
+      width: 80%;
       border: 1px solid var(--gray-200, #e5e5e5);
 
       .index {
@@ -24,17 +76,7 @@
       }
 
       .list_body {
-        .question {
-          color: var(--gray-900, #141414);
-
-          /* Body text xl/Semibold */
-          font-size: 18px;
-          font-style: normal;
-          font-weight: 600;
-          line-height: 30px; /* 150% */
-        }
-
-        .answer {
+        .image-name {
           color: var(--gray-700, #424242);
 
           /* Body text lg/Regular */
@@ -44,34 +86,8 @@
           line-height: 24px; /* 133.333% */
         }
       }
-
-      .icons {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        .edit_icon {
-          cursor: pointer;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          border-radius: 9999px;
-          background: var(--gray-200, #e5e5e5);
-          padding: 8px;
-        }
-
-        .remove_icon {
-          cursor: pointer;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          border-radius: 9999px;
-          background: rgba(255, 75, 60, 0.14);
-          padding: 8px;
-        }
-      }
     }
   }
-
   .btn {
     cursor: pointer;
     outline: none;
