@@ -19,8 +19,8 @@ export const analyticsColumns: ColumnDef<Analytic>[] = [
     header: "ПОСЛЕДНЕЕ ДЕЙСТВИЕ",
   },
   {
-    accessorKey: "ИНФО",
-    header: "МЕСТО ВОЗВРАТА",
+    accessorKey: "infoAuto",
+    header: "ИНФО ОБ АВТО",
   },
 
 ];

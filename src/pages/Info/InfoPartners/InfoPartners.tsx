@@ -3,20 +3,28 @@ import "./InfoPartners.scss";
 
 const InfoPartners = () => {
   const [img, setImg] = useState<File>();
-  const partnerList = ["TTI-logo.jpg"];
+  const [partnerList, setPartnerList] = useState(["TTI-logo.jpg"]);
 
   const handleImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.files?.[0] && setImg(e.target.files?.[0]);
+
+    if (e.target.files?.[0]) {
+      e.target.value = e.target.files?.[0].name;
+    }
+  };
+
+  const addPartner = () => {
+    setPartnerList([...partnerList, " "]);
   };
 
   return (
     <div className="info_partners">
       <div className="lists">
         {partnerList.map((p, index) => (
-          <>
+          <div key={index}>
             <div className="partner">Партнер {index + 1}</div>
             <div className="list-icons">
-              <input className="list" value={p} disabled />
+              <input className="list" value={img ? img.name : ""} disabled />
 
               <div className="icons">
                 <label htmlFor="upload_img" className="upload_img">
@@ -40,6 +48,7 @@ const InfoPartners = () => {
                     type="file"
                     id="upload_img"
                     className="edit_icon"
+                    required
                   />
                 </label>
 
@@ -62,11 +71,11 @@ const InfoPartners = () => {
                 </div>
               </div>
             </div>
-          </>
+          </div>
         ))}
       </div>
 
-      <div className="btn btn_add">
+      <div className="btn btn_add" onClick={addPartner}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="20"
