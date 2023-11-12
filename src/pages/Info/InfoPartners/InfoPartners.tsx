@@ -2,19 +2,30 @@ import { useState } from "react";
 import "./InfoPartners.scss";
 
 const InfoPartners = () => {
-  const [img, setImg] = useState<File>();
+  // const [img, setImg] = useState<File>();
   const [partnerList, setPartnerList] = useState(["TTI-logo.jpg"]);
 
-  const handleImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.files?.[0] && setImg(e.target.files?.[0]);
+  // const handleAddImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   e.target.files?.[0] && setImg(e.target.files?.[0]);
 
-    if (e.target.files?.[0]) {
-      e.target.value = e.target.files?.[0].name;
-    }
+  //   if (e.target.files?.[0]) {
+  //     e.target.value = e.target.files?.[0].name;
+  //   }
+  // };
+
+  const updateImg = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
+    const left = partnerList.slice(0, id);
+    const current = e.target.files?.[0]?.name || "";
+    const right = partnerList.slice(id, partnerList.length - 1);
+    setPartnerList([...left, current, ...right]);
   };
 
   const addPartner = () => {
     setPartnerList([...partnerList, " "]);
+  };
+
+  const handleRemovePartner = () => {
+    // Todo: add api for delete
   };
 
   return (
@@ -24,7 +35,7 @@ const InfoPartners = () => {
           <div key={index}>
             <div className="partner">Партнер {index + 1}</div>
             <div className="list-icons">
-              <input className="list" value={img ? img.name : ""} disabled />
+              <input className="list" value={p} disabled />
 
               <div className="icons">
                 <label htmlFor="upload_img" className="upload_img">
@@ -44,7 +55,9 @@ const InfoPartners = () => {
                     />
                   </svg>
                   <input
-                    onChange={handleImg}
+                    onChange={(e) => {
+                      updateImg(e, index);
+                    }}
                     type="file"
                     id="upload_img"
                     className="edit_icon"
@@ -52,7 +65,7 @@ const InfoPartners = () => {
                   />
                 </label>
 
-                <div className="remove_icon">
+                <div className="remove_icon" onClick={handleRemovePartner}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"

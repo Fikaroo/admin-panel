@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Dayjs } from "dayjs";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -37,8 +38,8 @@ type Params = {
   minLuggageCount?: number;
   maxLuggageCount?: number;
   actionCode?: string;
-  minActionDate?: Date;
-  maxActionDate?: Date;
+  minActionDate?: Date | Dayjs;
+  maxActionDate?: Date | Dayjs;
 };
 
 export const calatogApis = {
