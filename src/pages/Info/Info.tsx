@@ -14,7 +14,7 @@ const Info = () => {
   ];
 
   const { pathname } = useLocation();
-  console.log(pathname);
+ 
   return (
     <div>
       <div className="headerTitle">Информация о сайте</div>

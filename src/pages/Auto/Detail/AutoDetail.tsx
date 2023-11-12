@@ -133,15 +133,17 @@ const AutoDetail = () => {
         <p>Назад</p>
       </button>
 
-      <h1 className="header__title">Карточка авто</h1>
+      <h1 className="header__title">{id ? "Карточка авто" : "Добавить авто"}</h1>
 
       <div className="form__container">
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <div className="columns">
             <div className="columns_group">
               <ImageUpload
+                clsName={"upload-image-container"}
                 setValue={setValue}
                 name="carImg"
+                beforeTitle="Добавить в "
                 title="фото"
                 details="SVG, PNG, JPG or GIF (max. 464 x 240 px)"
               />
@@ -152,8 +154,10 @@ const AutoDetail = () => {
 
             <div className="columns_group">
               <ImageUpload
+                clsName={"upload-image-container"}
                 setValue={setValue}
                 name="carLogoImg"
+                beforeTitle="Добавить в "
                 title="логотип"
                 details="SVG, PNG, JPG or GIF (max. 72 x 72 px)"
               />

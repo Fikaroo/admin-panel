@@ -36,7 +36,7 @@ const routes: Routes[] = [
   },
   {
     name: "Акции",
-    path: "/stocks",
+    path: "/discounts",
     icon: akcii,
     iconBlack: akciiBlack,
   },
@@ -69,7 +69,7 @@ const SideBar = () => {
               to={path}
               className="link"
               style={
-                pathName === path
+                pathName === path || pathName === (path)
                   ? {
                       backgroundColor: "#FC0",
                       color: "#434244",

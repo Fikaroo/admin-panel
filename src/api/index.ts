@@ -83,3 +83,13 @@ export const analyticsApis = {
   create: "/analytics/save",
   delete: (id: string) => `/analytics/delete/${id}`,
 };
+
+export const discountApis = {
+  getAll: "/promotions",
+  search: (params: Params) =>
+    `/promotions?${Object.entries(params)
+      .map(([key, value]) => (value ? `${key}=${value}&` : ""))
+      .join("")}`,
+  create: "/promotions/save",
+  delete: (id: string) => `/promotions/delete/${id}`,
+};
