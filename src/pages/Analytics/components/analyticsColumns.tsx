@@ -1,9 +1,10 @@
 import { Analytic } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
+import dayjs from "dayjs";
 
 export const analyticsColumns: ColumnDef<Analytic>[] = [
   {
-    accessorKey: "ipAdress",
+    accessorKey: "ip",
     header: "IP АДРЕС",
   },
   {
@@ -11,16 +12,23 @@ export const analyticsColumns: ColumnDef<Analytic>[] = [
     header: "РЕГИОН",
   },
   {
-    accessorKey: "date",
+    accessorKey: "actionDate",
     header: "ДАТА",
+    cell: ({ row }) => {
+      const date = dayjs(row.getValue("actionDate")).format(
+        "YYYY-MM-DD HH:mm:ss"
+      );
+
+      return date;
+    },
   },
   {
-    accessorKey: "lastAction",
+    accessorKey: "actionCode",
     header: "ПОСЛЕДНЕЕ ДЕЙСТВИЕ",
   },
   {
-    accessorKey: "ИНФО",
+    accessorKey: "catalogName",
+    //Todo change header
     header: "МЕСТО ВОЗВРАТА",
   },
-
 ];

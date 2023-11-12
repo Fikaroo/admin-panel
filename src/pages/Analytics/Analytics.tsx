@@ -8,19 +8,17 @@ import { analyticsApis, getDataWithPagination } from "@/api";
 import OutlinedButton from "@/elements/outlinedButton";
 import SearchElement from "@/elements/search";
 import filterUpLogo from "@/assets/filterIcon.svg";
-import calendarLogo from "@/assets/calendarIcon.svg";
-
 import dayjs, { Dayjs } from "dayjs";
 import { DateRange } from "@mui/x-date-pickers-pro";
 import DateRangePickerWithButtonField from "@/components/ui/calendar/calendar";
 
 const Analytics = () => {
   const [value, setValue] = useState<DateRange<Dayjs>>([null, null]);
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
 
   const [pageNum, setPageNum] = useState(1);
-  const [minActionDate, setMinActionDate] = useState(1);
-  const [maxActionDate, setMaxActionDate] = useState(1);
+  const [minActionDate, setMinActionDate] = useState(dayjs(1997));
+  const [maxActionDate, setMaxActionDate] = useState(dayjs());
   const {
     data: analyticsData,
     isLoading,
@@ -35,10 +33,10 @@ const Analytics = () => {
     getDataWithPagination
   );
 
-  const handleDateSelect = (newValue) => {
+  const handleDateSelect = (newValue: DateRange<Dayjs>) => {
     if (newValue[0] !== null && newValue[1] !== null) {
-      setMinActionDate(newValue[0]);
-      setMaxActionDate(newValue[1]);
+      setMinActionDate(newValue?.[0]);
+      setMaxActionDate(newValue?.[1]);
     }
     setValue(newValue);
   };
