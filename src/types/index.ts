@@ -28,7 +28,7 @@ export interface Catalog {
   nameEn: string;
   nameRu: string;
 }
-
+export interface Discount {}
 export interface Order {}
 export interface Analytic {}
 export interface Make {

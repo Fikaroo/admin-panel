@@ -27,8 +27,7 @@ export const analyticsColumns: ColumnDef<Analytic>[] = [
     header: "ПОСЛЕДНЕЕ ДЕЙСТВИЕ",
   },
   {
-    accessorKey: "catalogName",
-    //Todo change header
-    header: "МЕСТО ВОЗВРАТА",
+    accessorKey: "infoAuto",
+    header: "ИНФО ОБ АВТО",
   },
 ];

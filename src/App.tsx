@@ -9,6 +9,10 @@ import InfoMain from "./pages/Info/InfoMain/InfoMain";
 import InfoAbout from "./pages/Info/InfoAbout/InfoAbout";
 import InfoFaq from "./pages/Info/InfoFaq/InfoFaq";
 import InfoPartners from "./pages/Info/InfoPartners/InfoPartners";
+import Discounts from "./pages/Discounts/Discounts";
+import DiscountsDetail from "./pages/Discounts/Detail/DiscountsDetail";
+import NewDiscountPrice from "./pages/Discounts/Detail/NewDiscountPrice/newDiscountPrice";
+import NewDiscountDays from "./pages/Discounts/Detail/newDiscountDays/newDiscountDays";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +38,29 @@ const router = createBrowserRouter([
           {
             path: "detail/:id",
             element: <AutoDetail />,
+          },
+        ],
+      },
+      {
+        path: "discounts",
+        children: [
+          {
+            index: true,
+            element: <Discounts />,
+          },
+          {
+            path: "detail",
+            element:<DiscountsDetail />,
+            children: [
+              {
+                index: true,
+                element: <NewDiscountPrice />,
+              },
+              {
+                path: "newDiscountDays",
+                element: <NewDiscountDays />,
+              },
+            ]    
           },
         ],
       },

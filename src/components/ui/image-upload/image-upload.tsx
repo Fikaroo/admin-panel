@@ -4,13 +4,15 @@ import { UseFormSetValue } from "react-hook-form";
 import { AutoDetailForm } from "@/pages/Auto/Detail/AutoDetail";
 
 type ImageUploadProps = {
+  beforeTitle?: string;
   title?: string;
   details?: string;
   setValue?: UseFormSetValue<AutoDetailForm>;
   name?: keyof AutoDetailForm;
+  clsName?: string;
 };
 
-const ImageUpload = ({ title, details, setValue, name }: ImageUploadProps) => {
+const ImageUpload = ({ beforeTitle, title, details, setValue, name, clsName }: ImageUploadProps) => {
   return (
     <Dropzone
       accept={{ "image/*": [".svg", ".png", ".jpg", ".gif"] }}
@@ -24,7 +26,7 @@ const ImageUpload = ({ title, details, setValue, name }: ImageUploadProps) => {
       }}
     >
       {({ getRootProps, getInputProps }) => (
-        <div {...getRootProps({ className: "upload-image-container" })}>
+        <div {...getRootProps({ className: clsName })}>
           <input {...getInputProps()} />
           <div className="icon">
             <svg
@@ -44,7 +46,7 @@ const ImageUpload = ({ title, details, setValue, name }: ImageUploadProps) => {
             </svg>
           </div>
           <p>
-            Добавить <span className="image-name">{title}</span>
+            {beforeTitle} <span className="image-name">{title}</span>
           </p>
           <p className="details">{details}</p>
         </div>

@@ -38,10 +38,11 @@ const DateRangeButtonField = forwardRef(
     return (
       <Button
         sx={{
-          border: "2px solid #fc0 !important",
-          color: "#141414 !important",
-          backgroundColor: label ? "#fc0 !important" : "#fff !important",
-        }}
+            marginRight: "10px !important",
+            border:"2px solid #fc0 !important",
+            color: "#141414 !important",
+            backgroundColor: label ? "#fc0 !important" : "#fff !important",
+        }}  
         className="outlineCalendar"
         variant="outlined"
         id={id}
@@ -69,7 +70,7 @@ const ButtonDateRangePicker = forwardRef(
     const [open, setOpen] = useState<boolean>(false);
 
     return (
-      <DateRangePicker
+      <DateRangePicker      
         calendars={1}
         slots={{ field: DateRangeButtonField, ...props.slots }}
         slotProps={{ field: { setOpen } as object | undefined }}
