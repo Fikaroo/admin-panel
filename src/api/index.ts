@@ -1,5 +1,4 @@
-import axios from "axios";
-import { Dayjs } from "dayjs";
+import axios, { AxiosRequestConfig } from "axios";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -8,7 +7,10 @@ const instance = axios.create({
   // withCredentials: true,
 });
 
-export const getData = async (path: string) => (await instance.get(path)).data;
+export const getData = async (
+  path: string,
+  option?: AxiosRequestConfig<unknown>
+) => (await instance.get(path, option)).data;
 
 export const getDataWithPagination = async (path: string) => {
   const res = await instance.get(path);
@@ -25,6 +27,7 @@ export const getDataWithPagination = async (path: string) => {
 type Params = {
   searchString?: string;
   isActive?: boolean;
+  localize?: boolean;
   pageNum?: number;
   pageSize?: number;
   makeIds?: string;
@@ -38,8 +41,20 @@ type Params = {
   minLuggageCount?: number;
   maxLuggageCount?: number;
   actionCode?: string;
-  minActionDate?: Date | Dayjs;
-  maxActionDate?: Date | Dayjs;
+  minActionDate?: string;
+  maxActionDate?: string;
+  includeCatalog?: boolean;
+};
+
+export const orderApis = {
+  getById: (id: string) => `/orders/${id}`,
+  getAll: "/orders",
+  search: (params: Params) =>
+    `/orders?${Object.entries(params)
+      .map(([key, value]) => (value ? `${key}=${value}&` : ""))
+      .join("")}`,
+  create: "/orders/save",
+  update: (id: string) => `/orders/save/${id}`,
 };
 
 export const calatogApis = {
@@ -83,4 +98,14 @@ export const analyticsApis = {
       .join("")}`,
   create: "/analytics/save",
   delete: (id: string) => `/analytics/delete/${id}`,
+};
+
+export const faqApis = {
+  getAll: "/faq",
+  search: (params: Params) =>
+    `/faq?${Object.entries(params)
+      .map(([key, value]) => (value ? `${key}=${value}&` : ""))
+      .join("")}`,
+  create: "/faq/save",
+  delete: (id: string) => `/faq/delete/${id}`,
 };

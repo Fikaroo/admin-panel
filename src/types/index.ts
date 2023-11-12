@@ -118,3 +118,16 @@ export enum SeatMaterialType {
   Nylon = 5,
   Other = 6,
 }
+
+export enum Lang {
+  Az = "az",
+  En = "en",
+  Ru = "ru",
+}
+
+export interface Faq {
+  num: number;
+  lang: Lang;
+  question: string;
+  answer: string;
+}

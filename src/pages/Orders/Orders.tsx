@@ -7,7 +7,7 @@ import { Order, DataWithPagination } from "@/types";
 import OutlinedButton from "@/elements/outlinedButton";
 import SearchElement from "@/elements/search";
 import filterUpLogo from "@/assets/filterIcon.svg";
-import { getDataWithPagination } from "@/api";
+import { getDataWithPagination, orderApis } from "@/api";
 
 const Orders = () => {
   const [pageNum, setPageNum] = useState(1);
@@ -16,9 +16,7 @@ const Orders = () => {
     isLoading,
     error,
   } = useSWR<DataWithPagination<Order[]>>(
-    // Todo: Update with order api
-    // `/catalog?localize=true&pageNum=${pageIndex}&pageSize=10`,
-    "",
+    orderApis.search({ pageNum, pageSize: 10, includeCatalog: false }),
     getDataWithPagination
   );
   const handleFilterClick = () => {};

@@ -1,6 +1,21 @@
+import { Lang } from "@/types";
 import { createContext, useState } from "react";
 
-export const LocalizationContext = createContext({});
+// export type LaguangesType = "en" | "ru" | "az";
+
+type LocalizationContextProps = {
+  currentLanguage: Lang;
+  setCurrentLanguage: React.Dispatch<React.SetStateAction<Lang>>;
+  translate: object;
+};
+
+export const LocalizationContext = createContext<LocalizationContextProps>({
+  currentLanguage: Lang.Ru,
+  setCurrentLanguage: () => "",
+  translate: {},
+});
+
+type Translations = Record<Lang, object>;
 
 export function LocalizationProvider({
   children,
@@ -8,7 +23,7 @@ export function LocalizationProvider({
   children: React.ReactNode;
 }) {
   // Предположим, что у вас есть объект с переводами для разных языков
-  const translations = {
+  const translations: Translations = {
     en: {
       greeting: "Hello",
     },
@@ -20,11 +35,10 @@ export function LocalizationProvider({
     },
   };
 
-  const [currentLanguage, setCurrentLanguage] =
-    useState<keyof typeof translations>("ru"); // По умолчанию используем русский
+  const [currentLanguage, setCurrentLanguage] = useState<Lang>(Lang.Ru); // По умолчанию используем русский
 
-  const translate = (key: keyof typeof translations.ru) =>
-    translations[currentLanguage]?.[key] || key;
+  const translate = (key: keyof Translations["ru"]) =>
+    translations[currentLanguage][key];
 
   return (
     <LocalizationContext.Provider

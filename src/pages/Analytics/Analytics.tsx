@@ -17,8 +17,8 @@ const Analytics = () => {
   // const [show, setShow] = useState(false);
 
   const [pageNum, setPageNum] = useState(1);
-  const [minActionDate, setMinActionDate] = useState(dayjs(1997));
-  const [maxActionDate, setMaxActionDate] = useState(dayjs());
+  const [minActionDate, setMinActionDate] = useState(dayjs(1997).toISOString());
+  const [maxActionDate, setMaxActionDate] = useState(dayjs().toISOString());
   const {
     data: analyticsData,
     isLoading,
@@ -35,9 +35,10 @@ const Analytics = () => {
 
   const handleDateSelect = (newValue: DateRange<Dayjs>) => {
     if (newValue[0] !== null && newValue[1] !== null) {
-      setMinActionDate(newValue?.[0]);
-      setMaxActionDate(newValue?.[1]);
+      setMinActionDate(newValue?.[0].toISOString());
+      setMaxActionDate(newValue?.[1].toISOString());
     }
+    console.log(newValue, dayjs(1997));
     setValue(newValue);
   };
 
