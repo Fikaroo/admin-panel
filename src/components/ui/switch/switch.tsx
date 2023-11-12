@@ -13,9 +13,11 @@ const Switch = ({ label, isAcive, setValue }: SwitchProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(isAcive || false);
   const handleSwitch = () => {
     setIsOpen(!isOpen);
+    console.log(isAcive, isOpen, setValue);
     setValue && setValue("isActive", isOpen);
   };
-  useEffect(() => setIsOpen(isAcive || false), [isAcive]);
+
+  useEffect(() => setIsOpen(isAcive || false), [isAcive, setValue]);
   return (
     <div className="switch">
       <button

@@ -184,7 +184,9 @@ const Card = ({ carForm, carData }: CardProps) => {
               <ImageIcon />
             </div>
           )}
-          <p className="card-title">{carForm.make || "Марка авто"}</p>
+          <p className="card-title">
+            {carForm.make || "Марка авто"} {carForm.model}
+          </p>
         </div>
         {carForm.carImg ? (
           <img className="car-image" src={carForm.carImg} alt="car-image" />
