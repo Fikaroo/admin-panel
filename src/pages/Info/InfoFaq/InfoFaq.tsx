@@ -1,63 +1,31 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import LaguageSwitcher from "@/elements/laguageSwitcher";
 import "./InfoFaq.scss";
 import Modal from "@/elements/modal";
-
-export type FaqList = {
-  question: string;
-  answer: string;
-};
+import useSWR from "swr";
+import { faqApis, getData } from "@/api";
+import { LocalizationContext } from "@/hooks/customLangHook";
+import { Faq, Lang } from "@/types";
 
 const InfoFaq = () => {
-  const faqList: FaqList[] = [
-    {
-      question: "Каковы требования к арендатору транспортного средства?",
-      answer:
-        "Минимальный возраст арендатора на момент бронирования – 22 года, наличие водительских прав, требуемый стаж вождения – минимум 4 года.",
-    },
-    {
-      question: "Каковы требования к арендатору транспортного средства?",
-      answer:
-        "Минимальный возраст арендатора на момент бронирования – 22 года, наличие водительских прав, требуемый стаж вождения – минимум 4 года.",
-    },
-    {
-      question: "Каковы требования к арендатору транспортного средства?",
-      answer:
-        "Минимальный возраст арендатора на момент бронирования – 22 года, наличие водительских прав, требуемый стаж вождения – минимум 4 года.",
-    },
-    {
-      question: "Каковы требования к арендатору транспортного средства?",
-      answer:
-        "Минимальный возраст арендатора на момент бронирования – 22 года, наличие водительских прав, требуемый стаж вождения – минимум 4 года.",
-    },
-    {
-      question: "Каковы требования к арендатору транспортного средства?",
-      answer:
-        "Минимальный возраст арендатора на момент бронирования – 22 года, наличие водительских прав, требуемый стаж вождения – минимум 4 года.",
-    },
-    {
-      question: "Каковы требования к арендатору транспортного средства?",
-      answer:
-        "Минимальный возраст арендатора на момент бронирования – 22 года, наличие водительских прав, требуемый стаж вождения – минимум 4 года.",
-    },
-    {
-      question: "Каковы требования к арендатору транспортного средства?",
-      answer:
-        "Минимальный возраст арендатора на момент бронирования – 22 года, наличие водительских прав, требуемый стаж вождения – минимум 4 года.",
-    },
-    {
-      question: "Каковы требования к арендатору транспортного средства?",
-      answer:
-        "Минимальный возраст арендатора на момент бронирования – 22 года, наличие водительских прав, требуемый стаж вождения – минимум 4 года.",
-    },
-    {
-      question: "Каковы требования к арендатору транспортного средства?",
-      answer:
-        "Минимальный возраст арендатора на момент бронирования – 22 года, наличие водительских прав, требуемый стаж вождения – минимум 4 года.",
-    },
-  ];
+  const { currentLanguage } = useContext(LocalizationContext);
 
-  const [faq, setFaq] = useState<FaqList>({ question: "", answer: "" });
+  const { data: faqList, mutate } = useSWR<Faq[]>(
+    faqApis.search({ localize: true }),
+    (arg: string) =>
+      getData(arg, { headers: { "Accept-Language": currentLanguage } })
+  );
+
+  useEffect(() => {
+    mutate();
+  }, [currentLanguage, mutate]);
+
+  const [faq, setFaq] = useState<Faq>({
+    num: 0,
+    question: "",
+    answer: "",
+    lang: Lang.Ru,
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleModalOpen = () => setIsModalOpen(!isModalOpen);
@@ -65,8 +33,9 @@ const InfoFaq = () => {
   // const { currentLanguage, setCurrentLanguage, translate } =
   //   useContext(LocalizationContext);
 
-  const handleEditFaq = (data: FaqList) => {
+  const handleEditFaq = (data: Faq) => {
     setFaq(data);
+    console.log(faq);
     handleModalOpen();
   };
 
@@ -78,9 +47,9 @@ const InfoFaq = () => {
     <div className="info_faq">
       <LaguageSwitcher>
         <div className="lists">
-          {faqList.map(({ question, answer }, index) => (
-            <div className="list" key={index}>
-              <div className="index">{index + 1}.</div>
+          {faqList?.map(({ num, question, answer }) => (
+            <div className="list" key={num}>
+              <div className="index">{num}.</div>
 
               <div className="list_body">
                 <div className="question">{question}</div>
@@ -161,8 +130,9 @@ const InfoFaq = () => {
 
       {isModalOpen && (
         <Modal
-          index={faqList.length}
+          num={(faqList?.length && faqList.length + 1) || 0}
           handleModal={handleModalOpen}
+          lang={currentLanguage}
           setValue={setFaq}
           value={faq}
         />

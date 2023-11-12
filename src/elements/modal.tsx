@@ -1,17 +1,19 @@
-import { FaqList } from "@/pages/Info/InfoFaq/InfoFaq";
+import { Faq, Lang } from "@/types";
 import "./modal.scss";
 
 type ModalProps = {
   handleModal: () => void;
-  index: number;
-  value: FaqList;
-  setValue: React.Dispatch<React.SetStateAction<FaqList>>;
+  num: number;
+  lang: Lang;
+  value: Faq;
+  setValue: React.Dispatch<React.SetStateAction<Faq>>;
 };
 
 const Modal: React.FC<ModalProps> = ({
   handleModal,
-  index,
+  num,
   setValue,
+  lang,
   value,
 }) => {
   return (
@@ -23,7 +25,7 @@ const Modal: React.FC<ModalProps> = ({
             <h2>Добавить вопрос</h2>
           </div>
           <div className="form-child">
-            <h3>Вопрос {index || null}</h3>
+            <h3>Вопрос {num || null}</h3>
             <input
               className="input"
               placeholder="Placeholder"
@@ -35,7 +37,7 @@ const Modal: React.FC<ModalProps> = ({
             />
           </div>
           <div className="form-child">
-            <h3>Ответ {index || null}</h3>
+            <h3>Ответ {num || null}</h3>
             <textarea
               className="textarea"
               placeholder="Placeholder"
@@ -49,7 +51,15 @@ const Modal: React.FC<ModalProps> = ({
           </div>
 
           <div className="btn-div">
-            <div className="btn btn_primary">Сохранить изменения</div>
+            <div
+              className="btn btn_primary"
+              onClick={() => {
+                setValue((prev) => ({ ...prev, lang: lang, num: num }));
+                handleModal();
+              }}
+            >
+              Сохранить изменения
+            </div>
           </div>
         </div>
         <div className="icon" onClick={handleModal}>

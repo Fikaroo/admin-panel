@@ -1,26 +1,30 @@
-import { Fragment, useState, useContext } from "react";
+import { Fragment, useContext } from "react";
 import "./laguageSwitcher.scss";
-import {LocalizationContext} from "@/hooks/customLangHook"
-type Laguage = "ru" | "az" | "en";
-const laguages: Laguage[] = ["az", "ru", "en"];
+import { LocalizationContext } from "@/hooks/customLangHook";
+import { Lang } from "@/types";
+
 const LaguageSwitcher = ({ children }: { children: React.ReactNode }) => {
   // const [language, setLanguage] = useState<Laguage>("RU");
-  const { currentLanguage, setCurrentLanguage, translate } = useContext(LocalizationContext);
-  const handleLanguageSwitch = (lang: Laguage) => {
+  const { currentLanguage, setCurrentLanguage } =
+    useContext(LocalizationContext);
+  const handleLanguageSwitch = (lang: Lang) => {
     setCurrentLanguage(lang);
   };
+  console.log();
   return (
     <Fragment>
       <div className="languages">
-        {laguages.map((l) => (
+        {Object.entries(Lang).map(([key, value]) => (
           <button
-            key={l}
-            onClick={() => handleLanguageSwitch(l)}
+            key={key}
+            onClick={() => handleLanguageSwitch(value)}
             className={
-              currentLanguage === l ? "language language__active" : "language"
+              currentLanguage === value
+                ? "language language__active"
+                : "language"
             }
           >
-            {l}
+            {key}
           </button>
         ))}
       </div>

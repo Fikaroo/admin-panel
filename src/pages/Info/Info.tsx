@@ -14,7 +14,6 @@ const Info = () => {
   ];
 
   const { pathname } = useLocation();
- 
   return (
     <div>
       <div className="headerTitle">Информация о сайте</div>
