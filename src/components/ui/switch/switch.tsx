@@ -1,23 +1,25 @@
 import { useEffect, useState } from "react";
 import "./switch.scss";
 import { UseFormSetValue } from "react-hook-form";
-import { AutoDetailForm } from "@/pages/Auto/Detail/AutoDetail";
+import { AutoDetailFormSchema } from "@/pages/Auto/Detail/AutoDetail";
 
 type SwitchProps = {
   label?: string;
   isAcive?: boolean;
-  setValue?: UseFormSetValue<AutoDetailForm>;
+  setValue?: UseFormSetValue<AutoDetailFormSchema>;
+  onChange?: (...event: unknown[]) => void;
 };
 
-const Switch = ({ label, isAcive, setValue }: SwitchProps) => {
+const Switch = ({ label, isAcive, setValue, onChange }: SwitchProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(isAcive || false);
   const handleSwitch = () => {
     setIsOpen(!isOpen);
-    console.log(isAcive, isOpen, setValue);
     setValue && setValue("isActive", isOpen);
+    onChange && onChange(!isOpen);
   };
 
-  useEffect(() => setIsOpen(isAcive || false), [isAcive, setValue]);
+  useEffect(() => {}, [isAcive]);
+
   return (
     <div className="switch">
       <button

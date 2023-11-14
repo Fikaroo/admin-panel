@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 export const ordersColumns: ColumnDef<Order>[] = [
   {
-    accessorKey: "сlientName",
+    accessorKey: "fullname",
     header: "КЛИЕНТ",
   },
   {
@@ -11,23 +11,43 @@ export const ordersColumns: ColumnDef<Order>[] = [
     header: "АВТОМОБИЛЬ",
   },
   {
-    accessorKey: "rentPoint",
+    accessorKey: "placeOfReceipt",
     header: "МЕСТО АРЕНДЫ",
   },
   {
-    accessorKey: "DatePlace",
+    accessorKey: "startDate",
     header: "ДАТА АРЕНДЫ",
+    cell: ({ row }) => {
+      const data = row.original;
+      const startTime = data?.startTime;
+      const startDate = data?.startDate;
+      return (
+        <>
+          {startDate} {startTime}
+        </>
+      );
+    },
   },
   {
-    accessorKey: "returnPoint",
+    accessorKey: "placeOfHandover",
     header: "МЕСТО ВОЗВРАТА",
   },
   {
-    accessorKey: "returnDate",
+    accessorKey: "endDate",
     header: "ДАТА ВОЗВРАТА",
+    cell: ({ row }) => {
+      const data = row.original;
+      const endTime = data?.endTime;
+      const endDate = data?.endDate;
+      return (
+        <>
+          {endDate} {endTime}
+        </>
+      );
+    },
   },
   {
     accessorKey: "ipAdress",
     header: "IP АДРЕС",
-  }
+  },
 ];
