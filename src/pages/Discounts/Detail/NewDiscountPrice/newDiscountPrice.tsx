@@ -23,13 +23,11 @@ const NewDiscountPrice = () => {
   const uploadImg = () => {
     // setValue("");
   };
-  const [srok, setSrok] = useState(null);
-  const [startAksiyaDate, setStartAksiyaDate] = useState(new Date());
-  const d = new Date();
-  const year = d.getFullYear();
-  const month = d.getMonth() + 1;
-  const day = d.getDate();
-  const formattedDate = `${year}-${month}-${day}`;
+  const [srok, setSrok] = useState('');
+  const [periodPrice, setPeriodPrice] = useState('');
+  const [startAksiyaDate, setStartAksiyaDate] = useState();
+  const [endAksiyaDate, setEndAksiyaDate] = useState();
+ 
   
   return (
     <div className="all-disc-price">
@@ -65,7 +63,7 @@ const NewDiscountPrice = () => {
         </div>
         <div className="select__group" style={{marginBottom: 50}}>
           <label>Автомобиль</label>
-          <select className="select" onChange={(e) => {}} required>
+          <select className="select" onChange={() => {}} required>
             <option value="">Марка</option>
             {/* {makeData?.map(({ id, name }) => (
                       <option key={id} data-state={name} value={id}>
@@ -135,13 +133,18 @@ const NewDiscountPrice = () => {
       <div className="select__group discnt-name"  style={{marginRight: 10}} >
           <label>Срок аренды</label>
           <input
-            className="input"  style={{}} 
-              value={srok}
-              onChange={(event) => setSrok(+event.target.value) }
+            className="input" 
+            value={srok}
+            onChange={(event) => setSrok(event.target.value) }
             type="text"
           />
-          <input type="date" name="startDate" id="" min={formattedDate} />
-          <div  style={{display:"flex", marginTop: 5}}>
+          <label>Начало срока</label>
+          <input type="date" name="startDate" id=""
+           value={startAksiyaDate} className="startDate"
+           onChange={(event) => setStartAksiyaDate(event.target.value) }
+          //  min={formattedDate}
+            />
+          <div  style={{display:"flex", marginTop: 25}}>
             <input type="checkbox" name="" id="" style={{ width:24,height:24,marginRight:10 }}/>
             <p>Включить кнопку</p> 
           </div>
@@ -150,13 +153,20 @@ const NewDiscountPrice = () => {
         <div className="select__group discnt-name">
           <label>Цена за период</label>
           <input
-            className="input" style={{ }} 
-            //   value={}
-            //   onChange={(event) => onChange(+event.target.value) }
+            className="input"
+              value={periodPrice}
+              onChange={(event) => setPeriodPrice(event.target.value) }
             type="text"
           />
-          <input type="date" name="endDate" id="" />
-          <div  style={{display:"flex", marginTop: 5}}>
+          <label>Конец срока</label>
+          <input type="date" 
+                 name="endDate"
+                 id=""
+                 className="endDate"
+                 value={endAksiyaDate}
+                 onChange={(event) => setStartAksiyaDate(event.target.value) }
+                  />
+          <div  style={{display:"flex", marginTop: 25}}>
             <div>
               <input type="checkbox" name="" id="" style={{ width:24,height:24,marginRight:10 }} />
               {/* <div style={{backgroundColor: "#F5F5F5"}}>AZN</div> */}
