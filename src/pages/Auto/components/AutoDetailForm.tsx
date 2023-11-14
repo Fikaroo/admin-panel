@@ -310,6 +310,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
               <FormItem className="select__group">
                 <FormLabel>Кол-во пассажиров</FormLabel>
                 <FormControl>
+                  <>
                   <select
                     className="select"
                     {...field}
@@ -322,8 +323,12 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                     <option value={-1} disabled selected hidden>
                       Кол-во пассажиров
                     </option>
-                    <option value={"6+1"}>6 + 1</option>
+                    {[1,2,3,4,5,6,7,8].map((item)=>
+                     <option value={item}>{item}</option>
+                    )}
                   </select>
+                  <div><input type="checkbox" /> + 1 пассажир</div>
+                  </>
                 </FormControl>
                 <FormMessage className="error" />
               </FormItem>
@@ -345,7 +350,9 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                     <option value={-1} disabled selected hidden>
                       Кол-во багажа
                     </option>
-                    <option value={4}>4</option>
+                    {[1,2,3,4].map((item)=>
+                     <option value={item}>{item}</option>
+                    )}
                   </select>
                 </FormControl>
                 <FormMessage className="error" />
