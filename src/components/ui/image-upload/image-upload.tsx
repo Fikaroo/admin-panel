@@ -1,35 +1,29 @@
 import Dropzone from "react-dropzone";
 import "./image-upload.scss";
-import { UseFormSetValue } from "react-hook-form";
-import { AutoDetailForm } from "@/pages/Auto/Detail/AutoDetail";
 import { getBase64 } from "@/utils";
 
 type ImageUploadProps = {
   beforeTitle?: string;
   title?: string;
   details?: string;
-  setValue?: UseFormSetValue<AutoDetailForm>;
-  name?: keyof AutoDetailForm;
   clsName?: string;
+  onChange: (...event: unknown[]) => void;
 };
 
 const ImageUpload = ({
   beforeTitle,
   title,
   details,
-  setValue,
-  name,
   clsName,
+  onChange,
 }: ImageUploadProps) => {
   return (
     <Dropzone
       accept={{ "image/*": [".svg", ".png", ".jpg", ".gif"] }}
       onDrop={(acceptedFiles) => {
-        setValue &&
-          name &&
-          getBase64(acceptedFiles[acceptedFiles.length - 1], (result) => {
-            setValue(name, result as string);
-          });
+        getBase64(acceptedFiles[acceptedFiles.length - 1], (result) => {
+          onChange(result as string);
+        });
       }}
     >
       {({ getRootProps, getInputProps }) => (

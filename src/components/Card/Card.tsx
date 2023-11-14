@@ -6,16 +6,18 @@ import transmissionIcon from "@/assets/transmission.svg";
 import luggageIcon from "@/assets/luggage.svg";
 import ImageIcon from "@/assets/image-icon.svg?react";
 import "./Card.scss";
-import { AutoDetailForm } from "@/pages/Auto/Detail/AutoDetail";
 import { useEffect, useState } from "react";
-import { Catalog } from "@/types";
+import { useFormContext } from "react-hook-form";
+import { AutoDetailFormSchema } from "@/pages/Auto/Detail/AutoDetail";
+import { enumToMap } from "@/utils";
+import { BodyType, SeatMaterialType, TransmissionType } from "@/types";
 
-type CardProps = {
-  carForm: Partial<AutoDetailForm>;
-  carData: Catalog;
+const findEnumNameForId = (id: number, enumType: object) => {
+  return enumToMap(enumType).find(([key]) => Number(key) === id)?.[1];
 };
 
-const Card = ({ carForm, carData }: CardProps) => {
+const Card = () => {
+  const { watch } = useFormContext<AutoDetailFormSchema>();
   const [details, setDetails] = useState<
     { id: string; icon: string; title: string | number }[][]
   >([
@@ -84,16 +86,17 @@ const Card = ({ carForm, carData }: CardProps) => {
             id: "yearOfManufacture",
             icon: calendartIcon,
             title:
-              (Number(carForm.yearOfManufacture) === -1 && "-") ||
-              carForm.yearOfManufacture ||
+              (Number(watch().yearOfManufacture) === -1 && "-") ||
+              watch().yearOfManufacture ||
               "-",
           },
           {
             id: "bodyType",
             icon: carIcon,
             title:
-              (Number(carForm.bodyType) === -1 && "-") ||
-              carForm.bodyType ||
+              findEnumNameForId(Number(watch().bodyType), BodyType) ||
+              "-" ||
+              watch().bodyType ||
               "-",
           },
         ],
@@ -102,16 +105,16 @@ const Card = ({ carForm, carData }: CardProps) => {
             id: "seatCount",
             icon: userIcon,
             title:
-              (Number(carForm.seatCount) === -1 && "-") ||
-              carForm.seatCount ||
+              (Number(watch().seatCount) === -1 && "-") ||
+              watch().seatCount ||
               "-",
           },
           {
             id: "luggageCount",
             icon: luggageIcon,
             title:
-              (Number(carForm.luggageCount) === -1 && "-") ||
-              carForm.luggageCount ||
+              (Number(watch().luggageCount) === -1 && "-") ||
+              watch().luggageCount ||
               "-",
           },
         ],
@@ -120,17 +123,17 @@ const Card = ({ carForm, carData }: CardProps) => {
             id: "seatMaterialType",
             icon: carSeatIcon,
             title:
-              (Number(carForm.seatMaterialType) === -1 && "-") ||
-              carForm.seatMaterialType ||
-              "-",
+              findEnumNameForId(
+                Number(watch().seatMaterialType),
+                SeatMaterialType
+              ) || "-",
           },
 
           {
             id: "gearType",
             icon: transmissionIcon,
             title:
-              (Number(carForm.gearType) === -1 && "-") ||
-              carForm.gearType ||
+              findEnumNameForId(Number(watch().gearType), TransmissionType) ||
               "-",
           },
         ],
@@ -143,40 +146,46 @@ const Card = ({ carForm, carData }: CardProps) => {
       const updatedData = [
         {
           id: "firstPrice",
-          subtitle: `${carData?.priceSettings?.[0].minDays || "2"}-${
-            carData?.priceSettings?.[0].maxDays || "7"
+          subtitle: `${watch()?.priceSettings?.[0].minDays}-${
+            watch()?.priceSettings?.[0].maxDays
           }  дней`,
-          title: carForm.firstPrice || 0,
+          title: watch().priceSettings?.[0]?.pricePerDay || 0,
         },
         {
           id: "secondPrice",
-          subtitle: `${carData?.priceSettings?.[1].minDays || "2"}-${
-            carData?.priceSettings?.[1].maxDays || "7"
+          subtitle: `${watch()?.priceSettings?.[1].minDays}-${
+            watch()?.priceSettings?.[1].maxDays
           }  дней`,
-          title: carForm.secondPrice || 0,
+          title: watch().priceSettings?.[1]?.pricePerDay || 0,
         },
         {
           id: "thirdPrice",
-          subtitle: `${carData?.priceSettings?.[2].minDays || "2"}-${
-            carData?.priceSettings?.[2].maxDays || "7"
-          }  дней`,
-          title: carForm.thirdPrice || 0,
+          subtitle: `${watch()?.priceSettings?.[2].minDays}+  дней`,
+          title: watch().priceSettings?.[2]?.pricePerDay || 0,
         },
       ];
 
       return updatedData;
     });
-  }, [carData?.priceSettings, carForm]);
+  }, [
+    watch().yearOfManufacture,
+    watch().bodyType,
+    watch().priceSettings,
+    watch().seatCount,
+    watch().luggageCount,
+    watch().seatMaterialType,
+    watch().gearType,
+  ]);
 
   return (
     <div className="card">
       {/* {isPromo && <div className="card-promo">АКЦИЯ</div>} */}
       <div className="card-wrapper">
         <div className="card-header">
-          {carForm.carLogoImg ? (
+          {watch().makeImageBase64 ? (
             <img
               className="car-logo"
-              src={carForm.carLogoImg}
+              src={watch()?.makeImageBase64 || ""}
               alt="card-logo"
             />
           ) : (
@@ -185,11 +194,15 @@ const Card = ({ carForm, carData }: CardProps) => {
             </div>
           )}
           <p className="card-title">
-            {carForm.make || "Марка авто"} {carForm.model}
+            {watch().makeName || "Марка авто"} {watch().modelName}
           </p>
         </div>
-        {carForm.carImg ? (
-          <img className="car-image" src={carForm.carImg} alt="car-image" />
+        {watch().imageBase64 ? (
+          <img
+            className="car-image"
+            src={watch()?.imageBase64 || ""}
+            alt="car-image"
+          />
         ) : (
           <div className="car-image">
             <ImageIcon />

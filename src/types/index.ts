@@ -20,17 +20,31 @@ export interface Catalog {
   imageBase64: string;
   priceSettings: PriceSetting[];
   makeName: string;
-  makeImageBase64: string;
+  makeImageBase64: null;
   modelName: string;
-  descriptionAz: string;
-  descriptionEn: string;
-  descriptionRu: string;
+  descriptionAz: null;
+  descriptionEn: null;
+  descriptionRu: null;
   nameAz: string;
   nameEn: string;
   nameRu: string;
 }
 export interface Discount {}
-export interface Order {}
+export interface Order {
+  id: string;
+  placeOfReceipt: string;
+  placeOfHandover: string;
+  startDate: Date;
+  endDate: Date;
+  startTime: string;
+  endTime: string;
+  fullname: string;
+  phoneNumber: string;
+  email: string;
+  comment: string;
+  catalogId: string;
+  status: number;
+}
 export interface Analytic {}
 export interface Make {
   id: string;
