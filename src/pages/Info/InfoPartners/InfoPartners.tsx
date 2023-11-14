@@ -83,6 +83,7 @@ const InfoPartners = () => {
                   </svg>
                 </div>
               </div>
+              
             </div>
           </div>
         ))}

@@ -46,8 +46,5 @@ export const ordersColumns: ColumnDef<Order>[] = [
       );
     },
   },
-  {
-    accessorKey: "ipAdress",
-    header: "IP АДРЕС",
-  },
+  
 ];

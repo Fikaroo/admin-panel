@@ -6,6 +6,7 @@ import OutlinedButton from "@/elements/outlinedButton";
 import LaguageSwitcher from "@/elements/laguageSwitcher";
 import TextArea from "@/components/ui/textarea/textarea";
 import FilledButton from "@/elements/filledButton";
+import plusIcon from "@/assets/plusIcon.svg";
 
 const NewDiscountDays = () => {
   const [headingValueRu, setHeadingValueRu] = useState("");
@@ -14,14 +15,29 @@ const NewDiscountDays = () => {
   const [subHeadingAz, setSubHeadingValueAz] = useState("");
   const [headingValueEn, setHeadingValueEn] = useState("");
   const [subHeadingEn, setSubHeadingValueEn] = useState("");
-  const saveRuData = () => {};
-  const saveAzData = () => {};
-  const saveEnData = () => {};
+  const saveData = () => {};
+  const [datesList, setDatesList] = useState([
+    {
+      startDate: "",
+      endDate: "",
+      price: "",
+    },
+  ]);
 
   const { currentLanguage, setCurrentLanguage, translate } =
     useContext(LocalizationContext);
   const uploadImg = () => {
     // setValue("");
+  };
+  const addDates = () => {
+    setDatesList([
+      ...datesList,
+      {
+        startDate: "",
+        endDate: "",
+        price: "",
+      },
+    ]);
   };
   return (
     <div className="all-disc-price">
@@ -120,92 +136,62 @@ const NewDiscountDays = () => {
             </div>
           )}
         </LaguageSwitcher>
-        {/* <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div
-            className="select__group discnt-name"
-            style={{ marginRight: 10 }}
-          >
-            <label>Срок аренды</label>
-            <input
-              className="input"
-              style={{ width: 200 }}
-              //   value={}
-              //   onChange={(event) => onChange(+event.target.value) }
-              type="text"
-            />
-          </div>
-          <div className="select__group discnt-name">
-            <label>Цена за период</label>
-            <input
-              className="input"
-              style={{ width: 200 }}
-              //   value={}
-              //   onChange={(event) => onChange(+event.target.value) }
-              type="text"
-            />
-          </div>
-          <div className="select__group discnt-name">
-            <label>Цена за период</label>
-            <input
-              className="input"
-              style={{ width: 200 }}
-              //   value={}
-              //   onChange={(event) => onChange(+event.target.value) }
-              type="text"
-            />
-          </div>
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div
-            className="select__group discnt-name"
-            style={{ marginRight: 10 }}
-          >
-            <input
-              className="input"
-              style={{ width: 200 }}
-              //   value={}
-              //   onChange={(event) => onChange(+event.target.value) }
-              type="text"
-            />
-          </div>
-          <div className="select__group discnt-name">
-            <input
-              className="input"
-              style={{ width: 200 }}
-              //   value={}
-              //   onChange={(event) => onChange(+event.target.value) }
-              type="text"
-            />
-          </div>
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div
-            className="select__group discnt-name"
-            style={{ marginRight: 10 }}
-          >
-            <input
-              className="input"
-              style={{ width: 200 }}
-              //   value={}
-              //   onChange={(event) => onChange(+event.target.value) }
-              type="text"
-            />
-          </div>
-          <div className="select__group discnt-name">
-            <input
-              className="input"
-              style={{ width: 200 }}
-              //   value={}
-              //   onChange={(event) => onChange(+event.target.value) }
-              type="text"
-            />
-          </div>
-        </div> */}
 
-        <FilledButton
-          text={"Сохранить изменения"}
-          onClick={() => saveRuData()}
-        />
+        <div className="promoDates">
+          <div className="promoDates-titles">
+            <p>Начало</p>
+            <p>Конец</p>
+            <p>Цена за день</p>
+          </div>
+
+          <div className="listOfPromoDates">
+            {datesList.map((p, index) => (
+              <div key={index} className="row-date">
+                <input
+                  type="date"
+                  className="row-date-start"
+                  value={p.startDate}
+                />
+                <input type="date" className="row-date-end" value={p.endDate} />
+                <div className="price-promo">
+                  <input
+                    type="text"
+                    className="price-promo-value"
+                    value={p.price}
+                  />
+                  <div className="azn">AZN</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <OutlinedButton
+            icon={plusIcon}
+            text={"Добавить"}
+            onClick={addDates}
+          />
+        </div>
+        <div style={{ display: "flex", marginBlock: 32 }}>
+          <div style={{ display: "flex", width: "45%", marginRight: 32 }}>
+            <input
+              type="checkbox"
+              name=""
+              id=""
+              style={{ width: 24, height: 24, marginRight: 10 }}
+            />
+            <p>Включить кнопку</p>
+          </div>
+          <div style={{ display: "flex", width: "45%", }}>
+            <input
+              type="checkbox"
+              name=""
+              id=""
+              style={{ width: 24, height: 24, marginRight: 10 }}
+            />
+            <p>Включить акцию сейчас</p>
+          </div>
+        </div>
+
+        <FilledButton text={"Сохранить изменения"} onClick={() => saveData()} />
       </div>
       <div className="right-disc-price-block"></div>
     </div>
