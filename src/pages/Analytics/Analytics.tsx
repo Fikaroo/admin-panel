@@ -82,7 +82,7 @@ const Analytics = () => {
       ) : (
         analyticsData?.data && (
           <DataTable
-            rowLink="detail"
+            rowLink=""
             pageNum={pageNum}
             setPageNum={setPageNum}
             pagination={analyticsData.pagination}

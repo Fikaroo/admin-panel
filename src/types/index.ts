@@ -20,6 +20,7 @@ export interface Catalog {
   imageBase64: string;
   priceSettings: PriceSetting[];
   makeName: string;
+  makeImageBase64: string;
   modelName: string;
   descriptionAz: string;
   descriptionEn: string;
@@ -35,6 +36,7 @@ export interface Make {
   id: string;
   name: string;
   isActive: boolean;
+  imageBase64: string;
 }
 
 export interface Model {

@@ -150,15 +150,15 @@ const Card = ({ carForm, carData }: CardProps) => {
         },
         {
           id: "secondPrice",
-          subtitle: `${carData?.priceSettings?.[1].minDays || "2"}-${
-            carData?.priceSettings?.[1].maxDays || "7"
+          subtitle: `${carData?.priceSettings?.[1].minDays || "8"}-${
+            carData?.priceSettings?.[1].maxDays || "21"
           }  дней`,
           title: carForm.secondPrice || 0,
         },
         {
           id: "thirdPrice",
-          subtitle: `${carData?.priceSettings?.[2].minDays || "2"}-${
-            carData?.priceSettings?.[2].maxDays || "7"
+          subtitle: `${carData?.priceSettings?.[2].minDays || "22"}+${
+            carData?.priceSettings?.[2].maxDays || ""
           }  дней`,
           title: carForm.thirdPrice || 0,
         },
@@ -184,7 +184,9 @@ const Card = ({ carForm, carData }: CardProps) => {
               <ImageIcon />
             </div>
           )}
-          <p className="card-title">{carForm.make || "Марка авто"}</p>
+          <p className="card-title">
+            {carForm.make || "Марка авто"} {carForm.model}
+          </p>
         </div>
         {carForm.carImg ? (
           <img className="car-image" src={carForm.carImg} alt="car-image" />

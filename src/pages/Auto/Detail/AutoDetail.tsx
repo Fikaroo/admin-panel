@@ -5,16 +5,17 @@ import Card from "@/components/Card/Card";
 
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useSWR from "swr";
-import { makeApis, getData, modelApis, calatogApis } from "@/api";
+import useSWRMutation from "swr/mutation";
+import { makeApis, getData, modelApis, catalogApis, postData } from "@/api";
 import {
   BodyType,
   Make,
   Model,
   TransmissionType,
   SeatMaterialType,
+  Catalog,
 } from "@/types";
 import { enumToMap, getSelectAttr, yearsList } from "@/utils";
 import Switch from "@/components/ui/switch/switch";
@@ -22,7 +23,7 @@ import ImageUpload from "@/components/ui/image-upload/image-upload";
 import { useEffect } from "react";
 
 const schema = z.object({
-  carLogoImg: z.string().min(1),
+  carLogoImg: z.string().optional(),
   carImg: z.string().min(1),
   makeId: z.string().min(1),
   make: z.string().min(1),
@@ -48,7 +49,13 @@ export type AutoDetailForm = z.infer<typeof schema>;
 
 const AutoDetail = () => {
   const { id } = useParams();
-  const { data } = useSWR(id && calatogApis.getById(id), getData);
+  const { data } = useSWR(id && catalogApis.getById(id), getData);
+  const { trigger } = useSWRMutation<
+    Catalog,
+    unknown,
+    string,
+    Partial<Catalog>
+  >(catalogApis.create, postData);
   const navigate = useNavigate();
 
   // Todo create a logic for preview card details
@@ -57,7 +64,7 @@ const AutoDetail = () => {
     handleSubmit,
     watch,
     setValue,
-    formState: { errors, isDirty, isValid },
+    formState: { errors },
   } = useForm<AutoDetailForm>({
     mode: "onChange",
     resolver: zodResolver(schema),
@@ -94,6 +101,7 @@ const AutoDetail = () => {
       firstPrice: data?.priceSettings?.at(0)?.pricePerDay,
       secondPrice: data?.priceSettings?.at(1)?.pricePerDay,
       thirdPrice: data?.priceSettings?.at(2)?.pricePerDay,
+      carImg: data?.imageBase64,
     },
   });
 
@@ -105,7 +113,6 @@ const AutoDetail = () => {
     watch("makeId") ? modelApis.search({ makeIds: watch("makeId") }) : null,
     getData
   );
-
   const handleBackNavigation = () => navigate(-1);
 
   useEffect(() => {
@@ -115,6 +122,9 @@ const AutoDetail = () => {
       );
       currentCar?.makeName && setValue("make", currentCar?.makeName);
       currentCar?.name && setValue("model", currentCar?.name);
+
+      currentCar?.imageBase64 &&
+        setValue("carLogoImg", currentCar?.imageBase64);
     }
   }, [modelData]);
 
@@ -125,7 +135,44 @@ const AutoDetail = () => {
     setValue(fieldName, getSelectAttr(e));
   };
 
-  const onSubmit = (data: AutoDetailForm) => console.log(data);
+  const onSubmit = async (data: AutoDetailForm) => {
+    console.log(data);
+    console.log(
+      await trigger({
+        isActive: data.isActive,
+        isPromotion: false,
+        makeId: data.makeId,
+        modelId: data.modelId,
+        yearOfManufacture: data.yearOfManufacture,
+        imageBase64: data.carImg,
+        bodyType: data.bodyTypeId,
+        gearType: data.gearTypeId,
+        seatCount: data.seatCount,
+        extraSeatCount: data.extraSeatCount,
+        seatMaterialType: data.seatMaterialTypeId,
+        luggageCount: 4,
+        priceSettings: [
+          {
+            minDays: 1,
+            maxDays: 7,
+            pricePerDay: data.firstPrice,
+          },
+          {
+            minDays: 8,
+            maxDays: 15,
+            pricePerDay: data.secondPrice,
+          },
+          {
+            minDays: 15,
+            maxDays: 30,
+            pricePerDay: data.thirdPrice,
+          },
+        ],
+      })
+    );
+  };
+
+  console.log(errors, watch());
   return (
     <div className="auto__detail">
       <button className="back__btn" onClick={handleBackNavigation}>
@@ -133,7 +180,9 @@ const AutoDetail = () => {
         <p>Назад</p>
       </button>
 
-      <h1 className="header__title">{id ? "Карточка авто" : "Добавить авто"}</h1>
+      <h1 className="header__title">
+        {id ? "Карточка авто" : "Добавить авто"}
+      </h1>
 
       <div className="form__container">
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -375,7 +424,12 @@ const AutoDetail = () => {
               render={({ field }) => (
                 <div className="select__group">
                   <label>Кол-во багажа</label>
-                  <select className="select" {...field} required>
+                  <select
+                    className="select"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    required
+                  >
                     <option value={-1} disabled selected hidden>
                       Кол-во багажа
                     </option>
@@ -459,26 +513,33 @@ const AutoDetail = () => {
             />
           </div>
 
-          <Switch isAcive={watch("isActive")} label="Активизировать карточку" />
-          <DevTool control={control} />
+          <Switch
+            isAcive={watch("isActive")}
+            setValue={setValue}
+            label="Активизировать карточку"
+          />
 
           {id ? (
-            <button
-              type="submit"
-              className="btn btn_primary"
-              disabled={!isDirty || !isValid}
-            >
-              Сохранить изменения
-            </button>
-          ) : (
             <div className="btn_group">
               <button type="submit" className="btn btn_outline">
                 Удалить
               </button>
-              <button type="submit" className="btn btn_primary">
+              <button
+                type="submit"
+                className="btn btn_primary"
+                // disabled={isDirty || isValid}
+              >
                 Сохранить изменения
               </button>
             </div>
+          ) : (
+            <button
+              type="submit"
+              className="btn btn_primary"
+              // disabled={!isDirty || !isValid}
+            >
+              Сохранить изменения
+            </button>
           )}
         </form>
         <Card carForm={watch()} carData={data} />

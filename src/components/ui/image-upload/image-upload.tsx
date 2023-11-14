@@ -2,6 +2,7 @@ import Dropzone from "react-dropzone";
 import "./image-upload.scss";
 import { UseFormSetValue } from "react-hook-form";
 import { AutoDetailForm } from "@/pages/Auto/Detail/AutoDetail";
+import { getBase64 } from "@/utils";
 
 type ImageUploadProps = {
   beforeTitle?: string;
@@ -12,17 +13,23 @@ type ImageUploadProps = {
   clsName?: string;
 };
 
-const ImageUpload = ({ beforeTitle, title, details, setValue, name, clsName }: ImageUploadProps) => {
+const ImageUpload = ({
+  beforeTitle,
+  title,
+  details,
+  setValue,
+  name,
+  clsName,
+}: ImageUploadProps) => {
   return (
     <Dropzone
       accept={{ "image/*": [".svg", ".png", ".jpg", ".gif"] }}
       onDrop={(acceptedFiles) => {
         setValue &&
           name &&
-          setValue(
-            name,
-            URL.createObjectURL(acceptedFiles[acceptedFiles.length - 1])
-          );
+          getBase64(acceptedFiles[acceptedFiles.length - 1], (result) => {
+            setValue(name, result as string);
+          });
       }}
     >
       {({ getRootProps, getInputProps }) => (

@@ -3,7 +3,7 @@ import "./Auto.scss";
 import useSWR from "swr";
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./components/columns";
-import { calatogApis, getDataWithPagination } from "@/api";
+import { catalogApis, getDataWithPagination } from "@/api";
 import { Catalog, DataWithPagination } from "@/types";
 import SearchElement from "@/elements/search";
 import OutlinedButton from "@/elements/outlinedButton";
@@ -20,7 +20,7 @@ const Auto = () => {
     isLoading,
     error,
   } = useSWR<DataWithPagination<Catalog[]>>(
-    calatogApis.search({ pageNum, pageSize: 10 }),
+    catalogApis.search({ pageNum, pageSize: 10 }),
     getDataWithPagination
   );
 

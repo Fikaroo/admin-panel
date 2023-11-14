@@ -57,19 +57,28 @@ const routes: Routes[] = [
 const SideBar = () => {
   const location = useLocation();
   const pathName = location.pathname;
-
+  console.log(
+    routes[1].path.includes(pathName.substring(1)),
+    pathName.substring(1),
+    routes[1].path
+  );
   return (
     <div className="sidebar__container">
       <div className="sidebar__container_up">
         <img src={logoHertz} alt="" className="logo-herts" />
         <div className="link__list">
-          {routes.map(({ name, path, icon, iconBlack }) => (
+          {routes.map(({ name, path, icon, iconBlack }, index) => (
             <Link
               key={name}
               to={path}
               className="link"
               style={
-                pathName === path
+                index === 0 && pathName === "/"
+                  ? {
+                      backgroundColor: "#FC0",
+                      color: "#434244",
+                    }
+                  : index !== 0 && pathName.includes(path)
                   ? {
                       backgroundColor: "#FC0",
                       color: "#434244",
@@ -80,7 +89,16 @@ const SideBar = () => {
                     }
               }
             >
-              <img src={pathName === path ? iconBlack : icon} alt="" />
+              <img
+                src={
+                  index === 0 && pathName === "/"
+                    ? iconBlack
+                    : index !== 0 && pathName.includes(path)
+                    ? iconBlack
+                    : icon
+                }
+                alt=""
+              />
               <span style={{ marginLeft: 10 }}>{name}</span>
             </Link>
           ))}

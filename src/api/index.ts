@@ -1,3 +1,4 @@
+import { Lang } from "@/types";
 import axios, { AxiosRequestConfig } from "axios";
 
 const baseUrl = import.meta.env.VITE_API_URL;
@@ -7,9 +8,11 @@ const instance = axios.create({
   // withCredentials: true,
 });
 
-export const getData = async (
+export const getData = async (path: string) => (await instance.get(path)).data;
+
+export const getDataWithHeader = async (
   path: string,
-  option?: AxiosRequestConfig<unknown>
+  option: AxiosRequestConfig<unknown>
 ) => (await instance.get(path, option)).data;
 
 export const getDataWithPagination = async (path: string) => {
@@ -23,6 +26,9 @@ export const getDataWithPagination = async (path: string) => {
     pagination: { total_records, total_pages, next_page, prev_page },
   };
 };
+
+export const postData = async (path: string, { arg }: { arg: unknown }) =>
+  (await instance.post(path, arg)).data;
 
 type Params = {
   searchString?: string;
@@ -57,7 +63,7 @@ export const orderApis = {
   update: (id: string) => `/orders/save/${id}`,
 };
 
-export const calatogApis = {
+export const catalogApis = {
   getById: (id: string) => `/catalog/${id}`,
   getAll: "/catalog",
   search: (params: Params) =>
@@ -107,7 +113,7 @@ export const faqApis = {
       .map(([key, value]) => (value ? `${key}=${value}&` : ""))
       .join("")}`,
   create: "/faq/save",
-  delete: (id: string) => `/faq/delete/${id}`,
+  delete: (id: string | number, lang: Lang) => `/faq/delete/${id}/${lang}`,
 };
 
 export const discountApis = {

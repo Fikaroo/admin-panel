@@ -1,5 +1,8 @@
 import { Faq, Lang } from "@/types";
 import "./modal.scss";
+import useSWRMutation from "swr/mutation";
+import { faqApis, postData } from "@/api";
+import { KeyedMutator } from "swr";
 
 type ModalProps = {
   handleModal: () => void;
@@ -7,6 +10,7 @@ type ModalProps = {
   lang: Lang;
   value: Faq;
   setValue: React.Dispatch<React.SetStateAction<Faq>>;
+  mutate: KeyedMutator<Faq[]>;
 };
 
 const Modal: React.FC<ModalProps> = ({
@@ -15,7 +19,16 @@ const Modal: React.FC<ModalProps> = ({
   setValue,
   lang,
   value,
+  mutate,
 }) => {
+  const { trigger } = useSWRMutation(faqApis.create, postData);
+  const handleAdd = () => {
+    setValue((prev) => ({ ...prev, lang: lang, num: num }));
+    trigger(value);
+    mutate();
+    handleModal();
+  };
+
   return (
     <>
       <div className="modal-bg" onClick={handleModal} />
@@ -51,13 +64,7 @@ const Modal: React.FC<ModalProps> = ({
           </div>
 
           <div className="btn-div">
-            <div
-              className="btn btn_primary"
-              onClick={() => {
-                setValue((prev) => ({ ...prev, lang: lang, num: num }));
-                handleModal();
-              }}
-            >
+            <div className="btn btn_primary" onClick={handleAdd}>
               Сохранить изменения
             </div>
           </div>
