@@ -17,11 +17,11 @@ const formSchema = z.object({
   yearOfManufacture: z.number().min(1),
   bodyType: z.number().min(1),
   seatCount: z.number().min(1),
-  extraSeatCount: z.number().min(1),
+  extraSeatCount: z.number().default(0),
   luggageCount: z.number().min(1),
   seatMaterialType: z.number().min(1),
   gearType: z.number().min(-1),
-  imageBase64: z.string().optional().nullable(),
+  imageBase64: z.string(),
   priceSettings: z.array(
     z.object({
       minDays: z.number().min(1),
@@ -30,7 +30,7 @@ const formSchema = z.object({
     })
   ),
   makeName: z.string(),
-  makeImageBase64: z.string().optional().nullable(),
+  makeImageBase64: z.string(),
   modelName: z.string(),
 });
 
@@ -46,9 +46,11 @@ const AutoDetail = () => {
   const navigate = useNavigate();
 
   const form = useForm<AutoDetailFormSchema>({
+    mode: "onChange",
     resolver: zodResolver(formSchema),
     defaultValues: {
-      isActive: true,
+      extraSeatCount: 0,
+      isActive: false,
       modelId: "",
       modelName: "",
       priceSettings: [

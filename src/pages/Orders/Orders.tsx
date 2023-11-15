@@ -16,43 +16,38 @@ const Orders = () => {
     isLoading,
     error,
   } = useSWR<DataWithPagination<Order[]>>(
-    orderApis.search({ pageNum, pageSize: 10, includeCatalog: false }),
+    orderApis.search({ pageNum, pageSize: 10, includeCatalog: true }),
     getDataWithPagination
   );
+
   const [sort, setSort] = useState(false);
   const handleFilterClick = () => {
     setSort(!sort);
   };
-  const handleOptionClick = () => {
-
-  }
+  const handleOptionClick = () => {};
 
   return (
     <div>
       <div className="headerTitle">Заказы</div>
       <div className="subHeader">
         <SearchElement />
-        <div style={{ position:"relative" }}>
+        <div style={{ position: "relative" }}>
           <OutlinedButton
             icon={filterUpLogo}
             text={"Фильтры"}
             onClick={handleFilterClick}
           />
           {sort && (
-                <div className="sort-options">
-                  <ul>
-                    <li onClick={() => handleOptionClick("")}>
-                      По клиенту
-                    </li>
-                    <li onClick={() => handleOptionClick("")}>
-                      По модели автомобиля
-                    </li>
-                    <li onClick={() => handleOptionClick("")}>
-                      По IP
-                    </li>
-                  </ul>
-                </div>
-              )}
+            <div className="sort-options">
+              <ul>
+                <li onClick={() => handleOptionClick()}>По клиенту</li>
+                <li onClick={() => handleOptionClick()}>
+                  По модели автомобиля
+                </li>
+                <li onClick={() => handleOptionClick()}>По IP</li>
+              </ul>
+            </div>
+          )}
         </div>
       </div>
       {isLoading ? (

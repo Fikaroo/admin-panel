@@ -7,15 +7,27 @@ import LaguageSwitcher from "@/elements/laguageSwitcher";
 import TextArea from "@/components/ui/textarea/textarea";
 import FilledButton from "@/elements/filledButton";
 import plusIcon from "@/assets/plusIcon.svg";
+import { catalogApis, discountApis, getData, postData } from "@/api";
+import { Catalog } from "@/types";
+import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
+import dayjs from "dayjs";
 
 const NewDiscountDays = () => {
+  const { trigger } = useSWRMutation(discountApis.create, postData);
+
   const [headingValueRu, setHeadingValueRu] = useState("");
   const [subHeadingValueRu, setSubHeadingValueRu] = useState("");
   const [headingValueAz, setHeadingValueAz] = useState("");
   const [subHeadingAz, setSubHeadingValueAz] = useState("");
   const [headingValueEn, setHeadingValueEn] = useState("");
   const [subHeadingEn, setSubHeadingValueEn] = useState("");
-  const saveData = () => {};
+  const [img, setImg] = useState("");
+  const [buttonActive, setButtonActive] = useState(false);
+  const [promotionActive, setPromotionActive] = useState(false);
+  const [aksiyaName, setAksiyaName] = useState("");
+  const [catalogId, setCatalogId] = useState("");
+
   const [datesList, setDatesList] = useState([
     {
       startDate: "",
@@ -24,11 +36,58 @@ const NewDiscountDays = () => {
     },
   ]);
 
-  const { currentLanguage, setCurrentLanguage, translate } =
-    useContext(LocalizationContext);
-  const uploadImg = () => {
-    // setValue("");
+  const { currentLanguage } = useContext(LocalizationContext);
+  const uploadImage = (...event: unknown[]) => {
+    setImg(event?.[0] as string);
   };
+
+  const { data: catalogData, isLoading } = useSWR<Catalog[]>(
+    catalogApis.search({ isActive: true }),
+    getData
+  );
+
+  const handleSubmit = async () => {
+    console.log(
+      await trigger({
+        type: 2,
+        name: aksiyaName,
+        captionAz: headingValueAz,
+        captionEn: headingValueEn,
+        captionRu: headingValueRu,
+        descriptionAz: subHeadingAz,
+        descriptionRu: subHeadingValueRu,
+        descriptionEn: subHeadingEn,
+        enableBookButton: buttonActive,
+        catalogId: catalogId,
+        isActive: promotionActive,
+        imageBase64: img,
+        // startDate: startAksiyaDate,
+        // endDate: endAksiyaDate,
+        priceSettings: [
+          {
+            minDays: 1,
+            maxDays: 7,
+            pricePerDay: 30,
+          },
+          {
+            minDays: 8,
+            maxDays: 15,
+            pricePerDay: 25,
+          },
+          {
+            minDays: 15,
+            maxDays: 30,
+            pricePerDay: 20,
+          },
+          {
+            minDays: 31,
+            pricePerDay: 15,
+          },
+        ],
+      })
+    );
+  };
+
   const addDates = () => {
     setDatesList([
       ...datesList,
@@ -46,6 +105,8 @@ const NewDiscountDays = () => {
           <label>Название акции</label>
           <input
             className="input"
+            value={aksiyaName}
+            onChange={(event) => setAksiyaName(event.target.value)}
             //   value={}
             //   onChange={(event) => onChange(+event.target.value) }
             type="text"
@@ -55,8 +116,7 @@ const NewDiscountDays = () => {
           <div style={{ marginRight: 24 }}>
             <ImageUpload
               clsName={"upload-kvadrat-image-container"}
-              setValue={() => uploadImg()}
-              name="carImg"
+              onChange={uploadImage}
               beforeTitle=""
               title=""
               details=""
@@ -73,8 +133,23 @@ const NewDiscountDays = () => {
         </div>
         <div className="select__group" style={{ marginBottom: 50 }}>
           <label>Автомобиль</label>
-          <select className="select" onChange={(e) => {}} required>
-            <option value="">Марка</option>
+          <select
+            className="select"
+            disabled={isLoading}
+            onChange={(e) => {
+              setCatalogId(e.target.value);
+            }}
+            value={catalogId}
+            required
+          >
+            <option hidden selected>
+              Марка
+            </option>
+            {catalogData?.map(({ id, nameEn }) => (
+              <option value={id} key={id}>
+                {nameEn}
+              </option>
+            ))}
             {/* {makeData?.map(({ id, name }) => (
                       <option key={id} data-state={name} value={id}>
                         {name}
@@ -152,7 +227,19 @@ const NewDiscountDays = () => {
                   className="row-date-start"
                   value={p.startDate}
                 />
-                <input type="date" className="row-date-end" value={p.endDate} />
+                <input
+                  type="date"
+                  className="row-date-end"
+                  value={dayjs(p.endDate).format("YYYY-MM-DD")}
+                  // onChange={(e) =>
+                  //   setDatesList([
+                  //     {
+                  //       ...datesList?.at(index),
+                  //       endDate: dayjs(e.target.value).toJSON(),
+                  //     },
+                  //   ])
+                  // }
+                />
                 <div className="price-promo">
                   <input
                     type="text"
@@ -177,21 +264,25 @@ const NewDiscountDays = () => {
               name=""
               id=""
               style={{ width: 24, height: 24, marginRight: 10 }}
+              checked={buttonActive}
+              onChange={(e) => setButtonActive(e.target.checked)}
             />
             <p>Включить кнопку</p>
           </div>
-          <div style={{ display: "flex", width: "45%", }}>
+          <div style={{ display: "flex", width: "45%" }}>
             <input
               type="checkbox"
               name=""
               id=""
               style={{ width: 24, height: 24, marginRight: 10 }}
+              onChange={(e) => setPromotionActive(e.target.checked)}
+              checked={promotionActive}
             />
             <p>Включить акцию сейчас</p>
           </div>
         </div>
 
-        <FilledButton text={"Сохранить изменения"} onClick={() => saveData()} />
+        <FilledButton text={"Сохранить изменения"} onClick={handleSubmit} />
       </div>
       <div className="right-disc-price-block"></div>
     </div>

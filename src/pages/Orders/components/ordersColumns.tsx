@@ -1,4 +1,4 @@
-import { Order } from "@/types";
+import { Catalog, Order } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 
 export const ordersColumns: ColumnDef<Order>[] = [
@@ -7,8 +7,12 @@ export const ordersColumns: ColumnDef<Order>[] = [
     header: "КЛИЕНТ",
   },
   {
-    accessorKey: "carName",
+    accessorKey: "catalog",
     header: "АВТОМОБИЛЬ",
+    cell: ({ row }) => {
+      const catalog = row.getValue<Catalog>("catalog");
+      return `${catalog?.makeName} ${catalog?.modelName}`;
+    },
   },
   {
     accessorKey: "placeOfReceipt",
@@ -46,5 +50,4 @@ export const ordersColumns: ColumnDef<Order>[] = [
       );
     },
   },
-  
 ];

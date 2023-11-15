@@ -10,15 +10,16 @@ type SwitchProps = {
   onChange?: (...event: unknown[]) => void;
 };
 
-const Switch = ({ label, isAcive, setValue, onChange }: SwitchProps) => {
+const Switch = ({ label, isAcive, onChange }: SwitchProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(isAcive || false);
   const handleSwitch = () => {
     setIsOpen(!isOpen);
-    setValue && setValue("isActive", isOpen);
     onChange && onChange(!isOpen);
   };
 
-  useEffect(() => {}, [isAcive]);
+  useEffect(() => {
+    isAcive && setIsOpen(isAcive);
+  }, [isAcive, isOpen]);
 
   return (
     <div className="switch">

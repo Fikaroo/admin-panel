@@ -38,7 +38,6 @@ const Analytics = () => {
       setMinActionDate(newValue?.[0].toISOString());
       setMaxActionDate(newValue?.[1].toISOString());
     }
-    console.log(newValue, dayjs(1997));
     setValue(newValue);
   };
 
@@ -46,9 +45,7 @@ const Analytics = () => {
   const handleFilterClick = () => {
     setSort(!sort);
   };
-  const handleOptionClick = () => {
-
-  }
+  const handleOptionClick = () => {};
 
   return (
     <div>
