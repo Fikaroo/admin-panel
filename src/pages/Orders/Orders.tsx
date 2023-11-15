@@ -19,19 +19,40 @@ const Orders = () => {
     orderApis.search({ pageNum, pageSize: 10, includeCatalog: false }),
     getDataWithPagination
   );
-  const handleFilterClick = () => {};
+  const [sort, setSort] = useState(false);
+  const handleFilterClick = () => {
+    setSort(!sort);
+  };
+  const handleOptionClick = () => {
+
+  }
 
   return (
     <div>
       <div className="headerTitle">Заказы</div>
       <div className="subHeader">
         <SearchElement />
-        <div style={{ display: "flex" }}>
+        <div style={{ position:"relative" }}>
           <OutlinedButton
             icon={filterUpLogo}
             text={"Фильтры"}
             onClick={handleFilterClick}
           />
+          {sort && (
+                <div className="sort-options">
+                  <ul>
+                    <li onClick={() => handleOptionClick("")}>
+                      По клиенту
+                    </li>
+                    <li onClick={() => handleOptionClick("")}>
+                      По модели автомобиля
+                    </li>
+                    <li onClick={() => handleOptionClick("")}>
+                      По IP
+                    </li>
+                  </ul>
+                </div>
+              )}
         </div>
       </div>
       {isLoading ? (
@@ -41,7 +62,7 @@ const Orders = () => {
       ) : (
         orderData?.data && (
           <DataTable
-            rowLink="detail"
+            rowLink=""
             pageNum={pageNum}
             setPageNum={setPageNum}
             pagination={orderData.pagination}
