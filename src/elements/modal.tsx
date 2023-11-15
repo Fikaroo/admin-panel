@@ -55,12 +55,13 @@ const Modal: React.FC<ModalProps> = ({
               className="textarea"
               placeholder="Placeholder"
               value={value.answer}
+              maxLength={500}
               onChange={(e) =>
                 setValue((prev) => ({ ...prev, answer: e?.target?.value }))
               }
               required
             ></textarea>
-            <p>Максимум Х слов</p>
+            <p>Максимум 500 слов</p>
           </div>
 
           <div className="btn-div">

@@ -1,0 +1,30 @@
+.sort-options-analytics {
+    position: absolute;
+    top: 45px;
+    width: 235px;
+    right: 7%;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 1px 4px 16px 0px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    justify-content: flex-end;
+    z-index: 99;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.sort-options-analytics ul li {
+    border-bottom: 1px solid lightgrey;
+    padding: 5px 0 5px 5px;
+}
+.sort-options-analytics ul li:first-child{
+    border-top-right-radius: 12px ;
+    border-top-left-radius: 12px ;
+}
+.sort-options-analytics ul li:last-child{
+    border-bottom-right-radius: 12px ;
+    border-bottom-left-radius: 12px ;
+    border-bottom: none;
+}

@@ -42,7 +42,13 @@ const Analytics = () => {
     setValue(newValue);
   };
 
-  const handleFilterClick = () => {};
+  const [sort, setSort] = useState(false);
+  const handleFilterClick = () => {
+    setSort(!sort);
+  };
+  const handleOptionClick = () => {
+
+  }
 
   return (
     <div>
@@ -68,11 +74,24 @@ const Analytics = () => {
             />
           </LocalizationProvider> : null} */}
 
-          <OutlinedButton
-            icon={filterUpLogo}
-            text={"Фильтры"}
-            onClick={handleFilterClick}
-          />
+          <div style={{ position: "relative" }}>
+            <OutlinedButton
+              icon={filterUpLogo}
+              text={"Фильтры"}
+              onClick={handleFilterClick}
+            />
+            {sort && (
+              <div className="sort-options-analytics">
+                <ul>
+                  <li onClick={() => handleOptionClick()}>По времени</li>
+                  <li onClick={() => handleOptionClick()}>
+                    По модели автомобиля
+                  </li>
+                  <li onClick={() => handleOptionClick()}>По IP</li>
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       {isLoading ? (
