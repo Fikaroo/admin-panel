@@ -29,7 +29,25 @@ export interface Catalog {
   nameEn: string;
   nameRu: string;
 }
-export interface Discount {}
+export interface Discount {
+  id: string;
+  name: string;
+  type: number;
+  isActive: boolean;
+  enableBookButton: boolean;
+  catalogId: string;
+  startDate: Date;
+  endDate: Date;
+  discountPercentage: null;
+  priceSettings: PriceSetting[];
+  descriptionAz: string;
+  descriptionEn: string;
+  descriptionRu: string;
+  captionAz: string;
+  captionEn: string;
+  captionRu: string;
+  catalog?: Catalog;
+}
 export interface Order {
   id: string;
   placeOfReceipt: string;
@@ -44,6 +62,7 @@ export interface Order {
   comment: string;
   catalogId: string;
   status: number;
+  catalog?: Catalog;
 }
 export interface Analytic {}
 export interface Make {

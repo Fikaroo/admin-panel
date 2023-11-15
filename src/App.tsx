@@ -11,7 +11,7 @@ import InfoFaq from "./pages/Info/InfoFaq/InfoFaq";
 import InfoPartners from "./pages/Info/InfoPartners/InfoPartners";
 import Discounts from "./pages/Discounts/Discounts";
 import DiscountsDetail from "./pages/Discounts/Detail/DiscountsDetail";
-import NewDiscountPrice from "./pages/Discounts/Detail/NewDiscountPrice/newDiscountPrice";
+import NewDiscountPrice from "./pages/Discounts/Detail/newDiscountPrice/newDiscountPrice";
 import NewDiscountDays from "./pages/Discounts/Detail/newDiscountDays/newDiscountDays";
 
 const router = createBrowserRouter([
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
           },
           {
             path: "detail",
-            element:<DiscountsDetail />,
+            element: <DiscountsDetail />,
             children: [
               {
                 index: true,
@@ -60,13 +60,13 @@ const router = createBrowserRouter([
                 path: "newDiscountDays",
                 element: <NewDiscountDays />,
               },
-            ]    
+            ],
           },
         ],
       },
       {
         path: "info",
-        element:<Info />,
+        element: <Info />,
         children: [
           {
             index: true,
