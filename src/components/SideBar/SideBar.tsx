@@ -57,11 +57,7 @@ const routes: Routes[] = [
 const SideBar = () => {
   const location = useLocation();
   const pathName = location.pathname;
-  console.log(
-    routes[1].path.includes(pathName.substring(1)),
-    pathName.substring(1),
-    routes[1].path
-  );
+
   return (
     <div className="sidebar__container">
       <div className="sidebar__container_up">

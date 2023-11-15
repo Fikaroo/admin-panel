@@ -61,10 +61,11 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
   };
 
   async function onSubmit(values: AutoDetailFormSchema) {
+    console.log(values);
     saveCatalog(values);
     id && navigate(-1);
   }
-
+  console.log(form.formState.errors);
   async function handleDelete() {
     removeCatalog();
     navigate(-1);
@@ -311,23 +312,32 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                 <FormLabel>Кол-во пассажиров</FormLabel>
                 <FormControl>
                   <>
-                  <select
-                    className="select"
-                    {...field}
-                    onChange={(e) => {
-                      const seats = e.target.value.split("+");
-                      form.setValue("extraSeatCount", Number(seats?.[1]));
-                      field.onChange(Number(seats[0]));
-                    }}
-                  >
-                    <option value={-1} disabled selected hidden>
-                      Кол-во пассажиров
-                    </option>
-                    {[1,2,3,4,5,6,7,8].map((item)=>
-                     <option value={item}>{item}</option>
-                    )}
-                  </select>
-                  <div><input type="checkbox" /> + 1 пассажир</div>
+                    <select
+                      className="select"
+                      {...field}
+                      onChange={(e) => {
+                        const seats = e.target.value.split("+");
+                        field.onChange(Number(seats[0]));
+                      }}
+                    >
+                      <option value={-1} disabled selected hidden>
+                        Кол-во пассажиров
+                      </option>
+                      {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+                        <option value={item}>{item}</option>
+                      ))}
+                    </select>
+                    <div>
+                      <input
+                        type="checkbox"
+                        onChange={(e) =>
+                          e.target.checked
+                            ? form.setValue("extraSeatCount", 1)
+                            : form.setValue("extraSeatCount", 0)
+                        }
+                      />{" "}
+                      + 1 пассажир
+                    </div>
                   </>
                 </FormControl>
                 <FormMessage className="error" />
@@ -350,9 +360,9 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                     <option value={-1} disabled selected hidden>
                       Кол-во багажа
                     </option>
-                    {[1,2,3,4].map((item)=>
-                     <option value={item}>{item}</option>
-                    )}
+                    {[1, 2, 3, 4].map((item) => (
+                      <option value={item}>{item}</option>
+                    ))}
                   </select>
                 </FormControl>
                 <FormMessage className="error" />
