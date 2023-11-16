@@ -8,9 +8,9 @@ import { useLocation } from "react-router-dom";
 const Info = () => {
   const array = [
     { name: "Header & Footer", to: "/info" },
-    { name: "About Us & B2B", to: "/info/about" },
+    { name: "О нас & B2B", to: "/info/about" },
     { name: "FAQ", to: "/info/faq" },
-    { name: "Partners", to: "/info/partners" },
+    { name: "Партнеры", to: "/info/partners" },
   ];
 
   const { pathname } = useLocation();
