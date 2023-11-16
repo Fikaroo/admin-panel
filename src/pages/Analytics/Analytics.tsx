@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./Analytics.scss";
 import useSWR from "swr";
 import { DataTable } from "@/components/ui/data-table";
@@ -8,15 +8,17 @@ import { analyticsApis, getDataWithPagination } from "@/api";
 import OutlinedButton from "@/elements/outlinedButton";
 import SearchElement from "@/elements/search";
 import filterUpLogo from "@/assets/filterIcon.svg";
-import dayjs, { Dayjs } from "dayjs";
-import { DateRange } from "@mui/x-date-pickers-pro";
-import DateRangePickerWithButtonField from "@/components/ui/calendar/calendar";
+import calendarLogo from "@/assets/calendarIcon.svg";
+import dayjs from "dayjs";
+import { DateRange, DayPicker } from "react-day-picker";
 import Loading from "@/components/Loading";
+import "react-day-picker/dist/style.css";
+import useOutSideClick from "@/hooks/useOutSideClick";
 
 const Analytics = () => {
-  const [value, setValue] = useState<DateRange<Dayjs>>([null, null]);
-  // const [show, setShow] = useState(false);
-
+  const [value, setValue] = useState<DateRange | undefined>();
+  const ref = useRef(null);
+  const { isOpen: show, setIsOpen: setShow } = useOutSideClick(ref);
   const [pageNum, setPageNum] = useState(1);
   const [minActionDate, setMinActionDate] = useState(dayjs(1997).toISOString());
   const [maxActionDate, setMaxActionDate] = useState(dayjs().toISOString());
@@ -34,12 +36,15 @@ const Analytics = () => {
     getDataWithPagination
   );
 
-  const handleDateSelect = (newValue: DateRange<Dayjs>) => {
-    if (newValue[0] !== null && newValue[1] !== null) {
-      setMinActionDate(newValue?.[0].toISOString());
-      setMaxActionDate(newValue?.[1].toISOString());
+  const handleDateSelect = (newValue: DateRange | undefined) => {
+    if (newValue?.from !== undefined && newValue?.to !== undefined) {
+      setMinActionDate(newValue.from.toISOString());
+      setMaxActionDate(newValue.to.toISOString());
     }
-    setValue(newValue);
+    newValue?.from !== undefined &&
+      setMinActionDate(newValue?.from.toISOString());
+
+    setValue({ from: newValue?.from, to: newValue?.to });
   };
 
   const [sort, setSort] = useState(false);
@@ -54,16 +59,37 @@ const Analytics = () => {
       <div className="subHeader">
         <SearchElement />
         <div style={{ display: "flex" }}>
-          {/* <OutlinedButton
-            icon={calendarLogo}
-            text={"Выберите даты"}
-            onClick={handleDateSelect}
-          /> */}
+          <div ref={ref} style={{ position: "relative" }}>
+            <OutlinedButton
+              icon={calendarLogo}
+              text={"Выберите даты"}
+              onClick={() => setShow(!show)}
+            />
 
-          <DateRangePickerWithButtonField
+            {show ? (
+              <DayPicker
+                style={{
+                  position: "absolute",
+                  background: "white",
+                  padding: 20,
+                  top: 40,
+                  left: -20,
+                  zIndex: 10,
+                  border: "1px solid var(--gray-200, #EAECF0)",
+                  borderRadius: "4px",
+                }}
+                defaultMonth={new Date()}
+                mode="range"
+                selected={value}
+                onSelect={(newValue) => handleDateSelect(newValue)}
+                // footer={footer}
+              />
+            ) : null}
+          </div>
+          {/* <DateRangePickerWithButtonField
             value={value}
             onChange={(newValue) => handleDateSelect(newValue)}
-          />
+          /> */}
           {/* {show ? <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateRangeCalendar
               calendars={1}

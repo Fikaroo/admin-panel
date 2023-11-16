@@ -50,12 +50,13 @@ export interface Discount {
   catalog?: Catalog;
 }
 export interface Order {
-  id: string;
+  id?: string;
   placeOfReceipt: string;
   placeOfHandover: string;
   startDate: Date;
   endDate: Date;
   startTime: string;
+  calculatedPrice?: number;
   endTime: string;
   fullname: string;
   phoneNumber: string;
