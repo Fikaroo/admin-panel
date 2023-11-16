@@ -1,17 +1,43 @@
 import ArrowLeft from "@/assets/arrow-narrow-left.svg?react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import "./DiscountsDetail.scss";
 import Tab from "@/elements/tab";
 import NewDiscountPrice from "./newDiscountPrice/newDiscountPrice";
 import NewDiscountDays from "./newDiscountDays/newDiscountDays";
+import { discountApis, getData } from "@/api";
+import useSWR from "swr";
+import { Discount } from "@/types";
+import { useEffect } from "react";
+import Loading from "@/components/Loading";
 
 const DiscountsDetail = () => {
+  const { id } = useParams();
+  const { data, isLoading, error, isValidating } = useSWR<Discount>(
+    id && discountApis.getById(id),
+    getData
+  );
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const array = [
-    { name: "Акционная цена", to: "/discounts/detail" },
-    { name: "Акционные дни", to: "/discounts/detail/newDiscountDays" },
+    {
+      name: "Акционная цена",
+      to: id ? `newDiscountPrice/${id}` : "newDiscountPrice",
+    },
+    {
+      name: "Акционные дни",
+      to: id ? `newDiscountDays/${id}` : "newDiscountDays",
+    },
   ];
+
+  useEffect(() => {
+    if (data?.type === 2) {
+      navigate(`newDiscountDays/${id}`);
+    }
+  }, [data, id, navigate]);
+
+  if (isValidating || isLoading) return <Loading />;
+  if (error) return "No result";
+
   const handleBackNavigation = () => navigate("/discounts");
   return (
     <div className="new-discount__price">
@@ -19,11 +45,15 @@ const DiscountsDetail = () => {
         <ArrowLeft className="left__arrow" />
         <p>Назад</p>
       </button>
-      <h1 className="header__title">Новая акция</h1>
-      <Tab links={array}>
-        {pathname === "/discounts/detail" && <NewDiscountPrice />}
-        {pathname === "/discounts/detail/newDiscountDays" && (
-          <NewDiscountDays />
+      <h1 className="header__title">
+        {id ? `${data?.name} акция` : "Новая акция"}
+      </h1>
+      <Tab links={data?.type ? [array?.[data?.type - 1]] : array}>
+        {pathname.includes("newDiscountDays") && (
+          <NewDiscountDays data={data} />
+        )}
+        {pathname.includes("newDiscountPrice") && (
+          <NewDiscountPrice data={data} />
         )}
       </Tab>
     </div>

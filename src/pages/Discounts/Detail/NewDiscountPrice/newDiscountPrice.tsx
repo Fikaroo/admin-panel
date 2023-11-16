@@ -9,27 +9,50 @@ import FilledButton from "@/elements/filledButton";
 import dayjs from "dayjs";
 import useSWRMutation from "swr/mutation";
 import { catalogApis, discountApis, getData, postData } from "@/api";
-import { Catalog } from "@/types";
+import { Catalog, Discount } from "@/types";
 import useSWR from "swr";
+import { useNavigate } from "react-router-dom";
+import { defaultToast } from "@/utils";
 
-const NewDiscountPrice = () => {
-  const { trigger } = useSWRMutation(discountApis.create, postData);
-  const [aksiyaName, setAksiyaName] = useState("");
-  const [headingValueRu, setHeadingValueRu] = useState("");
-  const [subHeadingValueRu, setSubHeadingValueRu] = useState("");
-  const [headingValueAz, setHeadingValueAz] = useState("");
-  const [subHeadingAz, setSubHeadingValueAz] = useState("");
-  const [headingValueEn, setHeadingValueEn] = useState("");
-  const [subHeadingEn, setSubHeadingValueEn] = useState("");
-  const [catalogId, setCatalogId] = useState("");
+const NewDiscountPrice = ({ data }: { data?: Discount }) => {
+  const navigate = useNavigate();
+  const { trigger, isMutating } = useSWRMutation<
+    Discount,
+    unknown,
+    string,
+    Partial<Discount>
+  >(data ? discountApis.update(data?.id) : discountApis.create, postData);
+
+  const { trigger: removeTrigger, isMutating: removeIsMutation } =
+    useSWRMutation(data ? discountApis.delete(data?.id) : null, getData);
+  const [aksiyaName, setAksiyaName] = useState(data?.name || "");
+  const [headingValueRu, setHeadingValueRu] = useState(data?.captionRu || "");
+  const [subHeadingValueRu, setSubHeadingValueRu] = useState(
+    data?.descriptionRu || ""
+  );
+  const [headingValueAz, setHeadingValueAz] = useState(data?.captionAz || "");
+  const [subHeadingAz, setSubHeadingValueAz] = useState(
+    data?.descriptionAz || ""
+  );
+  const [headingValueEn, setHeadingValueEn] = useState(data?.captionEn || "");
+  const [subHeadingEn, setSubHeadingValueEn] = useState(
+    data?.descriptionEn || ""
+  );
+  const [catalogId, setCatalogId] = useState(data?.catalogId || "");
   const { currentLanguage } = useContext(LocalizationContext);
-  const [img, setImg] = useState("");
-  const [srok, setSrok] = useState("");
-  const [periodPrice, setPeriodPrice] = useState("");
-  const [startAksiyaDate, setStartAksiyaDate] = useState("");
-  const [endAksiyaDate, setEndAksiyaDate] = useState("");
-  const [buttonActive, setButtonActive] = useState(false);
-  const [promotionActive, setPromotionActive] = useState(false);
+  const [img, setImg] = useState(data?.imageBase64 || "");
+  const [srok, setSrok] = useState(data?.priceSettings?.[0].minDays || 0);
+  const [periodPrice, setPeriodPrice] = useState(
+    data?.priceSettings?.[0].pricePerDay || 0
+  );
+  const [startAksiyaDate, setStartAksiyaDate] = useState(data?.startDate || "");
+  const [endAksiyaDate, setEndAksiyaDate] = useState(data?.endDate || "");
+  const [buttonActive, setButtonActive] = useState(
+    data?.enableBookButton || false
+  );
+  const [promotionActive, setPromotionActive] = useState(
+    data?.isActive || false
+  );
 
   const uploadImage = (...event: unknown[]) => {
     setImg(event?.[0] as string);
@@ -41,8 +64,8 @@ const NewDiscountPrice = () => {
   );
 
   const handleSubmit = async () => {
-    console.log(
-      await trigger({
+    const res = await defaultToast(
+      trigger({
         type: 1,
         name: aksiyaName,
         captionAz: headingValueAz,
@@ -65,7 +88,19 @@ const NewDiscountPrice = () => {
         ],
       })
     );
+    setTimeout(async () => {
+      res && navigate("/discounts");
+    }, 1);
   };
+
+  const handleDelete = async () => {
+    const res = await defaultToast(removeTrigger());
+
+    setTimeout(() => {
+      res && navigate("/discounts");
+    }, 1);
+  };
+
   return (
     <div className="all-disc-price">
       <div className="left-disc-price-block">
@@ -186,7 +221,11 @@ const NewDiscountPrice = () => {
             <input
               className="input"
               value={srok}
-              onChange={(event) => setSrok(event.target.value)}
+              onChange={(e) =>
+                setSrok(
+                  Number(e.target.value.replace(/^0/, "").replace(/[^\d]+/, ""))
+                )
+              }
               type="text"
             />
             <label>Начало срока</label>
@@ -199,7 +238,7 @@ const NewDiscountPrice = () => {
               onChange={(event) =>
                 setStartAksiyaDate(dayjs(event.target.value).toJSON())
               }
-              //  min={formattedDate}
+              min={dayjs().format("YYYY-MM-DD")}
             />
             <div style={{ display: "flex", marginTop: 25 }}>
               <input
@@ -218,7 +257,11 @@ const NewDiscountPrice = () => {
             <input
               className="input"
               value={periodPrice}
-              onChange={(event) => setPeriodPrice(event.target.value)}
+              onChange={(e) =>
+                setPeriodPrice(
+                  Number(e.target.value.replace(/^0/, "").replace(/[^\d]+/, ""))
+                )
+              }
               type="text"
             />
             <label>Конец срока</label>
@@ -231,6 +274,7 @@ const NewDiscountPrice = () => {
               onChange={(event) =>
                 setEndAksiyaDate(dayjs(event.target.value).toJSON())
               }
+              min={dayjs(startAksiyaDate).format("YYYY-MM-DD")}
             />
             <div style={{ display: "flex", marginTop: 25 }}>
               <div>
@@ -248,8 +292,28 @@ const NewDiscountPrice = () => {
             </div>
           </div>
         </div>
-
-        <FilledButton text={"Сохранить изменения"} onClick={handleSubmit} />
+        {data ? (
+          <div className="btn_group">
+            <OutlinedButton
+              full
+              text={"Удалить"}
+              onClick={handleDelete}
+              disabled={isMutating || removeIsMutation}
+            />
+            <FilledButton
+              full
+              text={"Сохранить изменения"}
+              onClick={handleSubmit}
+              disabled={isMutating || removeIsMutation}
+            />
+          </div>
+        ) : (
+          <FilledButton
+            text={"Сохранить изменения"}
+            onClick={handleSubmit}
+            disabled={isMutating || removeIsMutation}
+          />
+        )}
       </div>
       <div className="right-disc-price-block"></div>
     </div>

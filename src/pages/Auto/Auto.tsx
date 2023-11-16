@@ -11,6 +11,7 @@ import FilledButton from "@/elements/filledButton";
 import filterUpLogo from "@/assets/filterIcon.svg";
 import plusLogo from "@/assets/plusIcon.svg";
 import { useNavigate } from "react-router-dom";
+import Loading from "@/components/Loading";
 
 const Auto = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const Auto = () => {
     data: catalogData,
     isLoading,
     error,
+    isValidating,
   } = useSWR<DataWithPagination<Catalog[]>>(
     catalogApis.search({ pageNum, pageSize: 10 }),
     getDataWithPagination
@@ -49,8 +51,8 @@ const Auto = () => {
         </div>
       </div>
 
-      {isLoading ? (
-        <>Loading...</>
+      {isValidating || isLoading ? (
+        <Loading />
       ) : error ? (
         <>Error</>
       ) : (

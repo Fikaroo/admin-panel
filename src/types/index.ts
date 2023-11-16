@@ -34,10 +34,11 @@ export interface Discount {
   name: string;
   type: number;
   isActive: boolean;
+  imageBase64?: string;
   enableBookButton: boolean;
   catalogId: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   discountPercentage: null;
   priceSettings: PriceSetting[];
   descriptionAz: string;

@@ -11,6 +11,7 @@ import FilledButton from "@/elements/filledButton";
 import filterUpLogo from "@/assets/filterIcon.svg";
 import plusLogo from "@/assets/plusIcon.svg";
 import { useNavigate } from "react-router-dom";
+import Loading from "@/components/Loading";
 
 const Discounts = () => {
   const navigate = useNavigate();
@@ -19,16 +20,17 @@ const Discounts = () => {
     data: discountData,
     isLoading,
     error,
+    isValidating,
   } = useSWR<DataWithPagination<Discount[]>>(
     // Update with discount api
-    discountApis.search({ pageNum, pageSize: 10 }),
+    discountApis.search({ pageNum, pageSize: 10, includeCatalog: true }),
     getDataWithPagination
   );
 
   const handleFilterClick = () => {};
 
   const handleNewDiscountClick = () => {
-    navigate("detail");
+    navigate("detail/newDiscountPrice");
   };
 
   return (
@@ -50,14 +52,14 @@ const Discounts = () => {
         </div>
       </div>
 
-      {isLoading ? (
-        <>Loading...</>
+      {isValidating || isLoading ? (
+        <Loading />
       ) : error ? (
         <>Error</>
       ) : (
         discountData?.data && (
           <DataTable
-            rowLink=""
+            rowLink="detail/newDiscountPrice"
             pageNum={pageNum}
             setPageNum={setPageNum}
             pagination={discountData.pagination}
