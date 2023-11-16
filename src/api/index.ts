@@ -72,7 +72,7 @@ export const catalogApis = {
       .join("")}`,
   create: "/catalog/save",
   update: (id: string) => `/catalog/save/${id}`,
-  delete: (id: string) => `/catalog/save/${id}`,
+  delete: (id: string) => `/catalog/delete/${id}`,
 };
 
 export const modelApis = {
