@@ -159,13 +159,6 @@ const NewDiscountDays = ({ data }: { data?: Discount }) => {
               details=""
             />
           </div>
-          <div style={{ marginRight: 24 }}>
-            <OutlinedButton
-              icon={""}
-              text={"Добавить фото"}
-              onClick={() => {}}
-            />
-          </div>
           <div className="jpg-png-text">JPG or PNG. 1 MB max.</div>
         </div>
         <div className="select__group" style={{ marginBottom: 50 }}>

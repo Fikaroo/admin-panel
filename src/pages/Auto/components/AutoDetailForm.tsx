@@ -318,6 +318,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                       onChange={(e) => {
                         const seats = e.target.value.split("+");
                         field.onChange(Number(seats[0]));
+                        form.setValue("extraSeatCount", 1)
                       }}
                     >
                       <option value={-1} disabled selected hidden>
@@ -328,15 +329,15 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                       ))}
                     </select>
                     <div>
-                      <input
+                      {/* <input
                         type="checkbox"
                         onChange={(e) =>
                           e.target.checked
                             ? form.setValue("extraSeatCount", 1)
                             : form.setValue("extraSeatCount", 0)
                         }
-                      />{" "}
-                      + 1 пассажир
+                      />{" "} */}
+                      + 1 водитель
                     </div>
                   </>
                 </FormControl>
