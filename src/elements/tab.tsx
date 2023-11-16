@@ -39,7 +39,12 @@ const Tab = ({ links, children }: TabProps) => {
     <Fragment>
       <div className="tabs">
         {links.map(({ name, to }) => (
-          <Link data-state={to === pathname} to={to} key={name} className="tab">
+          <Link
+            data-state={pathname.includes(to)}
+            to={to}
+            key={name}
+            className="tab"
+          >
             <p className="tab__title">{name}</p>
           </Link>
         ))}

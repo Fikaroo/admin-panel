@@ -8,6 +8,7 @@ import { catalogApis, getData } from "@/api";
 import AutoDetailForm from "../components/AutoDetailForm";
 import * as z from "zod";
 import useSWR from "swr";
+import Loading from "@/components/Loading";
 
 const formSchema = z.object({
   isActive: z.boolean().default(false),
@@ -38,7 +39,7 @@ export type AutoDetailFormSchema = z.infer<typeof formSchema>;
 
 const AutoDetail = () => {
   const { id } = useParams();
-  const { data } = useSWR<AutoDetailFormSchema>(
+  const { data, isLoading, error } = useSWR<AutoDetailFormSchema>(
     id && catalogApis.getById(id),
     getData
   );
@@ -74,6 +75,9 @@ const AutoDetail = () => {
   });
 
   const handleBackNavigation = () => navigate(-1);
+
+  if (isLoading) return <Loading />;
+  if (error) return "No result";
 
   return (
     <FormProvider {...form}>

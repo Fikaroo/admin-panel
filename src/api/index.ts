@@ -118,11 +118,13 @@ export const faqApis = {
 };
 
 export const discountApis = {
+  getById: (id: string) => `/promotions/${id}?includeImage=true`,
   getAll: "/promotions",
   search: (params: Params) =>
     `/promotions?${Object.entries(params)
       .map(([key, value]) => (value ? `${key}=${value}&` : ""))
       .join("")}`,
   create: "/promotions/save",
+  update: (id: string) => `/promotions/save/${id}`,
   delete: (id: string) => `/promotions/delete/${id}`,
 };

@@ -20,7 +20,7 @@ export const discountColumns: ColumnDef<Discount>[] = [
     cell: ({ row }) => {
       const type = row.getValue("type");
 
-      type === 1 ? "Акционная цена" : type === 2 ? "Акционная дни" : "";
+      return type === 1 ? "Акционная цена" : type === 2 ? "Акционная дни" : "";
     },
   },
 ];

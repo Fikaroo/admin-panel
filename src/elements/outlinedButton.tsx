@@ -1,16 +1,28 @@
 import "./outlinedButton.scss";
 
-interface OutlineButtonProps{
-  icon: string,
-  text: string,
-  onClick: () => void,
+interface OutlineButtonProps {
+  icon?: string;
+  text: string;
+  full?: boolean;
+  onClick: () => void;
+  disabled?: boolean;
 }
-export default function OutlinedButton({icon, text,onClick}:OutlineButtonProps) {
+export default function OutlinedButton({
+  icon,
+  text,
+  onClick,
+  full,
+  disabled,
+}: OutlineButtonProps) {
   return (
-    <button className="outline" onClick={onClick}>
-        <img src={icon} className="outline-icon" />
-        <p className="outline-text">{text}</p>
+    <button
+      className="outline"
+      style={{ width: full ? "100%" : "auto" }}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {icon && <img src={icon} className="outline-icon" />}
+      <p className="outline-text">{text}</p>
     </button>
-    
   );
 }

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { toast } from "react-toastify";
+
 const date = new Date();
 const currentYear = date.getFullYear();
 date.setFullYear(2000);
@@ -34,4 +37,23 @@ export const getBase64 = (
   reader.onerror = function (error) {
     console.log("Error: ", error);
   };
+};
+
+export const changeArrayByIndex = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  array: any[],
+  index: number,
+  changeElement: unknown
+) => [
+  ...array.slice(0, index),
+  changeElement,
+  ...array.slice(index + 1, array.length),
+];
+
+export const defaultToast = async (fetch: any) => {
+  return await toast.promise(fetch, {
+    pending: "Waiting",
+    success: "Done 👌",
+    error: "Error 🤯",
+  });
 };

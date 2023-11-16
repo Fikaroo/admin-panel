@@ -11,6 +11,7 @@ import filterUpLogo from "@/assets/filterIcon.svg";
 import dayjs, { Dayjs } from "dayjs";
 import { DateRange } from "@mui/x-date-pickers-pro";
 import DateRangePickerWithButtonField from "@/components/ui/calendar/calendar";
+import Loading from "@/components/Loading";
 
 const Analytics = () => {
   const [value, setValue] = useState<DateRange<Dayjs>>([null, null]);
@@ -92,7 +93,7 @@ const Analytics = () => {
         </div>
       </div>
       {isLoading ? (
-        <>Loading...</>
+        <Loading />
       ) : error ? (
         <>Error</>
       ) : (

@@ -14,6 +14,8 @@ import DiscountsDetail from "./pages/Discounts/Detail/DiscountsDetail";
 import NewDiscountPrice from "./pages/Discounts/Detail/newDiscountPrice/newDiscountPrice";
 import NewDiscountDays from "./pages/Discounts/Detail/newDiscountDays/newDiscountDays";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -53,11 +55,25 @@ const router = createBrowserRouter([
             element: <DiscountsDetail />,
             children: [
               {
-                index: true,
+                path: "newDiscountPrice",
                 element: <NewDiscountPrice />,
               },
               {
                 path: "newDiscountDays",
+                element: <NewDiscountDays />,
+              },
+            ],
+          },
+          {
+            path: "detail",
+            element: <DiscountsDetail />,
+            children: [
+              {
+                path: "newDiscountPrice/:id",
+                element: <NewDiscountPrice />,
+              },
+              {
+                path: "newDiscountDays/:id",
                 element: <NewDiscountDays />,
               },
             ],
@@ -100,7 +116,12 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </>
+  );
 };
 
 export default App;

@@ -16,8 +16,7 @@ import {
   TransmissionType,
 } from "@/types";
 import { useFormContext } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
-import { enumToMap, getSelectAttr, yearsList } from "@/utils";
+import { defaultToast, enumToMap, getSelectAttr, yearsList } from "@/utils";
 import { AutoDetailFormSchema } from "../Detail/AutoDetail";
 import { makeApis, getData, modelApis, catalogApis, postData } from "@/api";
 import useSWR from "swr";
@@ -29,17 +28,15 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
   const navigate = useNavigate();
   const form = useFormContext<AutoDetailFormSchema>();
 
-  const { trigger: saveCatalog } = useSWRMutation<
+  const { trigger: saveCatalog, isMutating } = useSWRMutation<
     Catalog,
     unknown,
     string,
     AutoDetailFormSchema
   >(id ? catalogApis.update(id) : catalogApis.create, postData);
 
-  const { trigger: removeCatalog } = useSWRMutation(
-    id ? catalogApis.delete(id) : null,
-    getData
-  );
+  const { trigger: removeCatalog, isMutating: removeIsMutation } =
+    useSWRMutation(id ? catalogApis.delete(id) : null, getData);
 
   const { data: makeData, isLoading: makesLoading } = useSWR<Make[]>(
     makeApis.getAll,
@@ -61,14 +58,17 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
   };
 
   async function onSubmit(values: AutoDetailFormSchema) {
-    console.log(values);
-    saveCatalog(values);
-    id && navigate(-1);
+    const res = await defaultToast(saveCatalog(values));
+    setTimeout(async () => {
+      res && navigate("/auto");
+    }, 1);
   }
   console.log(form.formState.errors);
   async function handleDelete() {
-    removeCatalog();
-    navigate(-1);
+    const res = await defaultToast(removeCatalog());
+    setTimeout(async () => {
+      res && navigate("/auto");
+    }, 1);
   }
 
   return (
@@ -529,21 +529,28 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
               type="button"
               onClick={handleDelete}
               className="btn btn_outline"
+              disabled={isMutating || removeIsMutation}
             >
               Удалить
             </button>
-            <button type="submit" className="btn btn_primary">
+            <button
+              type="submit"
+              className="btn btn_primary"
+              disabled={isMutating || removeIsMutation}
+            >
               Сохранить изменения
             </button>
           </div>
         ) : (
-          <button type="submit" className="btn btn_primary">
+          <button
+            type="submit"
+            className="btn btn_primary"
+            disabled={isMutating || removeIsMutation}
+          >
             Сохранить изменения
           </button>
         )}
       </form>
-
-      <DevTool control={form.control} />
     </Form>
   );
 };
