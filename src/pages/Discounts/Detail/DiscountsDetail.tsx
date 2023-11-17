@@ -14,7 +14,8 @@ const DiscountsDetail = () => {
   const { id } = useParams();
   const { data, isLoading, error, isValidating } = useSWR<Discount>(
     id && discountApis.getById(id),
-    getData
+    getData,
+    { revalidateOnFocus: false }
   );
   const navigate = useNavigate();
   const { pathname } = useLocation();

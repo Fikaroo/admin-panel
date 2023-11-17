@@ -13,6 +13,7 @@ import Discounts from "./pages/Discounts/Discounts";
 import DiscountsDetail from "./pages/Discounts/Detail/DiscountsDetail";
 import NewDiscountPrice from "./pages/Discounts/Detail/newDiscountPrice/newDiscountPrice";
 import NewDiscountDays from "./pages/Discounts/Detail/newDiscountDays/newDiscountDays";
+import Login from "./pages/Login/Login";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

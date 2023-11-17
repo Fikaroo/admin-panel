@@ -87,7 +87,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                       clsName={"upload-image-container"}
                       beforeTitle="Добавить в "
                       title="фото"
-                      details="SVG, PNG, JPG or GIF (max. 464 x 240 px)"
+                      details="PNG, JPG"
                       {...field}
                     />
                   </FormControl>
@@ -109,7 +109,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                       clsName={"upload-image-container"}
                       beforeTitle="Добавить в "
                       title="логотип"
-                      details="SVG, PNG, JPG or GIF (max. 72 x 72 px)"
+                      details="SVG, PNG, JPG"
                       {...field}
                     />
                   </FormControl>

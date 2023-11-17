@@ -19,7 +19,7 @@ const ImageUpload = ({
 }: ImageUploadProps) => {
   return (
     <Dropzone
-      accept={{ "image/*": [".svg", ".png", ".jpg", ".gif"] }}
+      accept={{ "image/*": [ ".png", ".jpg"] }}
       onDrop={(acceptedFiles) => {
         getBase64(acceptedFiles[acceptedFiles.length - 1], (result) => {
           onChange(result as string);
