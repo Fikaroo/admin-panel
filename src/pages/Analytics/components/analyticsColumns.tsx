@@ -8,10 +8,6 @@ export const analyticsColumns: ColumnDef<Analytic>[] = [
     header: "IP АДРЕС",
   },
   {
-    accessorKey: "region",
-    header: "РЕГИОН",
-  },
-  {
     accessorKey: "actionDate",
     header: "ДАТА",
     cell: ({ row }) => {
