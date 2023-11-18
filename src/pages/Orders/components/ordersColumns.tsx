@@ -26,7 +26,7 @@ export const ordersColumns: ColumnDef<Order>[] = [
   },
   {
     accessorKey: "catalog",
-    header: "avto type",
+    header: "ТИП АВТО",
     cell: ({ row }) => {
       const catalog = row.getValue<Catalog>("catalog");
       return enumToMap(BodyType).find(
@@ -72,6 +72,6 @@ export const ordersColumns: ColumnDef<Order>[] = [
   },
   {
     accessorKey: "calculatedPrice",
-    header: "price",
+    header: "ЦЕНА",
   },
 ];
