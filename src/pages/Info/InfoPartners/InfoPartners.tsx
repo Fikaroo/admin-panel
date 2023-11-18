@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./InfoPartners.scss";
 import { changeArrayByIndex, defaultToast } from "@/utils";
-import { Partner } from "@/types";
+import { DynamicContent } from "@/types";
 import PartnerItem from "./components/PartnerItem";
 import useSWRMutation from "swr/mutation";
 import { dynamicContentApis, getData, postData } from "@/api";
@@ -20,15 +20,15 @@ const InfoPartners = () => {
     isValidating,
     error,
     mutate,
-  } = useSWRImmutable<Partner[]>(
-    dynamicContentApis.getArrayByCode("partners"),
+  } = useSWRImmutable<DynamicContent[]>(
+    dynamicContentApis.getArrayByCode("partner"),
     getData
   );
   const [updateItemsIds, setUpdateItemsIds] = useState<string[]>([]);
-  const [partnerList, setPartnerList] = useState<Partial<Partner>[]>([]);
+  const [partnerList, setPartnerList] = useState<Partial<DynamicContent>[]>([]);
 
   const updateImg = (e: string, name: string, index: number, id?: string) => {
-    const current = { contentEn: name || "", data: e, code: "partners" };
+    const current = { contentEn: name || "", data: e, code: "partner" };
     setPartnerList(changeArrayByIndex(partnerList, index, current));
     id && setUpdateItemsIds((prev) => [...prev, id]);
   };
@@ -36,7 +36,7 @@ const InfoPartners = () => {
   const addPartner = () => {
     setPartnerList((prev) => [
       ...prev,
-      { data: "", code: "partners", contentEn: "" },
+      { data: "", code: "partner", contentEn: "" },
     ]);
   };
 
@@ -60,8 +60,7 @@ const InfoPartners = () => {
 
   useEffect(() => {
     partners && setPartnerList(partners);
-    console.log(partners);
-  }, [partners]);
+  }, [partners, isValidating, isMutating]);
 
   if (isLoading || isValidating) return <Loading />;
   if (error) return "No result";

@@ -83,7 +83,7 @@ export interface Model {
   imageBase64: string;
 }
 
-export interface Partner {
+export interface DynamicContent {
   id: string;
   code: string;
   content?: string;

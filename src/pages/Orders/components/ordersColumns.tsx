@@ -71,6 +71,10 @@ export const ordersColumns: ColumnDef<Order>[] = [
     },
   },
   {
+    accessorKey: "comment",
+    header: "КОММЕНТАРИЙ",
+  },
+  {
     accessorKey: "calculatedPrice",
     header: "ЦЕНА",
   },
