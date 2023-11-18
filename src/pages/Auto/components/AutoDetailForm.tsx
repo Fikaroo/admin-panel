@@ -35,8 +35,11 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
     AutoDetailFormSchema
   >(id ? catalogApis.update(id) : catalogApis.create, postData);
 
-  const { trigger: removeCatalog, isMutating: removeIsMutation } =
-    useSWRMutation(id ? catalogApis.delete(id) : null, getData);
+  const {
+    trigger: removeCatalog,
+    isMutating: removeIsMutation,
+    error,
+  } = useSWRMutation(id ? catalogApis.delete(id) : null, getData);
 
   const { data: makeData, isLoading: makesLoading } = useSWR<Make[]>(
     makeApis.getAll,
@@ -65,9 +68,9 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
   }
   console.log(form.formState.errors);
   async function handleDelete() {
-    const res = await defaultToast(removeCatalog());
+    await defaultToast(removeCatalog());
     setTimeout(async () => {
-      res && navigate("/auto");
+      !error && navigate("/auto");
     }, 1);
   }
 
@@ -136,6 +139,11 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                       field.onChange(e);
                       customOnChange(e, "makeName");
                       form.setValue("modelId", "");
+                      form.setValue(
+                        "makeImageBase64",
+                        makeData?.find(({ id }) => id === e.target.value)
+                          ?.imageBase64 || ""
+                      );
                     }}
                   >
                     <option value="" disabled selected hidden>
@@ -318,7 +326,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                       onChange={(e) => {
                         const seats = e.target.value.split("+");
                         field.onChange(Number(seats[0]));
-                        form.setValue("extraSeatCount", 1)
+                        form.setValue("extraSeatCount", 1);
                       }}
                     >
                       <option value={-1} disabled selected hidden>

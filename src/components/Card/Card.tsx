@@ -204,7 +204,7 @@ const Card = () => {
             alt="car-image"
           />
         ) : (
-          <div className="car-image">
+          <div className="car-image" style={{ background: "#f5f5f5" }}>
             <ImageIcon />
           </div>
         )}

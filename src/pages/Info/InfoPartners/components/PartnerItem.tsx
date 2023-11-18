@@ -1,6 +1,6 @@
 import { dynamicContentApis, getData } from "@/api";
 import ImageUpload from "@/components/ui/image-upload/image-upload";
-import { Partner } from "@/types";
+import { DynamicContent } from "@/types";
 import { defaultToast } from "@/utils";
 import useSWRMutation from "swr/mutation";
 
@@ -14,7 +14,7 @@ type PartnerItemProps = {
   ) => void;
 
   handleRemoveByIndex: (deletedIndex: number) => void;
-} & Partial<Partner>;
+} & Partial<DynamicContent>;
 
 const PartnerItem = ({
   index,
@@ -30,7 +30,7 @@ const PartnerItem = ({
   );
 
   const handleRemovePartner = () => {
-    defaultToast(removePartner);
+    id && defaultToast(removePartner);
     handleRemoveByIndex(index);
   };
 
