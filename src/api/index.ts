@@ -128,3 +128,17 @@ export const discountApis = {
   update: (id: string) => `/promotions/save/${id}`,
   delete: (id: string) => `/promotions/delete/${id}`,
 };
+
+export const dynamicContentApis = {
+  getById: (id: string) => `/dynamic-content/${id}`,
+  getSingleByCode: (code: string) => `/dynamic-content/single/${code}`,
+  getArrayByCode: (code: string) => `/dynamic-content/array/${code}`,
+  getAll: "/dynamic-content",
+  search: (params: Params) =>
+    `/dynamic-content?${Object.entries(params)
+      .map(([key, value]) => (value ? `${key}=${value}&` : ""))
+      .join("")}`,
+  create: "/dynamic-content/save",
+  update: (id: string) => `/dynamic-content/save/${id}`,
+  delete: (id: string) => `/dynamic-content/delete/${id}`,
+};

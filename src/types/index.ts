@@ -83,6 +83,16 @@ export interface Model {
   imageBase64: string;
 }
 
+export interface Partner {
+  id: string;
+  code: string;
+  content?: string;
+  contentAz?: string;
+  contentEn?: string;
+  contentRu?: string;
+  data: string;
+}
+
 export type Pagination = {
   total_records: number;
   total_pages: number;
