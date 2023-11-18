@@ -56,17 +56,17 @@ const NewDiscountDays = ({ data }: { data?: Discount }) => {
   const [datesList, setDatesList] = useState(
     data?.priceSettings || [
       {
-        minDays: 0,
-        maxDays: 0,
+        minDays: 2,
+        maxDays: 7,
         pricePerDay: 0,
       },
       {
-        minDays: 0,
-        maxDays: 0,
+        minDays: 8,
+        maxDays: 12,
         pricePerDay: 0,
       },
       {
-        minDays: 0,
+        minDays: 22,
         maxDays: 0,
         pricePerDay: 0,
       },

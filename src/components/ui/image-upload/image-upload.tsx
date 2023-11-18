@@ -8,6 +8,8 @@ type ImageUploadProps = {
   details?: string;
   clsName?: string;
   onChange: (...event: unknown[]) => void;
+  id?: string;
+  iconScale?: number;
 };
 
 const ImageUpload = ({
@@ -15,25 +17,28 @@ const ImageUpload = ({
   title,
   details,
   clsName,
+  id,
   onChange,
+  iconScale,
 }: ImageUploadProps) => {
   return (
     <Dropzone
-      accept={{ "image/*": [ ".png", ".jpg"] }}
+      accept={{ "image/png": [".png", ".jpg"] }}
       onDrop={(acceptedFiles) => {
+        const fileName = acceptedFiles[acceptedFiles.length - 1].name;
         getBase64(acceptedFiles[acceptedFiles.length - 1], (result) => {
-          onChange(result as string);
+          onChange(result as string, fileName);
         });
       }}
     >
       {({ getRootProps, getInputProps }) => (
         <div {...getRootProps({ className: clsName })}>
-          <input {...getInputProps()} />
+          <input id={id} {...getInputProps()} />
           <div className="icon">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
+              width={iconScale ? iconScale : "20"}
+              height={iconScale ? iconScale : "20"}
               viewBox="0 0 20 20"
               fill="none"
             >

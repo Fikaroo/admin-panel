@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import LaguageSwitcher from "@/elements/laguageSwitcher";
 import "./InfoFaq.scss";
 import Modal from "@/elements/modal";
@@ -26,10 +26,6 @@ const InfoFaq = () => {
         headers: { "Accept-Language": currentLanguage },
       })
   );
-
-  useEffect(() => {
-    mutate();
-  }, [currentLanguage, mutate]);
 
   const handleModalOpen = () => setIsModalOpen(!isModalOpen);
 
