@@ -1,23 +1,102 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { LocalizationContext } from "@/hooks/customLangHook";
 import LaguageSwitcher from "@/elements/laguageSwitcher";
 import TextArea from "@/components/ui/textarea/textarea";
 import FilledButton from "@/elements/filledButton";
+import { dynamicContentApis, getDataWithHeader, postData } from "@/api";
+import { DynamicContent } from "@/types";
+import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
+import { defaultToast } from "@/utils";
+import Loading from "@/components/Loading";
 
 const InfoAbout = () => {
-  const [aboutValueRu, setAboutValueRu] = useState("");
-  const [b2bValueRu, setB2bValueRu] = useState("");
-  const [aboutValueAz, setAboutValueAz] = useState("");
-  const [b2bValueAz, setB2bValueAz] = useState("");
-  const [aboutValueEn, setAboutValueEn] = useState("");
-  const [b2bValueEn, setB2bValueEn] = useState("");
+  const {
+    data: about,
+    isLoading: aboutLoading,
+    isValidating: aboutValidationg,
+    mutate: aboutMutate,
+  } = useSWR<DynamicContent>(
+    dynamicContentApis.getSingleByCode("about"),
+    (path: string) =>
+      getDataWithHeader(path, { headers: { "Accept-Language": "" } })
+  );
+  const { trigger: saveAbout, isMutating: aboutMutating } = useSWRMutation<
+    DynamicContent,
+    null,
+    string,
+    Partial<DynamicContent>
+  >(
+    about?.id ? dynamicContentApis.update(about.id) : dynamicContentApis.create,
+    postData
+  );
 
-  const saveRuData = () => {};
-  const saveAzData = () => {};
-  const saveEnData = () => {};
+  const {
+    data: b2b,
+    isLoading: b2bLoading,
+    isValidating: b2bValidationg,
+    mutate: b2bMutate,
+  } = useSWR<DynamicContent>(
+    dynamicContentApis.getSingleByCode("b2b"),
+    (path: string) =>
+      getDataWithHeader(path, { headers: { "Accept-Language": "" } })
+  );
+  const { trigger: saveB2b, isMutating: b2bMutating } = useSWRMutation<
+    DynamicContent,
+    null,
+    string,
+    Partial<DynamicContent>
+  >(
+    b2b?.id ? dynamicContentApis.update(b2b.id) : dynamicContentApis.create,
+    postData
+  );
 
-  const { currentLanguage, setCurrentLanguage, translate } =
-    useContext(LocalizationContext);
+  const [aboutValueRu, setAboutValueRu] = useState(about?.contentRu || "");
+  const [b2bValueRu, setB2bValueRu] = useState(b2b?.contentRu || "");
+  const [aboutValueAz, setAboutValueAz] = useState(about?.contentAz || "");
+  const [b2bValueAz, setB2bValueAz] = useState(b2b?.contentAz || "");
+  const [aboutValueEn, setAboutValueEn] = useState(about?.contentEn || "");
+  const [b2bValueEn, setB2bValueEn] = useState(b2b?.contentEn || "");
+
+  const { currentLanguage } = useContext(LocalizationContext);
+
+  const handleSave = () => {
+    defaultToast(
+      saveAbout({
+        code: "about",
+        contentAz: aboutValueAz,
+        contentRu: aboutValueRu,
+        contentEn: aboutValueEn,
+      })
+    );
+
+    defaultToast(
+      saveB2b({
+        code: "b2b",
+        contentAz: b2bValueAz,
+        contentRu: b2bValueRu,
+        contentEn: b2bValueEn,
+      })
+    );
+
+    setTimeout(() => {
+      aboutMutate();
+      b2bMutate();
+    }, 1);
+  };
+
+  useEffect(() => {
+    about?.contentEn && setAboutValueEn(about?.contentEn);
+    about?.contentRu && setAboutValueRu(about?.contentRu);
+    about?.contentAz && setAboutValueAz(about?.contentAz);
+
+    b2b?.contentEn && setB2bValueEn(b2b?.contentEn);
+    b2b?.contentRu && setB2bValueRu(b2b?.contentRu);
+    b2b?.contentAz && setB2bValueAz(b2b?.contentAz);
+  }, [about, b2b]);
+
+  if (aboutLoading || b2bLoading || aboutValidationg || b2bValidationg)
+    return <Loading />;
 
   return (
     <div>
@@ -38,10 +117,6 @@ const InfoAbout = () => {
               value={b2bValueRu}
               onChange={(ev: string) => setB2bValueRu(ev)}
             />
-            <FilledButton
-              text={"Сохранить изменения"}
-              onClick={() => saveRuData()}
-            />
           </div>
         ) : currentLanguage === "az" ? (
           <div>
@@ -59,7 +134,6 @@ const InfoAbout = () => {
               value={b2bValueAz}
               onChange={(ev: string) => setB2bValueAz(ev)}
             />
-            <FilledButton text={"Yadda saxla"} onClick={() => saveAzData()} />
           </div>
         ) : (
           <div>
@@ -77,10 +151,23 @@ const InfoAbout = () => {
               value={b2bValueEn}
               onChange={(ev: string) => setB2bValueEn(ev)}
             />
-            <FilledButton text={"Save changes"} onClick={() => saveEnData()} />
           </div>
         )}
       </LaguageSwitcher>
+
+      <FilledButton
+        text={
+          currentLanguage === "az"
+            ? "Yadda saxla"
+            : currentLanguage === "en"
+            ? "Save changes"
+            : currentLanguage === "ru"
+            ? "Сохранить изменения"
+            : "Сохранить изменения"
+        }
+        onClick={() => handleSave()}
+        disabled={aboutMutating || b2bMutating}
+      />
     </div>
   );
 };

@@ -52,15 +52,17 @@ const InfoPartners = () => {
       ?.filter(({ id }) => !id)
       ?.map((item) => defaultToast(createPartner(item)));
 
-    setUpdateItemsIds([]);
-    mutate();
+    setTimeout(() => {
+      setUpdateItemsIds([]);
+      mutate();
+    }, 1);
   };
   const handleRemoveByIndex = (deletedIndex: number) =>
     setPartnerList((prev) => prev.filter((_, index) => index !== deletedIndex));
 
   useEffect(() => {
     partners && setPartnerList(partners);
-  }, [partners, isValidating, isMutating]);
+  }, [partners, isValidating, isMutating, isLoading]);
 
   if (isLoading || isValidating) return <Loading />;
   if (error) return "No result";

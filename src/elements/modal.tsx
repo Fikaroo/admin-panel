@@ -3,6 +3,7 @@ import "./modal.scss";
 import useSWRMutation from "swr/mutation";
 import { faqApis, postData } from "@/api";
 import { KeyedMutator } from "swr";
+import { defaultToast } from "@/utils";
 
 type ModalProps = {
   handleModal: () => void;
@@ -21,12 +22,16 @@ const Modal: React.FC<ModalProps> = ({
   value,
   mutate,
 }) => {
-  const { trigger } = useSWRMutation(faqApis.create, postData);
-  const handleAdd = () => {
-    setValue((prev) => ({ ...prev, lang: lang, num: num }));
-    trigger(value);
-    mutate();
-    handleModal();
+  const { trigger, isMutating } = useSWRMutation(faqApis.create, postData);
+  const handleAdd = async () => {
+    const res = await defaultToast(trigger(value));
+    setTimeout(() => {
+      if (res) {
+        setValue((prev) => ({ ...prev, lang: lang, num: num }));
+        mutate();
+        handleModal();
+      }
+    }, 1);
   };
 
   return (
@@ -65,9 +70,13 @@ const Modal: React.FC<ModalProps> = ({
           </div>
 
           <div className="btn-div">
-            <div className="btn btn_primary" onClick={handleAdd}>
+            <button
+              disabled={isMutating}
+              className="btn btn_primary"
+              onClick={handleAdd}
+            >
               Сохранить изменения
-            </div>
+            </button>
           </div>
         </div>
         <div className="icon" onClick={handleModal}>
