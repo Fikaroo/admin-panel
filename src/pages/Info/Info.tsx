@@ -17,8 +17,9 @@ const Info = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
-    navigate("detail");
-  }, []);
+    pathname === "/info" && navigate("detail");
+  }, [pathname]);
+
   return (
     <div>
       <div className="headerTitle">Информация о сайте</div>

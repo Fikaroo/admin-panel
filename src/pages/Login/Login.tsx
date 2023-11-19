@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import "./Login.scss";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/AuthProvider";
 
 const Login = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [errorUserName, setErrorUserName] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
-
 
   const changeUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setErrorUserName("");
@@ -21,28 +22,39 @@ const Login = () => {
 
   const handleClick = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if(userName === "1" && password === "1"){
+    if (userName === "1" && password === "1") {
+      login();
       navigate("/");
     } else {
       setErrorUserName("Неверное имя");
       setErrorPassword("Неверный пароль");
     }
-    
   };
   return (
     <div className="login-container">
-      <form action="" className="login-form" onSubmit={(e)=>handleClick(e)}>
-
+      <form action="" className="login-form" onSubmit={(e) => handleClick(e)}>
         <label htmlFor="">
-          <input className="loginUsername" type="text" onChange={(e)=>changeUserName(e)} placeholder="Имя пользователя"/>
+          <input
+            className="loginUsername"
+            type="text"
+            onChange={(e) => changeUserName(e)}
+            placeholder="Имя пользователя"
+          />
           <p className="errorInvalid">{errorUserName}</p>
         </label>
 
         <label htmlFor="">
-          <input  className="loginPassword" type="password" onChange={(e)=>changePassword(e)} placeholder="Пароль"/>
+          <input
+            className="loginPassword"
+            type="password"
+            onChange={(e) => changePassword(e)}
+            placeholder="Пароль"
+          />
           <p className="errorInvalid">{errorPassword}</p>
         </label>
-        <button type="submit" className="loginButton" >Вход</button>
+        <button type="submit" className="loginButton">
+          Вход
+        </button>
       </form>
     </div>
   );

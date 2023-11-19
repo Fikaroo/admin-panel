@@ -1,5 +1,5 @@
 import "./SideBar.scss";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logoHertz from "@/assets/Logo.svg";
 import logOut from "@/assets/logOut.svg";
 import zakaz from "@/assets/zakaz.svg";
@@ -13,6 +13,7 @@ import autoBlack from "@/assets/autoBlack.svg";
 import akciiBlack from "@/assets/akciiBlack.svg";
 import infocircleBlack from "@/assets/info-circleBlack.svg";
 import analitikaBlack from "@/assets/analitikaBlack.svg";
+import { useAuth } from "@/AuthProvider";
 
 type Routes = {
   name: string;
@@ -55,11 +56,13 @@ const routes: Routes[] = [
 ];
 
 const SideBar = () => {
+  const { logout } = useAuth();
   const location = useLocation();
   const pathName = location.pathname;
-
+  const navigate = useNavigate();
   const handleLogOutClick = () => {
-      navigate("/login");
+    logout();
+    navigate("/login");
   };
 
   return (
@@ -107,7 +110,9 @@ const SideBar = () => {
       <div>
         <button className="sidebar__container_bottom">
           <img src={logOut} alt="logout" />
-          <span style={{ marginLeft: 5 }} onClick={()=> handleLogOutClick}>Выход</span>
+          <span style={{ marginLeft: 5 }} onClick={handleLogOutClick}>
+            Выход
+          </span>
         </button>
       </div>
     </div>
