@@ -18,9 +18,6 @@ import useOutSideClick from "@/hooks/useOutSideClick";
 import dayjs from "dayjs";
 import { DateRange, DayPicker } from "react-day-picker";
 
-import { useAuth } from '@/AuthProvider';
-import { useNavigate } from "react-router-dom";
-
 const getOrderExcelJson = (res: Order[]) => {
   const orders: any[] = [];
   const order: Record<any, any> = {};
@@ -109,13 +106,6 @@ const Orders = () => {
     }
   };
 
-  const { isAuthenticated } = useAuth();
-  if (!isAuthenticated) {
-    const navigate = useNavigate();
-    navigate('/login');
-    return null;
-  }
-  
   const handleDateSelect = (newValue: DateRange | undefined) => {
     newValue?.from !== undefined
       ? setMinActionDate(newValue?.from.toISOString())

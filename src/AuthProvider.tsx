@@ -1,8 +1,18 @@
-import React, { createContext, useContext, useState } from 'react';
+import { PropsWithChildren, createContext, useContext, useState } from "react";
 
-const AuthContext = createContext();
+type AuthContextProps = {
+  isAuthenticated: boolean;
+  login: () => void;
+  logout: () => void;
+};
 
-const AuthProvider = ({ children }) => {
+const AuthContext = createContext<AuthContextProps>({
+  isAuthenticated: false,
+  login: () => null,
+  logout: () => null,
+});
+
+const AuthProvider = ({ children }: PropsWithChildren) => {
   const [isAuthenticated, setAuthenticated] = useState(false);
 
   const login = () => {
@@ -23,7 +33,7 @@ const AuthProvider = ({ children }) => {
 const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
