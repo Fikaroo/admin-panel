@@ -12,6 +12,7 @@ const Info = () => {
     { name: "О нас & B2B", to: "/info/about" },
     { name: "FAQ", to: "/info/faq" },
     { name: "Партнеры", to: "/info/partners" },
+    { name: "E-mails", to: "/info/emails" },
   ];
 
   const { pathname } = useLocation();
@@ -27,6 +28,7 @@ const Info = () => {
         {pathname === "/info/about" && <InfoAbout />}
         {pathname === "/info/faq" && <InfoFaq />}
         {pathname === "/info/partners" && <InfoPartners />}
+        {pathname === "/info/mails" && <InfoMails />}
       </Tab>
     </div>
   );
