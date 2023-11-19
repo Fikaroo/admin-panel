@@ -1,4 +1,4 @@
-import { BodyType, Catalog, Order } from "@/types";
+import { BodyType, Order } from "@/types";
 import { enumToMap } from "@/utils";
 import { ColumnDef } from "@tanstack/react-table";
 
@@ -17,18 +17,18 @@ export const ordersColumns: ColumnDef<Order>[] = [
   },
 
   {
-    accessorKey: "catalog",
+    accessorKey: "carName",
     header: "АВТОМОБИЛЬ",
     cell: ({ row }) => {
-      const catalog = row.getValue<Catalog>("catalog");
+      const catalog = row?.original?.catalog;
       return `${catalog?.makeName} ${catalog?.modelName}`;
     },
   },
   {
-    accessorKey: "catalog",
+    accessorKey: "carType",
     header: "ТИП АВТО",
     cell: ({ row }) => {
-      const catalog = row.getValue<Catalog>("catalog");
+      const catalog = row?.original?.catalog;
       return enumToMap(BodyType).find(
         ([key]) => key == catalog?.bodyType.toString()
       )?.[1];

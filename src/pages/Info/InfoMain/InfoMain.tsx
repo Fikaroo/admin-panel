@@ -1,31 +1,203 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { LocalizationContext } from "@/hooks/customLangHook";
 import LaguageSwitcher from "@/elements/laguageSwitcher";
 import Input from "@/components/ui/input/input";
 import FilledButton from "@/elements/filledButton";
+import useSWRMutation from "swr/mutation";
+import { dynamicContentApis, getDataWithHeader, postData } from "@/api";
+import useSWR from "swr";
+import { DynamicContent } from "@/types";
+import Loading from "@/components/Loading";
+import { defaultToast } from "@/utils";
 
 const InfoMain = () => {
-  const [phoneValueRu, setPhoneValueRu] = useState("");
-  const [emailValueRu, setEmailValueRu] = useState("");
-  const [adressMainValueRu, setAdressMainValueRu] = useState("");
-  const [adressBranchValueRu, setAdressBranchValueRu] = useState("");
+  const {
+    data: phoneNumber,
+    isLoading: phoneNumberLoading,
+    isValidating: phoneNumberValidationg,
+    mutate: phoneNumberMutate,
+  } = useSWR<DynamicContent>(
+    dynamicContentApis.getSingleByCode("phoneNumber"),
+    (path: string) =>
+      getDataWithHeader(path, { headers: { "Accept-Language": "" } })
+  );
+  const { trigger: savePhoneNumber, isMutating: phoneNumberMutating } =
+    useSWRMutation<DynamicContent, null, string, Partial<DynamicContent>>(
+      phoneNumber?.id
+        ? dynamicContentApis.update(phoneNumber.id)
+        : dynamicContentApis.create,
+      postData
+    );
 
-  const [phoneValueAz, setPhoneValueAz] = useState("");
-  const [emailValueAz, setEmailValueAz] = useState("");
-  const [adressMainValueAz, setAdressMainValueAz] = useState("");
-  const [adressBranchValueAz, setAdressBranchValueAz] = useState("");
+  const {
+    data: email,
+    isLoading: emailLoading,
+    isValidating: emailValidationg,
+    mutate: emailMutate,
+  } = useSWR<DynamicContent>(
+    dynamicContentApis.getSingleByCode("email"),
+    (path: string) =>
+      getDataWithHeader(path, { headers: { "Accept-Language": "" } })
+  );
+  const { trigger: saveEmail, isMutating: emailMutating } = useSWRMutation<
+    DynamicContent,
+    null,
+    string,
+    Partial<DynamicContent>
+  >(
+    email?.id ? dynamicContentApis.update(email.id) : dynamicContentApis.create,
+    postData
+  );
 
-  const [phoneValueEn, setPhoneValueEn] = useState("");
-  const [emailValueEn, setEmailValueEn] = useState("");
-  const [adressMainValueEn, setAdressMainValueEn] = useState("");
-  const [adressBranchValueEn, setAdressBranchValueEn] = useState("");
+  const {
+    data: mainBranch,
+    isLoading: mainBranchLoading,
+    isValidating: mainBranchValidationg,
+    mutate: mainBranchMutate,
+  } = useSWR<DynamicContent>(
+    dynamicContentApis.getSingleByCode("mainBranch"),
+    (path: string) =>
+      getDataWithHeader(path, { headers: { "Accept-Language": "" } })
+  );
+  const { trigger: saveMainBranch, isMutating: mainBranchMutating } =
+    useSWRMutation<DynamicContent, null, string, Partial<DynamicContent>>(
+      mainBranch?.id
+        ? dynamicContentApis.update(mainBranch.id)
+        : dynamicContentApis.create,
+      postData
+    );
 
-  const { currentLanguage, setCurrentLanguage, translate } =
-    useContext(LocalizationContext);
+  const {
+    data: branch1,
+    isLoading: branch1Loading,
+    isValidating: branch1Validationg,
+    mutate: branch1Mutate,
+  } = useSWR<DynamicContent>(
+    dynamicContentApis.getSingleByCode("branch1"),
+    (path: string) =>
+      getDataWithHeader(path, { headers: { "Accept-Language": "" } })
+  );
+  const { trigger: saveBranch1, isMutating: branch1Mutating } = useSWRMutation<
+    DynamicContent,
+    null,
+    string,
+    Partial<DynamicContent>
+  >(
+    branch1?.id
+      ? dynamicContentApis.update(branch1.id)
+      : dynamicContentApis.create,
+    postData
+  );
 
-  const saveRuData = () => {};
-  const saveAzData = () => {};
-  const saveEnData = () => {};
+  const [phoneValueRu, setPhoneValueRu] = useState(
+    phoneNumber?.contentRu || ""
+  );
+  const [emailValueRu, setEmailValueRu] = useState(email?.contentRu || "");
+  const [adressMainValueRu, setAdressMainValueRu] = useState(
+    mainBranch?.contentRu || ""
+  );
+  const [adressBranchValueRu, setAdressBranchValueRu] = useState(
+    branch1?.contentRu || ""
+  );
+
+  const [phoneValueAz, setPhoneValueAz] = useState(
+    phoneNumber?.contentAz || ""
+  );
+  const [emailValueAz, setEmailValueAz] = useState(email?.contentAz || "");
+  const [adressMainValueAz, setAdressMainValueAz] = useState(
+    mainBranch?.contentAz || ""
+  );
+  const [adressBranchValueAz, setAdressBranchValueAz] = useState(
+    branch1?.contentAz || ""
+  );
+
+  const [phoneValueEn, setPhoneValueEn] = useState(
+    phoneNumber?.contentEn || ""
+  );
+  const [emailValueEn, setEmailValueEn] = useState(email?.contentEn || "");
+  const [adressMainValueEn, setAdressMainValueEn] = useState(
+    mainBranch?.contentEn || ""
+  );
+  const [adressBranchValueEn, setAdressBranchValueEn] = useState(
+    branch1?.contentEn || ""
+  );
+
+  const { currentLanguage } = useContext(LocalizationContext);
+
+  const handleSave = () => {
+    defaultToast(
+      savePhoneNumber({
+        code: "phoneNumber",
+        contentAz: phoneValueAz,
+        contentRu: phoneValueRu,
+        contentEn: phoneValueEn,
+      })
+    );
+
+    defaultToast(
+      saveEmail({
+        code: "email",
+        contentAz: emailValueAz,
+        contentRu: emailValueRu,
+        contentEn: emailValueEn,
+      })
+    );
+
+    defaultToast(
+      saveMainBranch({
+        code: "mainBranch",
+        contentAz: adressMainValueAz,
+        contentRu: adressMainValueRu,
+        contentEn: adressMainValueEn,
+      })
+    );
+
+    defaultToast(
+      saveBranch1({
+        code: "branch1",
+        contentAz: adressBranchValueAz,
+        contentRu: adressBranchValueRu,
+        contentEn: adressBranchValueEn,
+      })
+    );
+
+    setTimeout(() => {
+      phoneNumberMutate();
+      emailMutate();
+      mainBranchMutate();
+      branch1Mutate();
+    }, 1);
+  };
+
+  useEffect(() => {
+    phoneNumber?.contentEn && setPhoneValueEn(phoneNumber?.contentEn);
+    phoneNumber?.contentRu && setPhoneValueRu(phoneNumber?.contentRu);
+    phoneNumber?.contentAz && setPhoneValueAz(phoneNumber?.contentAz);
+
+    email?.contentEn && setEmailValueEn(email?.contentEn);
+    email?.contentRu && setEmailValueRu(email?.contentRu);
+    email?.contentAz && setEmailValueAz(email?.contentAz);
+
+    mainBranch?.contentEn && setAdressMainValueEn(mainBranch?.contentEn);
+    mainBranch?.contentRu && setAdressMainValueRu(mainBranch?.contentRu);
+    mainBranch?.contentAz && setAdressMainValueAz(mainBranch?.contentAz);
+
+    branch1?.contentEn && setAdressBranchValueEn(branch1?.contentEn);
+    branch1?.contentRu && setAdressBranchValueRu(branch1?.contentRu);
+    branch1?.contentAz && setAdressBranchValueAz(branch1?.contentAz);
+  }, [phoneNumber, email, mainBranch, branch1]);
+
+  if (
+    phoneNumberLoading ||
+    emailLoading ||
+    mainBranchLoading ||
+    branch1Loading ||
+    phoneNumberValidationg ||
+    emailValidationg ||
+    mainBranchValidationg ||
+    branch1Validationg
+  )
+    return <Loading />;
 
   return (
     <div>
@@ -56,10 +228,6 @@ const InfoMain = () => {
               value={adressBranchValueRu}
               onChange={(ev: string) => setAdressBranchValueRu(ev)}
             />
-            <FilledButton
-              text={"Сохранить изменения"}
-              onClick={() => saveRuData()}
-            />
           </div>
         ) : currentLanguage === "az" ? (
           <div>
@@ -87,7 +255,6 @@ const InfoMain = () => {
               value={adressBranchValueAz}
               onChange={(ev: string) => setAdressBranchValueAz(ev)}
             />
-            <FilledButton text={"Yadda saxla"} onClick={() => saveAzData()} />
           </div>
         ) : (
           <div>
@@ -115,10 +282,28 @@ const InfoMain = () => {
               value={adressBranchValueEn}
               onChange={(ev: string) => setAdressBranchValueEn(ev)}
             />
-            <FilledButton text={"Save changes"} onClick={() => saveEnData()} />
           </div>
         )}
       </LaguageSwitcher>
+
+      <FilledButton
+        text={
+          currentLanguage === "az"
+            ? "Yadda saxla"
+            : currentLanguage === "en"
+            ? "Save changes"
+            : currentLanguage === "ru"
+            ? "Сохранить изменения"
+            : "Сохранить изменения"
+        }
+        onClick={() => handleSave()}
+        disabled={
+          phoneNumberMutating ||
+          emailMutating ||
+          mainBranchMutating ||
+          branch1Mutating
+        }
+      />
     </div>
   );
 };

@@ -1,12 +1,13 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import LaguageSwitcher from "@/elements/laguageSwitcher";
 import "./InfoFaq.scss";
 import Modal from "@/elements/modal";
-import useSWR from "swr";
 import { faqApis, getDataWithHeader } from "@/api";
 import { LocalizationContext } from "@/hooks/customLangHook";
 import { Faq, Lang } from "@/types";
 import FaqItem from "./components/FaqItem";
+import useSWRImmutable from "swr/immutable";
+import Loading from "@/components/Loading";
 
 const InfoFaq = () => {
   const [faq, setFaq] = useState<Faq>({
@@ -19,7 +20,13 @@ const InfoFaq = () => {
 
   const { currentLanguage } = useContext(LocalizationContext);
 
-  const { data: faqList, mutate } = useSWR<Faq[]>(
+  const {
+    data: faqList,
+    mutate,
+    isLoading,
+    isValidating,
+    error,
+  } = useSWRImmutable<Faq[]>(
     faqApis.search({ localize: true }),
     (arg: string) =>
       getDataWithHeader(arg, {
@@ -43,6 +50,13 @@ const InfoFaq = () => {
     setFaq(data);
     handleModalOpen();
   };
+
+  useEffect(() => {
+    mutate();
+  }, [currentLanguage, faqList, mutate]);
+
+  if (isValidating || isLoading) return <Loading />;
+  if (error) return "No Result";
 
   return (
     <div className="info_faq">

@@ -3,6 +3,7 @@ import useSWRMutation from "swr/mutation";
 import { faqApis, getData } from "@/api";
 import { Faq } from "@/types";
 import { KeyedMutator } from "swr";
+import { defaultToast } from "@/utils";
 
 type FaqItemProps = {
   handleEdit: (data: Faq) => void;
@@ -17,10 +18,15 @@ const FaqItem = ({
   handleEdit,
   mutate,
 }: FaqItemProps) => {
-  const { trigger } = useSWRMutation(faqApis.delete(num, lang), getData);
+  const { trigger, isMutating } = useSWRMutation(
+    faqApis.delete(num, lang),
+    getData
+  );
   const handleRemoveFaq = () => {
-    trigger();
-    mutate();
+    defaultToast(trigger());
+    setTimeout(() => {
+      mutate();
+    }, 1);
   };
   return (
     <div className="list" key={num}>
@@ -32,7 +38,8 @@ const FaqItem = ({
       </div>
 
       <div className="icons">
-        <div
+        <button
+          disabled={isMutating}
           className="edit_icon"
           onClick={() =>
             handleEdit({
@@ -65,8 +72,12 @@ const FaqItem = ({
               </clipPath>
             </defs>
           </svg>
-        </div>
-        <div className="remove_icon" onClick={handleRemoveFaq}>
+        </button>
+        <button
+          disabled={isMutating}
+          className="remove_icon"
+          onClick={handleRemoveFaq}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -82,7 +93,7 @@ const FaqItem = ({
               stroke-linejoin="round"
             />
           </svg>
-        </div>
+        </button>
       </div>
     </div>
   );
