@@ -50,6 +50,8 @@ type Params = {
   minActionDate?: string;
   maxActionDate?: string;
   includeCatalog?: boolean;
+  startDate?: string;
+  endDate?: string;
 };
 
 export const orderApis = {

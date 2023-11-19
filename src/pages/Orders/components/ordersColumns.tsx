@@ -13,7 +13,12 @@ export const ordersColumns: ColumnDef<Order>[] = [
   },
   {
     accessorKey: "phoneNumber",
-    header: "НОМЕР ТЕЛЕФОНА",
+    header: "НОМЕР ТЕЛЕФОНА \n EMAIL",
+    cell: ({ row }) => {
+      const email = row.original.email;
+      const phoneNumber = row.original.phoneNumber;
+      return `${phoneNumber} \n ${email}`;
+    },
   },
 
   {

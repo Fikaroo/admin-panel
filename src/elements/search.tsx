@@ -1,11 +1,23 @@
 import "./search.scss";
 import search from "@/assets/search.svg";
 
-export default function SearchElement() {
+type SearchElementProps = {
+  onChange: (str: string) => void;
+};
+
+export default function SearchElement({ onChange }: SearchElementProps) {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) =>
+    onChange(e.target.value);
+
   return (
     <div className="search-element">
       <img src={search} className="search-icon" />
-      <input type="text" placeholder={"Поиск"} className="search" />
+      <input
+        onChange={handleInput}
+        type="text"
+        placeholder={"Поиск"}
+        className="search"
+      />
     </div>
   );
 }
