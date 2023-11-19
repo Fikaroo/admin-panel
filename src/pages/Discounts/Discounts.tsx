@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./Discounts.scss";
 import useSWR from "swr";
 import { DataTable } from "@/components/ui/data-table";
@@ -8,13 +8,22 @@ import { Discount, DataWithPagination } from "@/types";
 import SearchElement from "@/elements/search";
 import OutlinedButton from "@/elements/outlinedButton";
 import FilledButton from "@/elements/filledButton";
-import filterUpLogo from "@/assets/filterIcon.svg";
 import plusLogo from "@/assets/plusIcon.svg";
 import { useNavigate } from "react-router-dom";
 import Loading from "@/components/Loading";
+import calendarLogo from "@/assets/calendarIcon.svg";
+import useOutSideClick from "@/hooks/useOutSideClick";
+import dayjs from "dayjs";
+import { DateRange, DayPicker } from "react-day-picker";
 
 const Discounts = () => {
   const navigate = useNavigate();
+  const [searchString, setSearchString] = useState("");
+  const [value, setValue] = useState<DateRange | undefined>();
+  const ref = useRef(null);
+  const { isOpen: show, setIsOpen: setShow } = useOutSideClick(ref);
+  const [minActionDate, setMinActionDate] = useState(dayjs(1997).toISOString());
+  const [maxActionDate, setMaxActionDate] = useState(dayjs().toISOString());
   const [pageNum, setPageNum] = useState(1);
   const {
     data: discountData,
@@ -22,28 +31,65 @@ const Discounts = () => {
     error,
     isValidating,
   } = useSWR<DataWithPagination<Discount[]>>(
-    // Update with discount api
-    discountApis.search({ pageNum, pageSize: 10, includeCatalog: true }),
+    discountApis.search({
+      pageNum,
+      pageSize: 10,
+      includeCatalog: true,
+      minActionDate,
+      maxActionDate,
+      searchString,
+    }),
     getDataWithPagination
   );
 
-  const handleFilterClick = () => {};
+  const handleDateSelect = (newValue: DateRange | undefined) => {
+    newValue?.from !== undefined
+      ? setMinActionDate(newValue?.from.toISOString())
+      : setMinActionDate("");
+
+    newValue?.to !== undefined
+      ? setMaxActionDate(newValue?.to.toISOString())
+      : setMaxActionDate("");
+
+    setValue({ from: newValue?.from, to: newValue?.to });
+  };
 
   const handleNewDiscountClick = () => {
     navigate("detail/newDiscountPrice");
   };
 
+  const handleSearch = (str: string) => setSearchString(str);
   return (
     <div>
       <div className="headerTitle">Акции</div>
       <div className="subHeader">
-        <SearchElement />
-        <div style={{ display: "flex" }}>
+        <SearchElement onChange={handleSearch} />
+        <div ref={ref} style={{ display: "flex", position: "relative" }}>
           <OutlinedButton
-            icon={filterUpLogo}
-            text={"Фильтры"}
-            onClick={handleFilterClick}
+            icon={calendarLogo}
+            text={"Выберите даты"}
+            onClick={() => setShow(!show)}
           />
+
+          {show ? (
+            <DayPicker
+              style={{
+                position: "absolute",
+                background: "white",
+                padding: 20,
+                top: 40,
+                right: 145,
+                zIndex: 10,
+                border: "1px solid var(--gray-200, #EAECF0)",
+                borderRadius: "4px",
+              }}
+              defaultMonth={new Date()}
+              mode="range"
+              selected={value}
+              onSelect={(newValue) => handleDateSelect(newValue)}
+              // footer={footer}
+            />
+          ) : null}
           <FilledButton
             icon={plusLogo}
             text={"Новая акция"}
