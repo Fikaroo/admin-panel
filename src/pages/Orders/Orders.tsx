@@ -15,6 +15,9 @@ import useSWRMutation from "swr/mutation";
 import * as xlsx from "xlsx";
 import { defaultToast, enumToMap } from "@/utils";
 
+import { useAuth } from '@/AuthProvider';
+import { useNavigate } from "react-router-dom";
+
 const getOrderExcelJson = (res: Order[]) => {
   const orders: Record<any, any> = {};
   ordersColumns?.map(({ accessorKey, header }: any) =>
@@ -87,6 +90,13 @@ const Orders = () => {
       xlsx.writeFile(wb, "Orders.xlsx");
     }
   };
+
+  const { isAuthenticated } = useAuth();
+  if (!isAuthenticated) {
+    const navigate = useNavigate();
+    navigate('/login');
+    return null;
+  }
   return (
     <div>
       <div className="headerTitle">Заказы</div>

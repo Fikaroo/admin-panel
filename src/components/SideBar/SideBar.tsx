@@ -58,6 +58,10 @@ const SideBar = () => {
   const location = useLocation();
   const pathName = location.pathname;
 
+  const handleLogOutClick = () => {
+      navigate("/login");
+  };
+
   return (
     <div className="sidebar__container">
       <div className="sidebar__container_up">
@@ -103,7 +107,7 @@ const SideBar = () => {
       <div>
         <button className="sidebar__container_bottom">
           <img src={logOut} alt="logout" />
-          <span style={{ marginLeft: 5 }}>Выход</span>
+          <span style={{ marginLeft: 5 }} onClick={()=> handleLogOutClick}>Выход</span>
         </button>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { AuthProvider } from './AuthProvider'; 
 import Layout from "./components/Layout/Layout";
 import Orders from "./pages/Orders/Orders";
 import Auto from "./pages/Auto/Auto";
@@ -17,7 +18,13 @@ import Login from "./pages/Login/Login";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+
 const router = createBrowserRouter([
+  {
+    path: "/login",
+    element: <Login />,
+  },
   {
     path: "/",
     element: <Layout />,
@@ -118,10 +125,10 @@ const router = createBrowserRouter([
 
 const App = () => {
   return (
-    <>
+    <AuthProvider>
       <RouterProvider router={router} />
       <ToastContainer />
-    </>
+    </AuthProvider>
   );
 };
 
