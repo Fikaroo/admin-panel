@@ -13,7 +13,7 @@ const Info = () => {
     { name: "О нас & B2B", to: "/info/about" },
     { name: "FAQ", to: "/info/faq" },
     { name: "Партнеры", to: "/info/partners" },
-    { name: "Mails", to: "/info/mails" },
+    { name: "E-mails", to: "/info/emails" },
   ];
 
   const { pathname } = useLocation();
