@@ -17,50 +17,45 @@ import calendarLogo from "@/assets/calendarIcon.svg";
 import useOutSideClick from "@/hooks/useOutSideClick";
 import dayjs from "dayjs";
 import { DateRange, DayPicker } from "react-day-picker";
+import Loading from "@/components/Loading";
 
 const getOrderExcelJson = (res: Order[]) => {
   const orders: any[] = [];
-  const order: Record<any, any> = {};
   res.map((r: any) => {
+    const order: Record<any, any> = {};
+
     ordersColumns?.map(({ accessorKey, header }: any) => {
       const rowVal = r?.[accessorKey];
-      if (rowVal) {
-        if (accessorKey === "phoneNumber") {
-          const value = `${r?.phoneNumber} \n ${r?.email}`;
-          return (order[header] = value);
-        }
-
-        if (accessorKey === "carName") {
-          const value = `${r?.catalog?.makeName} ${r?.catalog?.modelName}`;
-          return (order[header] = value);
-        }
-
-        if (accessorKey === "carType") {
-          const value = enumToMap(BodyType).find(
-            ([key]) => key == r?.catalog?.mbodyType.toString()
-          )?.[1];
-          return (order[header] = value);
-        }
-
-        if (accessorKey === "startDate") {
-          const startDate = r?.startDate;
-          const startTime = r?.startTime;
-          const value = `${startDate} ${startTime}`;
-          return (order[header] = value);
-        }
-
-        if (accessorKey === "endDate") {
-          const endDate = r?.endDate;
-          const endTime = r?.endTime;
-          const value = `${endDate} ${endTime}`;
-          return (order[header] = value);
-        }
-
-        return (order[header] = rowVal);
+      if (accessorKey === "phoneNumber") {
+        const value = `${r?.phoneNumber} \n ${r?.email}`;
+        order[header] = value;
+      } else if (accessorKey === "carName") {
+        const value = `${r?.catalog?.makeName} ${r?.catalog?.modelName}`;
+        order[header] = value;
+        console.log(value, order);
+      } else if (accessorKey === "carType") {
+        const value = enumToMap(BodyType).find(
+          ([key]) => key == r?.catalog?.bodyType?.toString()
+        )?.[1];
+        order[header] = value;
+      } else if (accessorKey === "startDate") {
+        const startDate = r?.startDate;
+        const startTime = r?.startTime;
+        const value = `${startDate} ${startTime}`;
+        order[header] = value;
+      } else if (accessorKey === "endDate") {
+        const endDate = r?.endDate;
+        const endTime = r?.endTime;
+        const value = `${endDate} ${endTime}`;
+        order[header] = value;
+      } else {
+        order[header] = rowVal;
       }
     });
+
     orders.push(order);
   });
+  console.log(orders);
   return orders;
 };
 
@@ -75,6 +70,7 @@ const Orders = () => {
   const {
     data: orderData,
     isLoading,
+    isValidating,
     error,
   } = useSWR<DataWithPagination<Order[]>>(
     orderApis.search({
@@ -134,12 +130,14 @@ const Orders = () => {
             icon={download}
             text={"Download Excel"}
             onClick={handleExcelDownload}
+            disabled={isValidating || isLoading}
           />
 
           <OutlinedButton
             icon={calendarLogo}
             text={"Выберите даты"}
             onClick={() => setShow(!show)}
+            disabled={isValidating || isLoading}
           />
 
           {show ? (
@@ -163,8 +161,8 @@ const Orders = () => {
           ) : null}
         </div>
       </div>
-      {isLoading ? (
-        <>Loading...</>
+      {isValidating || isLoading ? (
+        <Loading />
       ) : error ? (
         <>Error</>
       ) : (
