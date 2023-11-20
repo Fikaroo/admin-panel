@@ -113,7 +113,7 @@ const router = createBrowserRouter([
                 element: <InfoPartners />,
               },
               {
-                path: "mails",
+                path: "emails",
                 element: <InfoMails />,
               },
             ],
