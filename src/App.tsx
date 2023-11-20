@@ -19,6 +19,7 @@ import Login from "./pages/Login/Login";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PrivateRoute from "./components/PrivateRoute";
+import InfoMails from "./pages/Info/InfoMails/InfoMails";
 
 const router = createBrowserRouter([
   {
@@ -110,6 +111,10 @@ const router = createBrowserRouter([
               {
                 path: "partners",
                 element: <InfoPartners />,
+              },
+              {
+                path: "mails",
+                element: <InfoMails />,
               },
             ],
           },

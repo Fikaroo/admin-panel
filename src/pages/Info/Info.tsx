@@ -5,6 +5,7 @@ import InfoFaq from "./InfoFaq/InfoFaq";
 import InfoPartners from "./InfoPartners/InfoPartners";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import InfoMails from "./InfoMails/InfoMails";
 
 const Info = () => {
   const array = [
