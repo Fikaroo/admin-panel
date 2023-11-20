@@ -13,6 +13,7 @@ import { Catalog, Discount } from "@/types";
 import useSWR from "swr";
 import { useNavigate } from "react-router-dom";
 import { defaultToast } from "@/utils";
+import photoHertz from "@/assets/HertzNotebook.png";
 
 const NewDiscountPrice = ({ data }: { data?: Discount }) => {
   const navigate = useNavigate();
@@ -31,11 +32,11 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
     data?.descriptionRu || ""
   );
   const [headingValueAz, setHeadingValueAz] = useState(data?.captionAz || "");
-  const [subHeadingAz, setSubHeadingValueAz] = useState(
+  const [subHeadingValueAz, setSubHeadingValueAz] = useState(
     data?.descriptionAz || ""
   );
   const [headingValueEn, setHeadingValueEn] = useState(data?.captionEn || "");
-  const [subHeadingEn, setSubHeadingValueEn] = useState(
+  const [subHeadingValueEn, setSubHeadingValueEn] = useState(
     data?.descriptionEn || ""
   );
   const [catalogId, setCatalogId] = useState(data?.catalogId || "");
@@ -71,9 +72,9 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
         captionAz: headingValueAz,
         captionEn: headingValueEn,
         captionRu: headingValueRu,
-        descriptionAz: subHeadingAz,
+        descriptionAz: subHeadingValueAz,
         descriptionRu: subHeadingValueRu,
-        descriptionEn: subHeadingEn,
+        descriptionEn: subHeadingValueEn,
         enableBookButton: buttonActive,
         catalogId: catalogId,
         isActive: promotionActive,
@@ -124,7 +125,7 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
             />
           </div>
 
-          <div className="jpg-png-text">JPG or PNG. 1 MB max.</div>
+          <div className="jpg-png-text">JPG or PNG.</div>
         </div>
         <div className="select__group" style={{ marginBottom: 50 }}>
           <label>Автомобиль</label>
@@ -183,7 +184,7 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
                 title={""}
                 subtitle={"Alt başlıq"}
                 maxSymbol={"Maksimum 500 simvol"}
-                value={subHeadingAz}
+                value={subHeadingValueAz}
                 onChange={(ev: string) => setSubHeadingValueAz(ev)}
               />
             </div>
@@ -200,7 +201,7 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
                 title={""}
                 subtitle={"Sub heading"}
                 maxSymbol={"Maximum 500 symbol"}
-                value={subHeadingEn}
+                value={subHeadingValueEn}
                 onChange={(ev: string) => setSubHeadingValueEn(ev)}
               />
             </div>
@@ -309,7 +310,30 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
           />
         )}
       </div>
-      <div className="right-disc-price-block"></div>
+      <div className="right-disc-price-block">
+        <img src={photoHertz} />
+        <div
+          className="frontPhotoHertz"
+        >
+          <img src={img || ""} className="fr" />
+          <div className="allHeadingAndSub">
+            <div>
+              {currentLanguage === "az"
+                ? subHeadingValueAz
+                : currentLanguage === "en"
+                ? headingValueEn
+                : headingValueRu}
+            </div>
+            <div>
+              {currentLanguage === "az"
+                ? subHeadingValueAz
+                : currentLanguage === "en"
+                ? subHeadingValueEn
+                : subHeadingValueRu}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

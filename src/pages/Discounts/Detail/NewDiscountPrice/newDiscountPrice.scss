@@ -1,14 +1,19 @@
 .all-disc-price {
   width: 100%;
+  display: flex;
+
   // background-color: yellow;
 }
 
 .left-disc-price-block {
-  width: 65%;
+  width: 35%;
 }
 
 .right-disc-price-block {
-  width: 35%;
+  display: flex;
+  align-items: center;
+  width: 65%;
+  position: relative;
 }
 
 .discnt-name {
@@ -67,4 +72,34 @@
     outline: none;
     border: 1px solid #fc0;
   }
+}
+.fr{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.frontPhotoHertz{
+  width: 495px ;
+  height: 313px;
+  
+  position: absolute;
+  top: 326px;
+  left: 140px;
+  display: flex;
+  align-items: flex-end ;
+}
+
+.allHeadingAndSub{
+  position: absolute;
+  top: 81px;
+  left: 10px;
+  width: 200px;
+
+}
+.allHeadingAndSub div:first-child{
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.allHeadingAndSub div:last-child{
+  font-size: 12px;
 }
