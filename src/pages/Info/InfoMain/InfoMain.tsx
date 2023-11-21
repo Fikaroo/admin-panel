@@ -5,10 +5,10 @@ import Input from "@/components/ui/input/input";
 import FilledButton from "@/elements/filledButton";
 import useSWRMutation from "swr/mutation";
 import { dynamicContentApis, getDataWithHeader, postData } from "@/api";
-import useSWR from "swr";
 import { DynamicContent } from "@/types";
 import Loading from "@/components/Loading";
 import { defaultToast } from "@/utils";
+import useSWRImmutable from "swr/immutable";
 
 const InfoMain = () => {
   const {
@@ -16,7 +16,7 @@ const InfoMain = () => {
     isLoading: phoneNumberLoading,
     isValidating: phoneNumberValidationg,
     mutate: phoneNumberMutate,
-  } = useSWR<DynamicContent>(
+  } = useSWRImmutable<DynamicContent>(
     dynamicContentApis.getSingleByCode("phoneNumber"),
     (path: string) =>
       getDataWithHeader(path, { headers: { "Accept-Language": "" } })
@@ -34,7 +34,7 @@ const InfoMain = () => {
     isLoading: emailLoading,
     isValidating: emailValidationg,
     mutate: emailMutate,
-  } = useSWR<DynamicContent>(
+  } = useSWRImmutable<DynamicContent>(
     dynamicContentApis.getSingleByCode("email"),
     (path: string) =>
       getDataWithHeader(path, { headers: { "Accept-Language": "" } })
@@ -54,7 +54,7 @@ const InfoMain = () => {
     isLoading: mainBranchLoading,
     isValidating: mainBranchValidationg,
     mutate: mainBranchMutate,
-  } = useSWR<DynamicContent>(
+  } = useSWRImmutable<DynamicContent>(
     dynamicContentApis.getSingleByCode("mainBranch"),
     (path: string) =>
       getDataWithHeader(path, { headers: { "Accept-Language": "" } })
@@ -72,7 +72,7 @@ const InfoMain = () => {
     isLoading: branch1Loading,
     isValidating: branch1Validationg,
     mutate: branch1Mutate,
-  } = useSWR<DynamicContent>(
+  } = useSWRImmutable<DynamicContent>(
     dynamicContentApis.getSingleByCode("branch1"),
     (path: string) =>
       getDataWithHeader(path, { headers: { "Accept-Language": "" } })
@@ -125,47 +125,117 @@ const InfoMain = () => {
   const { currentLanguage } = useContext(LocalizationContext);
 
   const handleSave = () => {
-    defaultToast(
-      savePhoneNumber({
-        code: "phoneNumber",
-        contentAz: phoneValueAz,
-        contentRu: phoneValueRu,
-        contentEn: phoneValueEn,
-      })
-    );
+    if (currentLanguage === "az") {
+      phoneValueAz !== phoneNumber?.contentAz &&
+        defaultToast(
+          savePhoneNumber({
+            code: "phoneNumber",
+            contentAz: phoneValueAz,
+          })
+        );
 
-    defaultToast(
-      saveEmail({
-        code: "email",
-        contentAz: emailValueAz,
-        contentRu: emailValueRu,
-        contentEn: emailValueEn,
-      })
-    );
+      emailValueAz !== email?.contentAz &&
+        defaultToast(
+          saveEmail({
+            code: "email",
+            contentAz: emailValueAz,
+          })
+        );
 
-    defaultToast(
-      saveMainBranch({
-        code: "mainBranch",
-        contentAz: adressMainValueAz,
-        contentRu: adressMainValueRu,
-        contentEn: adressMainValueEn,
-      })
-    );
+      adressMainValueAz !== mainBranch?.contentAz &&
+        defaultToast(
+          saveMainBranch({
+            code: "mainBranch",
+            contentAz: adressMainValueAz,
+          })
+        );
 
-    defaultToast(
-      saveBranch1({
-        code: "branch1",
-        contentAz: adressBranchValueAz,
-        contentRu: adressBranchValueRu,
-        contentEn: adressBranchValueEn,
-      })
-    );
+      adressBranchValueAz !== branch1?.contentAz &&
+        defaultToast(
+          saveBranch1({
+            code: "branch1",
+            contentAz: adressBranchValueAz,
+          })
+        );
+    } else if (currentLanguage === "en") {
+      phoneValueEn &&
+        phoneValueEn !== phoneNumber?.contentEn &&
+        defaultToast(
+          savePhoneNumber({
+            code: "phoneNumber",
+            contentEn: phoneValueEn,
+          })
+        );
+
+      emailValueEn !== email?.contentEn &&
+        defaultToast(
+          saveEmail({
+            code: "email",
+            contentEn: emailValueEn,
+          })
+        );
+
+      adressMainValueEn !== mainBranch?.contentEn &&
+        defaultToast(
+          saveMainBranch({
+            code: "mainBranch",
+            contentEn: adressMainValueEn,
+          })
+        );
+
+      adressBranchValueEn !== branch1?.contentEn &&
+        defaultToast(
+          saveBranch1({
+            code: "branch1",
+            contentEn: adressBranchValueEn,
+          })
+        );
+    } else if (currentLanguage === "ru") {
+      phoneValueRu !== phoneNumber?.contentRu &&
+        defaultToast(
+          savePhoneNumber({
+            code: "phoneNumber",
+            contentRu: phoneValueRu,
+          })
+        );
+
+      emailValueRu !== email?.contentRu &&
+        defaultToast(
+          saveEmail({
+            code: "email",
+            contentRu: emailValueRu,
+          })
+        );
+
+      adressMainValueRu !== mainBranch?.contentRu &&
+        defaultToast(
+          saveMainBranch({
+            code: "mainBranch",
+            contentRu: adressMainValueRu,
+          })
+        );
+
+      adressBranchValueRu !== branch1?.contentRu &&
+        defaultToast(
+          saveBranch1({
+            code: "branch1",
+            contentRu: adressBranchValueRu,
+          })
+        );
+    }
 
     setTimeout(() => {
-      phoneNumberMutate();
-      emailMutate();
-      mainBranchMutate();
-      branch1Mutate();
+      if (
+        phoneNumberMutating ||
+        emailMutating ||
+        mainBranchMutating ||
+        branch1Mutating
+      ) {
+        phoneNumberMutate();
+        emailMutate();
+        mainBranchMutate();
+        branch1Mutate();
+      }
     }, 1);
   };
 

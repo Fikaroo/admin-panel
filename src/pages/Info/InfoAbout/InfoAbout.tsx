@@ -61,27 +61,61 @@ const InfoAbout = () => {
   const { currentLanguage } = useContext(LocalizationContext);
 
   const handleSave = () => {
-    defaultToast(
-      saveAbout({
-        code: "about",
-        contentAz: aboutValueAz,
-        contentRu: aboutValueRu,
-        contentEn: aboutValueEn,
-      })
-    );
+    if (currentLanguage === "az") {
+      aboutValueAz !== about?.contentAz &&
+        defaultToast(
+          saveAbout({
+            code: "about",
+            contentAz: aboutValueAz,
+          })
+        );
 
-    defaultToast(
-      saveB2b({
-        code: "b2b",
-        contentAz: b2bValueAz,
-        contentRu: b2bValueRu,
-        contentEn: b2bValueEn,
-      })
-    );
+      b2bValueAz !== b2b?.contentAz &&
+        defaultToast(
+          saveB2b({
+            code: "b2b",
+            contentAz: b2bValueAz,
+          })
+        );
+    } else if (currentLanguage === "en") {
+      aboutValueEn !== about?.contentEn &&
+        defaultToast(
+          saveAbout({
+            code: "about",
+            contentEn: aboutValueEn,
+          })
+        );
+
+      b2bValueEn !== b2b?.contentEn &&
+        defaultToast(
+          saveB2b({
+            code: "b2b",
+            contentEn: b2bValueEn,
+          })
+        );
+    } else if (currentLanguage === "ru") {
+      aboutValueRu !== about?.contentRu &&
+        defaultToast(
+          saveAbout({
+            code: "about",
+            contentRu: aboutValueRu,
+          })
+        );
+
+      b2bValueRu !== b2b?.contentRu &&
+        defaultToast(
+          saveB2b({
+            code: "b2b",
+            contentRu: b2bValueRu,
+          })
+        );
+    }
 
     setTimeout(() => {
-      aboutMutate();
-      b2bMutate();
+      if (aboutMutating || b2bMutating) {
+        aboutMutate();
+        b2bMutate();
+      }
     }, 1);
   };
 

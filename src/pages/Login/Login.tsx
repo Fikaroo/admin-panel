@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Login.scss";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/AuthProvider";
+import Loading from "@/components/Loading";
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [errorUserName, setErrorUserName] = useState("");
@@ -30,6 +32,17 @@ const Login = () => {
       setErrorPassword("Неверный пароль");
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+
+      isAuthenticated && navigate("/");
+    }, 1000);
+  }, [isAuthenticated, navigate]);
+
+  if (isLoading) return <Loading isCenter={true} />;
+
   return (
     <div className="login-container">
       <form action="" className="login-form" onSubmit={(e) => handleClick(e)}>

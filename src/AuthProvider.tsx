@@ -1,4 +1,10 @@
-import { PropsWithChildren, createContext, useContext, useState } from "react";
+import {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 type AuthContextProps = {
   isAuthenticated: boolean;
@@ -16,12 +22,20 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
   const [isAuthenticated, setAuthenticated] = useState(false);
 
   const login = () => {
+    localStorage.setItem("isAuth", JSON.stringify(true));
     setAuthenticated(true);
   };
 
   const logout = () => {
+    localStorage.setItem("isAuth", JSON.stringify(false));
     setAuthenticated(false);
   };
+
+  useEffect(() => {
+    const isAuth = localStorage.getItem("isAuth");
+    isAuth && setAuthenticated(JSON.parse(isAuth));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localStorage.getItem("isAuth")]);
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
@@ -38,4 +52,5 @@ const useAuth = () => {
   return context;
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { AuthProvider, useAuth };

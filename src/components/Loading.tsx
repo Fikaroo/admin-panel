@@ -1,6 +1,6 @@
 import { MutatingDots } from "react-loader-spinner";
 
-const Loading = () => {
+const Loading = ({ isCenter = false }: { isCenter?: boolean }) => {
   return (
     <MutatingDots
       height="100"
@@ -13,7 +13,7 @@ const Loading = () => {
         position: "absolute",
         left: "50%",
         top: "50%",
-        translate: "50% -50%",
+        translate: isCenter ? "-50% -50%" : "50% -50%",
       }}
       wrapperClass=""
       visible={true}

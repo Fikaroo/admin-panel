@@ -30,7 +30,7 @@ const Info = () => {
         {pathname === "/info/about" && <InfoAbout />}
         {pathname === "/info/faq" && <InfoFaq />}
         {pathname === "/info/partners" && <InfoPartners />}
-        {pathname === "/info/mails" && <InfoMails />}
+        {pathname === "/info/emails" && <InfoMails />}
       </Tab>
     </div>
   );
