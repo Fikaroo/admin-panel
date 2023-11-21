@@ -24,8 +24,11 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
     Partial<Discount>
   >(data ? discountApis.update(data?.id) : discountApis.create, postData);
 
-  const { trigger: removeTrigger, isMutating: removeIsMutation } =
-    useSWRMutation(data ? discountApis.delete(data?.id) : null, getData);
+  const {
+    trigger: removeTrigger,
+    isMutating: removeIsMutation,
+    error,
+  } = useSWRMutation(data ? discountApis.delete(data?.id) : null, getData);
   const [aksiyaName, setAksiyaName] = useState(data?.name || "");
   const [headingValueRu, setHeadingValueRu] = useState(data?.captionRu || "");
   const [subHeadingValueRu, setSubHeadingValueRu] = useState(
@@ -91,14 +94,14 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
     );
     setTimeout(async () => {
       res && navigate("/discounts");
-    }, 1);
+    }, 1000);
   };
 
   const handleDelete = async () => {
-    const res = await defaultToast(removeTrigger());
+    defaultToast(removeTrigger());
 
     setTimeout(() => {
-      res && navigate("/discounts");
+      !error && navigate("/discounts");
     }, 1);
   };
 
@@ -312,9 +315,7 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
       </div>
       <div className="right-disc-price-block">
         <img src={photoHertz} />
-        <div
-          className="frontPhotoHertz"
-        >
+        <div className="frontPhotoHertz">
           <img src={img || ""} className="fr" />
           <div className="allHeadingAndSub">
             <div>

@@ -116,7 +116,7 @@ const InfoAbout = () => {
         aboutMutate();
         b2bMutate();
       }
-    }, 1);
+    }, 1000);
   };
 
   useEffect(() => {

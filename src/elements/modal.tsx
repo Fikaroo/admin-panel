@@ -31,7 +31,7 @@ const Modal: React.FC<ModalProps> = ({
         mutate();
         handleModal();
       }
-    }, 1);
+    }, 1000);
   };
 
   return (

@@ -53,14 +53,14 @@ const InfoMails = () => {
     setTimeout(() => {
       setUpdateItemsIds([]);
       mutate();
-    }, 1);
+    }, 1000);
   };
 
   const handleRemoveByIndex = (deletedIndex: number) => {
     setMailList((prev) => prev.filter((_, index) => index !== deletedIndex));
     setTimeout(() => {
       mutate();
-    }, 1);
+    }, 1000);
   };
 
   useEffect(() => {
