@@ -66,7 +66,22 @@ export interface Order {
   status: number;
   catalog?: Catalog;
 }
-export interface Analytic {}
+export interface Analytic {
+  id: string;
+  ip: string;
+  actionDate: Date;
+  actionCode: string;
+  placeOfReceipt: string;
+  placeOfHandover: string;
+  startDate: Date;
+  endDate: Date;
+  startTime: string;
+  endTime: string;
+  catalogBodyType: string;
+  totalPrice: number;
+  region: string;
+  catalogName: string;
+}
 export interface Make {
   id: string;
   name: string;

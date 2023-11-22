@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { catalogApis, postData } from "@/api";
 import Switch from "@/components/ui/switch/switch";
 import { BodyType, Catalog, SeatMaterialType, TransmissionType } from "@/types";
-import { enumToMap } from "@/utils";
+import { defaultToast, enumToMap } from "@/utils";
 import { ColumnDef } from "@tanstack/react-table";
+import { mutate } from "swr";
 
 export const columns: ColumnDef<Catalog>[] = [
   {
@@ -51,7 +54,21 @@ export const columns: ColumnDef<Catalog>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const car = row.original;
-      return <Switch isAcive={car.isActive} />;
+      const onChange = (props: unknown) => {
+        defaultToast(
+          postData(catalogApis.update(car?.id), {
+            arg: { ...car, isActive: props },
+          })
+        ).then((res) => {
+          res && mutate("/catalog");
+        });
+      };
+
+      return (
+        <div onClick={(e) => e.stopPropagation()}>
+          <Switch isAcive={car.isActive} onChange={onChange} />
+        </div>
+      );
     },
   },
 ];

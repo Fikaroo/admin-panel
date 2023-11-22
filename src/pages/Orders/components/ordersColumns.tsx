@@ -3,6 +3,7 @@ import { enumToMap } from "@/utils";
 import { ColumnDef } from "@tanstack/react-table";
 
 export const ordersColumns: ColumnDef<Order>[] = [
+  { accessorKey: "ip", header: "IP АДРЕС" },
   {
     accessorKey: "id",
     header: "ID",
