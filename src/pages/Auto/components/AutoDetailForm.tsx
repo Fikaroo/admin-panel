@@ -406,7 +406,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                         ?.slice(1, 3) || [
                         {
                           minDays: 8,
-                          maxDays: 12,
+                          maxDays: 21,
                           pricePerDay: 0,
                         },
                         {
@@ -445,7 +445,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                       ];
                       const current = {
                         minDays: 8,
-                        maxDays: 12,
+                        maxDays: 21,
                         pricePerDay: +event.target.value
                           .replace(/^0+₼$/, "")
                           .replace(/₼/, "")
@@ -493,7 +493,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                         },
                         {
                           minDays: 8,
-                          maxDays: 12,
+                          maxDays: 21,
                           pricePerDay: 0,
                         },
                       ];
