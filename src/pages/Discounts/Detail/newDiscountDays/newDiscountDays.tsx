@@ -12,8 +12,7 @@ import { Catalog, Discount } from "@/types";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import dayjs from "dayjs";
-import { changeArrayByIndex } from "@/utils";
-import { toast } from "react-toastify";
+import { changeArrayByIndex, defaultToast } from "@/utils";
 import { useNavigate } from "react-router-dom";
 import photoHertz from "@/assets/HertzNotebook.png";
 
@@ -26,8 +25,11 @@ const NewDiscountDays = ({ data }: { data?: Discount }) => {
     Partial<Discount>
   >(data ? discountApis.update(data?.id) : discountApis.create, postData);
 
-  const { trigger: removeTrigger, isMutating: removeIsMutation } =
-    useSWRMutation(data ? discountApis.delete(data?.id) : null, getData);
+  const {
+    trigger: removeTrigger,
+    isMutating: removeIsMutation,
+    error,
+  } = useSWRMutation(data ? discountApis.delete(data?.id) : null, getData);
   const [aksiyaName, setAksiyaName] = useState(data?.name || "");
   const [headingValueRu, setHeadingValueRu] = useState(data?.captionRu || "");
   const [subHeadingValueRu, setSubHeadingValueRu] = useState(
@@ -68,7 +70,6 @@ const NewDiscountDays = ({ data }: { data?: Discount }) => {
       },
       {
         minDays: 22,
-        maxDays: 0,
         pricePerDay: 0,
       },
     ]
@@ -83,7 +84,7 @@ const NewDiscountDays = ({ data }: { data?: Discount }) => {
   );
 
   const handleSubmit = async () => {
-    const res = await toast.promise(
+    const res = await defaultToast(
       trigger({
         type: 2,
         name: aksiyaName,
@@ -100,28 +101,17 @@ const NewDiscountDays = ({ data }: { data?: Discount }) => {
         startDate: startAksiyaDate,
         endDate: endAksiyaDate,
         priceSettings: datesList,
-      }),
-      {
-        pending: "Waiting",
-        success: "Action Updated 👌",
-        error: "Action Not Update 🤯",
-      }
+      })
     );
-
     setTimeout(() => {
       res && navigate("/discounts");
-    }, 1);
+    }, 1000);
   };
 
   const handleDelete = async () => {
-    const res = await toast.promise(removeTrigger(), {
-      pending: "Waiting",
-      success: "Action Deleted 👌",
-      error: "Action Not Deleted 🤯",
-    });
-
+    defaultToast(removeTrigger());
     setTimeout(() => {
-      res && navigate("/discounts");
+      !error && navigate("/discounts");
     }, 1);
   };
 
@@ -130,7 +120,6 @@ const NewDiscountDays = ({ data }: { data?: Discount }) => {
       ...datesList,
       {
         minDays: 0,
-        maxDays: 0,
         pricePerDay: 0,
       },
     ]);
@@ -306,6 +295,7 @@ const NewDiscountDays = ({ data }: { data?: Discount }) => {
                     }
                   />
                   <input
+                    disabled
                     type="text"
                     className="input"
                     value={p.maxDays}
@@ -347,6 +337,7 @@ const NewDiscountDays = ({ data }: { data?: Discount }) => {
                   </div>
 
                   <div
+                    style={{ zIndex: 10 }}
                     className="remove_icon"
                     onClick={() =>
                       setDatesList((prev) => {
@@ -393,6 +384,7 @@ const NewDiscountDays = ({ data }: { data?: Discount }) => {
                     }
                   />
                   <input
+                    disabled={index === 2 && datesList.length === 3}
                     type="text"
                     className="input"
                     value={p.maxDays}
@@ -492,11 +484,9 @@ const NewDiscountDays = ({ data }: { data?: Discount }) => {
         )}
       </div>
       <div className="right-disc-price-block">
-      <img src={photoHertz} />
-        <div
-          className="frontPhotoHertzDays"
-        >
-          <img src={img || ""} className="frDays"  alt=""/>
+        <img src={photoHertz} />
+        <div className="frontPhotoHertzDays">
+          <img src={img || ""} className="frDays" alt="" />
           <div className="allHeadingAndSubDays">
             <div>
               {currentLanguage === "az"

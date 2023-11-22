@@ -158,8 +158,7 @@ const InfoMain = () => {
           })
         );
     } else if (currentLanguage === "en") {
-      phoneValueEn &&
-        phoneValueEn !== phoneNumber?.contentEn &&
+      phoneValueEn !== phoneNumber?.contentEn &&
         defaultToast(
           savePhoneNumber({
             code: "phoneNumber",
@@ -236,7 +235,7 @@ const InfoMain = () => {
         mainBranchMutate();
         branch1Mutate();
       }
-    }, 1);
+    }, 1000);
   };
 
   useEffect(() => {

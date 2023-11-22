@@ -55,10 +55,14 @@ const InfoPartners = () => {
     setTimeout(() => {
       setUpdateItemsIds([]);
       mutate();
+    }, 1000);
+  };
+  const handleRemoveByIndex = (deletedIndex: number) => {
+    setPartnerList((prev) => prev.filter((_, index) => index !== deletedIndex));
+    setTimeout(() => {
+      mutate();
     }, 1);
   };
-  const handleRemoveByIndex = (deletedIndex: number) =>
-    setPartnerList((prev) => prev.filter((_, index) => index !== deletedIndex));
 
   useEffect(() => {
     partners && setPartnerList(partners);

@@ -64,7 +64,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
     const res = await defaultToast(saveCatalog(values));
     setTimeout(async () => {
       res && navigate("/auto");
-    }, 1);
+    }, 1000);
   }
   console.log(form.formState.errors);
   async function handleDelete() {
