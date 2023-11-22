@@ -62,7 +62,7 @@ const AutoDetail = () => {
         },
         {
           minDays: 8,
-          maxDays: 12,
+          maxDays: 21,
           pricePerDay: 0,
         },
         {
