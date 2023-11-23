@@ -1,6 +1,8 @@
-import { Analytic } from "@/types";
+import { Analytic,  BodyType } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import dayjs from "dayjs";
+import { enumToMap } from "@/utils";
+
 
 export const analyticsColumns: ColumnDef<Analytic>[] = [
   {
@@ -58,7 +60,13 @@ export const analyticsColumns: ColumnDef<Analytic>[] = [
       );
     },
   },
-  { accessorKey: "catalogBodyType", header: "ТИП АВТО" },
+  { accessorKey: "catalogBodyType",
+  header: "ТИП АВТО",
+  cell: ({ row }) => {
+    return enumToMap(BodyType).find(
+      ([key]) => key == row?.original?.catalogBodyType.toString()
+    )?.[1];
+  }, },
   {
     accessorKey: "catalogName",
     header: "ИНФО ОБ АВТО",
