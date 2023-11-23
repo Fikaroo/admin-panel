@@ -19,7 +19,7 @@ const TextArea = ({
       <textarea
         className="textareaElement"
         value={value}
-        maxLength={500}
+        // maxLength={500}
         style={{ marginTop: 6 }}
         onChange={(event) => onChange(event.target.value)}
       />
