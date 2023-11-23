@@ -23,7 +23,48 @@ export const analyticsColumns: ColumnDef<Analytic>[] = [
     header: "ПОСЛЕДНЕЕ ДЕЙСТВИЕ",
   },
   {
+    accessorKey: "placeOfReceipt",
+    header: "МЕСТО АРЕНДЫ",
+  },
+  {
+    accessorKey: "startDate",
+    header: "ДАТА АРЕНДЫ",
+    cell: ({ row }) => {
+      const data = row.original;
+      const startTime = data?.startTime;
+      const startDate = data?.startDate;
+      return (
+        <>
+          {startDate} {startTime}
+        </>
+      );
+    },
+  },
+  {
+    accessorKey: "placeOfHandover",
+    header: "МЕСТО ВОЗВРАТА",
+  },
+  {
+    accessorKey: "endDate",
+    header: "ДАТА ВОЗВРАТА",
+    cell: ({ row }) => {
+      const data = row.original;
+      const endTime = data?.endTime;
+      const endDate = data?.endDate;
+      return (
+        <>
+          {endDate} {endTime}
+        </>
+      );
+    },
+  },
+  { accessorKey: "catalogBodyType", header: "ТИП АВТО" },
+  {
     accessorKey: "catalogName",
     header: "ИНФО ОБ АВТО",
+  },
+  {
+    accessorKey: "totalPrice",
+    header: "ЦЕНА",
   },
 ];

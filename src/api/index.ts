@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig } from "axios";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
-const instance = axios.create({
+export const instance = axios.create({
   baseURL: baseUrl,
   // withCredentials: true,
 });
