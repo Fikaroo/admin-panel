@@ -4,7 +4,7 @@ import Switch from "@/components/ui/switch/switch";
 import { BodyType, Catalog, SeatMaterialType, TransmissionType } from "@/types";
 import { defaultToast, enumToMap } from "@/utils";
 import { ColumnDef } from "@tanstack/react-table";
-import { mutate } from "swr";
+import { useAutoStore } from "../Auto";
 
 export const columns: ColumnDef<Catalog>[] = [
   {
@@ -55,15 +55,19 @@ export const columns: ColumnDef<Catalog>[] = [
     cell: ({ row }) => {
       const car = row.original;
       const onChange = (props: unknown) => {
+        useAutoStore.setState({ disabled: true });
         defaultToast(
           postData(catalogApis.update(car?.id), {
             arg: { ...car, isActive: props },
           })
-        ).then((res) => {
-          res && mutate("/catalog");
-        });
+        )
+          .then((res) => {
+            res && useAutoStore.getState().mutator();
+          })
+          .finally(() => {
+            useAutoStore.setState({ disabled: false });
+          });
       };
-
       return (
         <div onClick={(e) => e.stopPropagation()}>
           <Switch isAcive={car.isActive} onChange={onChange} />
