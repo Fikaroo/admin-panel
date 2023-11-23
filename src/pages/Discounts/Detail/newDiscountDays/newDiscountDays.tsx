@@ -183,14 +183,14 @@ const NewDiscountDays = ({ data }: { data?: Discount }) => {
               <TextArea
                 title={""}
                 subtitle={"Заголовок"}
-                maxSymbol={"Максимум 500 символов"}
+                maxSymbol={"Максимум 1000 символов"}
                 value={headingValueRu}
                 onChange={(ev: string) => setHeadingValueRu(ev)}
               />
               <TextArea
                 title={""}
                 subtitle={"Подзаголовок"}
-                maxSymbol={"Максимум 500 символов"}
+                maxSymbol={"Максимум 1000 символов"}
                 value={subHeadingValueRu}
                 onChange={(ev: string) => setSubHeadingValueRu(ev)}
               />

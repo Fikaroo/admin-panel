@@ -140,14 +140,14 @@ const InfoAbout = () => {
             <TextArea
               title={"О Нас"}
               subtitle={"текст"}
-              maxSymbol={"Максимум 500 символов"}
+              maxSymbol={"Максимум 1000 символов"}
               value={aboutValueRu}
               onChange={(ev: string) => setAboutValueRu(ev)}
             />
             <TextArea
               title={"B2B"}
               subtitle={"текст"}
-              maxSymbol={"Максимум 500 символов"}
+              maxSymbol={"Максимум 1000 символов"}
               value={b2bValueRu}
               onChange={(ev: string) => setB2bValueRu(ev)}
             />
