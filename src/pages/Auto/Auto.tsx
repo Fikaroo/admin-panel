@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./Auto.scss";
-import useSWR from "swr";
+import useSWR, { KeyedMutator } from "swr";
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./components/columns";
 import { catalogApis, getDataWithPagination } from "@/api";
@@ -11,8 +11,33 @@ import FilledButton from "@/elements/filledButton";
 import plusLogo from "@/assets/plusIcon.svg";
 import { useNavigate } from "react-router-dom";
 import Loading from "@/components/Loading";
+import { create } from "zustand";
+import { devtools, persist } from "zustand/middleware";
+
+interface AutoState {
+  disabled: boolean;
+  mutator: KeyedMutator<DataWithPagination<Catalog[]>> | KeyedMutator<null>;
+  setMutator: (newMutator: KeyedMutator<DataWithPagination<Catalog[]>>) => void;
+}
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const useAutoStore = create<AutoState>()(
+  devtools(
+    persist(
+      (set) => ({
+        disabled: false,
+        mutator: async () => null,
+        setMutator: (newMutator) => set(() => ({ mutator: newMutator })),
+      }),
+      {
+        name: "auto-storage",
+      }
+    )
+  )
+);
 
 const Auto = () => {
+  const { setMutator } = useAutoStore();
   const navigate = useNavigate();
   const [searchString, setSearchString] = useState("");
   const ref = useRef(null);
@@ -22,6 +47,7 @@ const Auto = () => {
     isLoading,
     error,
     isValidating,
+    mutate,
   } = useSWR<DataWithPagination<Catalog[]>>(
     catalogApis.search({
       pageNum,
@@ -35,6 +61,10 @@ const Auto = () => {
     navigate("detail");
   };
   const handleSearch = (str: string) => setSearchString(str);
+
+  useEffect(() => {
+    setMutator(mutate);
+  }, []);
 
   return (
     <div>
