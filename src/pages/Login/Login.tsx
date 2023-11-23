@@ -24,7 +24,7 @@ const Login = () => {
 
   const handleClick = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (userName === "1" && password === "1") {
+    if (userName === "hertz.baku.admin" && password === "#we(loVE)caRS7Z7") {
       login();
       navigate("/");
     } else {
