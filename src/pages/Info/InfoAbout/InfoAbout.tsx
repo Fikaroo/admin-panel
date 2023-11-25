@@ -157,14 +157,14 @@ const InfoAbout = () => {
             <TextArea
               title={"Haqqimizda"}
               subtitle={"mətn"}
-              maxSymbol={"Maksimum 500 simvol"}
+              maxSymbol={"Maksimum 1000 simvol"}
               value={aboutValueAz}
               onChange={(ev: string) => setAboutValueAz(ev)}
             />
             <TextArea
               title={"B2B"}
               subtitle={"mətn"}
-              maxSymbol={"Maksimum 500 simvol"}
+              maxSymbol={"Maksimum 1000 simvol"}
               value={b2bValueAz}
               onChange={(ev: string) => setB2bValueAz(ev)}
             />
@@ -174,14 +174,14 @@ const InfoAbout = () => {
             <TextArea
               title={"About Us"}
               subtitle={"text"}
-              maxSymbol={"Maximum 500 symbol"}
+              maxSymbol={"Maximum 1000 symbol"}
               value={aboutValueEn}
               onChange={(ev: string) => setAboutValueEn(ev)}
             />
             <TextArea
               title={"B2B"}
               subtitle={"text"}
-              maxSymbol={"Maximum 500 symbol"}
+              maxSymbol={"Maximum 1000 symbol"}
               value={b2bValueEn}
               onChange={(ev: string) => setB2bValueEn(ev)}
             />
