@@ -1,7 +1,12 @@
 .info_mails {
   gap: 16px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .mails {
+    flex: 1;
+  }
 
   .lists {
     width: 100%;
