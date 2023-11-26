@@ -172,7 +172,7 @@ const Orders = () => {
             pageNum={pageNum}
             setPageNum={setPageNum}
             pagination={orderData.pagination}
-            data={orderData?.data}
+            data={orderData?.data.reverse()}
             columns={ordersColumns}
           />
         )
