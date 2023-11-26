@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import Loading from "@/components/Loading";
 import calendarLogo from "@/assets/calendarIcon.svg";
 import useOutSideClick from "@/hooks/useOutSideClick";
-import dayjs from "dayjs";
 import { DateRange, DayPicker } from "react-day-picker";
 
 const Discounts = () => {
@@ -22,8 +21,8 @@ const Discounts = () => {
   const [value, setValue] = useState<DateRange | undefined>();
   const ref = useRef(null);
   const { isOpen: show, setIsOpen: setShow } = useOutSideClick(ref);
-  const [minActionDate, setMinActionDate] = useState(dayjs(1997).toISOString());
-  const [maxActionDate, setMaxActionDate] = useState(dayjs().toISOString());
+  const [minActionDate, setMinActionDate] = useState("");
+  const [maxActionDate, setMaxActionDate] = useState("");
   const [pageNum, setPageNum] = useState(1);
   const {
     data: discountData,
