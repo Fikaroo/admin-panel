@@ -44,7 +44,7 @@ const InfoMails = () => {
   const [b2bMailList, setB2BMailList] = useState<Partial<DynamicContent>[]>([]);
 
   const updateOrderMail = (value: string, index: number, id?: string) => {
-    const current = { data: value, code: "orderMail" };
+    const current = { id, data: value, code: "orderMail" };
 
     setOrderMailList(changeArrayByIndex(orderMailList, index, current));
     id && setUpdateItemsOrderIds((prev) => [...prev, id]);
@@ -55,16 +55,21 @@ const InfoMails = () => {
   };
 
   const handleSaveOrderMail = () => {
+    console.log(updateItemsOrderIds);
     orderMailList
       ?.filter(({ id }) => (id ? updateItemsOrderIds.includes(id) : false))
       ?.map(({ id, ...item }) => {
+        console.log(id);
         id &&
           defaultToast(postData(dynamicContentApis.update(id), { arg: item }));
       });
 
     orderMailList
       ?.filter(({ id }) => !id)
-      ?.map((item) => item.data && defaultToast(createMail(item)));
+      ?.map((item) => {
+        console.log(item);
+        item.data && defaultToast(createMail(item));
+      });
 
     setTimeout(() => {
       setUpdateItemsOrderIds([]);
@@ -82,10 +87,11 @@ const InfoMails = () => {
   };
 
   const updateB2BMail = (value: string, index: number, id?: string) => {
-    const current = { data: value, code: "b2bMail" };
+    const current = { id, data: value, code: "b2bMail" };
 
     setB2BMailList(changeArrayByIndex(b2bMailList, index, current));
     id && setUpdateItemsB2BIds((prev) => [...prev, id]);
+    console.log(updateItemsB2BIds, updateItemsOrderIds);
   };
 
   const addB2BMail = () => {
@@ -118,7 +124,6 @@ const InfoMails = () => {
   };
 
   useEffect(() => {
-    console.log(orderMails, b2BMails);
     orderMails && setOrderMailList(orderMails);
     b2BMails && setB2BMailList(b2BMails);
   }, [
