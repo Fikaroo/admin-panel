@@ -85,23 +85,42 @@ const NewDiscountDays = ({ data }: { data?: Discount }) => {
 
   const handleSubmit = async () => {
     const res = await defaultToast(
-      trigger({
-        type: 2,
-        name: aksiyaName,
-        captionAz: headingValueAz,
-        captionEn: headingValueEn,
-        captionRu: headingValueRu,
-        descriptionAz: subHeadingValueAz,
-        descriptionRu: subHeadingValueRu,
-        descriptionEn: subHeadingValueEn,
-        enableBookButton: buttonActive,
-        catalogId: catalogId,
-        isActive: promotionActive,
-        imageBase64: img,
-        startDate: startAksiyaDate,
-        endDate: endAksiyaDate,
-        priceSettings: datesList,
-      })
+      trigger(
+        catalogId
+          ? {
+              type: 2,
+              name: aksiyaName,
+              captionAz: headingValueAz,
+              captionEn: headingValueEn,
+              captionRu: headingValueRu,
+              descriptionAz: subHeadingValueAz,
+              descriptionRu: subHeadingValueRu,
+              descriptionEn: subHeadingValueEn,
+              enableBookButton: buttonActive,
+              catalogId,
+              isActive: promotionActive,
+              imageBase64: img,
+              startDate: startAksiyaDate,
+              endDate: endAksiyaDate,
+              priceSettings: datesList,
+            }
+          : {
+              type: 2,
+              name: aksiyaName,
+              captionAz: headingValueAz,
+              captionEn: headingValueEn,
+              captionRu: headingValueRu,
+              descriptionAz: subHeadingValueAz,
+              descriptionRu: subHeadingValueRu,
+              descriptionEn: subHeadingValueEn,
+              enableBookButton: buttonActive,
+              isActive: promotionActive,
+              imageBase64: img,
+              startDate: startAksiyaDate,
+              endDate: endAksiyaDate,
+              priceSettings: datesList,
+            }
+      )
     );
     setTimeout(() => {
       res && navigate("/discounts");
@@ -245,6 +264,7 @@ const NewDiscountDays = ({ data }: { data?: Discount }) => {
                 setStartAksiyaDate(dayjs(event.target.value).toJSON())
               }
               min={dayjs().format("YYYY-MM-DD")}
+              required
             />
           </div>
 
@@ -260,6 +280,7 @@ const NewDiscountDays = ({ data }: { data?: Discount }) => {
                 setEndAksiyaDate(dayjs(event.target.value).toJSON())
               }
               min={dayjs(startAksiyaDate).format("YYYY-MM-DD")}
+              required
             />
           </div>
         </div>

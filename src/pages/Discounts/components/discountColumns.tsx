@@ -11,7 +11,7 @@ export const discountColumns: ColumnDef<Discount>[] = [
     header: "АВТОМОБИЛЬ",
     cell: ({ row }) => {
       const catalog = row.getValue<Catalog>("catalog");
-      return `${catalog?.makeName} ${catalog?.modelName}`;
+      return `${catalog?.makeName || ""} ${catalog?.modelName || ""}`;
     },
   },
   {
@@ -20,7 +20,7 @@ export const discountColumns: ColumnDef<Discount>[] = [
     cell: ({ row }) => {
       const type = row.getValue("type");
 
-      return type === 1 ? "Акционная цена" : type === 2 ? "Акционная дни" : "";
+      return type === 1 ? "Акционная цена" : type === 2 ? "Акционные дни" : "";
     },
   },
 ];
