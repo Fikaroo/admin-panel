@@ -69,28 +69,52 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
 
   const handleSubmit = async () => {
     const res = await defaultToast(
-      trigger({
-        type: 1,
-        name: aksiyaName,
-        captionAz: headingValueAz,
-        captionEn: headingValueEn,
-        captionRu: headingValueRu,
-        descriptionAz: subHeadingValueAz,
-        descriptionRu: subHeadingValueRu,
-        descriptionEn: subHeadingValueEn,
-        enableBookButton: buttonActive,
-        catalogId: catalogId,
-        isActive: promotionActive,
-        imageBase64: img,
-        startDate: startAksiyaDate,
-        endDate: endAksiyaDate,
-        priceSettings: [
-          {
-            minDays: srok,
-            pricePerDay: periodPrice,
-          },
-        ],
-      })
+      trigger(
+        catalogId
+          ? {
+              type: 1,
+              name: aksiyaName,
+              captionAz: headingValueAz,
+              captionEn: headingValueEn,
+              captionRu: headingValueRu,
+              descriptionAz: subHeadingValueAz,
+              descriptionRu: subHeadingValueRu,
+              descriptionEn: subHeadingValueEn,
+              enableBookButton: buttonActive,
+              catalogId,
+              isActive: promotionActive,
+              imageBase64: img,
+              startDate: startAksiyaDate,
+              endDate: endAksiyaDate,
+              priceSettings: [
+                {
+                  minDays: srok,
+                  pricePerDay: periodPrice,
+                },
+              ],
+            }
+          : {
+              type: 1,
+              name: aksiyaName,
+              captionAz: headingValueAz,
+              captionEn: headingValueEn,
+              captionRu: headingValueRu,
+              descriptionAz: subHeadingValueAz,
+              descriptionRu: subHeadingValueRu,
+              descriptionEn: subHeadingValueEn,
+              enableBookButton: buttonActive,
+              isActive: promotionActive,
+              imageBase64: img,
+              startDate: startAksiyaDate,
+              endDate: endAksiyaDate,
+              priceSettings: [
+                {
+                  minDays: srok,
+                  pricePerDay: periodPrice,
+                },
+              ],
+            }
+      )
     );
     setTimeout(async () => {
       res && navigate("/discounts");
