@@ -261,6 +261,7 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
                 setStartAksiyaDate(dayjs(event.target.value).toJSON())
               }
               min={dayjs().format("YYYY-MM-DD")}
+              required
             />
             <div style={{ display: "flex", marginTop: 25 }}>
               <input
@@ -297,6 +298,7 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
                 setEndAksiyaDate(dayjs(event.target.value).toJSON())
               }
               min={dayjs(startAksiyaDate).format("YYYY-MM-DD")}
+              required
             />
             <div style={{ display: "flex", marginTop: 25 }}>
               <div>
