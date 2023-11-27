@@ -31,6 +31,7 @@ const MailItem = ({
       <div className="list-icons">
         <input
           className="input list"
+          type="email"
           value={data}
           onChange={(e) => updateMail(e.target.value, index, id)}
           min={1}
