@@ -1,125 +1,3 @@
-export interface PriceSetting {
-  minDays: number;
-  maxDays?: number;
-  pricePerDay: number;
-}
-
-export interface Catalog {
-  id: string;
-  isActive: boolean;
-  isPromotion: boolean;
-  makeId: string;
-  modelId: string;
-  yearOfManufacture: number;
-  bodyType: number;
-  seatCount: number;
-  extraSeatCount: number;
-  luggageCount: number;
-  seatMaterialType: number;
-  gearType: number;
-  imageBase64: string;
-  priceSettings: PriceSetting[];
-  makeName: string;
-  makeImageBase64: null;
-  modelName: string;
-  descriptionAz: null;
-  descriptionEn: null;
-  descriptionRu: null;
-  nameAz: string;
-  nameEn: string;
-  nameRu: string;
-}
-export interface Discount {
-  id: string;
-  name: string;
-  type: number;
-  isActive: boolean;
-  imageBase64?: string;
-  enableBookButton: boolean;
-  catalogId: string;
-  startDate: string;
-  endDate: string;
-  discountPercentage: null;
-  priceSettings: PriceSetting[];
-  descriptionAz: string;
-  descriptionEn: string;
-  descriptionRu: string;
-  captionAz: string;
-  captionEn: string;
-  captionRu: string;
-  catalog?: Catalog;
-}
-export interface Order {
-  id?: string;
-  placeOfReceipt: string;
-  placeOfHandover: string;
-  startDate: Date;
-  endDate: Date;
-  startTime: string;
-  calculatedPrice?: number;
-  endTime: string;
-  fullname: string;
-  phoneNumber: string;
-  email: string;
-  comment: string;
-  catalogId: string;
-  status: number;
-  catalog?: Catalog;
-}
-export interface Analytic {
-  id: string;
-  ip: string;
-  actionDate: Date;
-  actionCode: string;
-  placeOfReceipt: string;
-  placeOfHandover: string;
-  startDate: Date;
-  endDate: Date;
-  startTime: string;
-  endTime: string;
-  catalogBodyType: string;
-  totalPrice: number;
-  region: string;
-  catalogName: string;
-}
-export interface Make {
-  id: string;
-  name: string;
-  isActive: boolean;
-  imageBase64: string;
-}
-
-export interface Model {
-  id: string;
-  name: string;
-  isActive: boolean;
-  makeId: string;
-  makeName: string;
-  imageBase64: string;
-}
-
-export interface DynamicContent {
-  id: string;
-  code: string;
-  content?: string;
-  contentAz?: string;
-  contentEn?: string;
-  contentRu?: string;
-  data: string;
-}
-
-export type Pagination = {
-  total_records: number;
-  total_pages: number;
-  next_page: "true" | "false";
-  prev_page: "true" | "false";
-};
-
-export type DataWithPagination<D> = {
-  data: D;
-  pagination: Pagination;
-};
-
 export enum DriveUnit {
   Full = 1,
   Fron = 2,
@@ -193,3 +71,136 @@ export interface Faq {
   question: string;
   answer: string;
 }
+
+export enum Status {
+  // Standart
+  Стандарт = 1,
+  // RejectedByAdmin
+  "Отклонено администратором" = 10,
+  // RejectedByUser
+  "Отклонено пользователем" = 11,
+}
+
+export interface PriceSetting {
+  minDays: number;
+  maxDays?: number;
+  pricePerDay: number;
+}
+
+export interface Catalog {
+  id: string;
+  isActive: boolean;
+  isPromotion: boolean;
+  makeId: string;
+  modelId: string;
+  yearOfManufacture: number;
+  bodyType: number;
+  seatCount: number;
+  extraSeatCount: number;
+  luggageCount: number;
+  seatMaterialType: number;
+  gearType: number;
+  imageBase64: string;
+  priceSettings: PriceSetting[];
+  makeName: string;
+  makeImageBase64: null;
+  modelName: string;
+  descriptionAz: null;
+  descriptionEn: null;
+  descriptionRu: null;
+  nameAz: string;
+  nameEn: string;
+  nameRu: string;
+}
+export interface Discount {
+  id: string;
+  name: string;
+  type: number;
+  isActive: boolean;
+  imageBase64?: string;
+  enableBookButton: boolean;
+  catalogId: string;
+  startDate: string;
+  endDate: string;
+  discountPercentage: null;
+  priceSettings: PriceSetting[];
+  descriptionAz: string;
+  descriptionEn: string;
+  descriptionRu: string;
+  captionAz: string;
+  captionEn: string;
+  captionRu: string;
+  catalog?: Catalog;
+}
+export interface Order {
+  id?: string;
+  placeOfReceipt: string;
+  placeOfHandover: string;
+  startDate: Date;
+  endDate: Date;
+  startTime: string;
+  calculatedPrice?: number;
+  endTime: string;
+  fullname: string;
+  phoneNumber: string;
+  email: string;
+  comment: string;
+  catalogId: string;
+  status: number;
+  system_id: string;
+  ip: string;
+  catalog?: Catalog;
+}
+export interface Analytic {
+  id: string;
+  ip: string;
+  actionDate: Date;
+  actionCode: string;
+  placeOfReceipt: string;
+  placeOfHandover: string;
+  startDate: Date;
+  endDate: Date;
+  startTime: string;
+  endTime: string;
+  catalogBodyType: string;
+  totalPrice: number;
+  region: string;
+  catalogName: string;
+}
+export interface Make {
+  id: string;
+  name: string;
+  isActive: boolean;
+  imageBase64: string;
+}
+
+export interface Model {
+  id: string;
+  name: string;
+  isActive: boolean;
+  makeId: string;
+  makeName: string;
+  imageBase64: string;
+}
+
+export interface DynamicContent {
+  id: string;
+  code: string;
+  content?: string;
+  contentAz?: string;
+  contentEn?: string;
+  contentRu?: string;
+  data: string;
+}
+
+export type Pagination = {
+  total_records: number;
+  total_pages: number;
+  next_page: "true" | "false";
+  prev_page: "true" | "false";
+};
+
+export type DataWithPagination<D> = {
+  data: D;
+  pagination: Pagination;
+};

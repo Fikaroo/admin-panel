@@ -10,10 +10,8 @@ export const instance = axios.create({
 
 export const getData = async (path: string) => (await instance.get(path)).data;
 
-export const getDataWithHeader = async (
-  path: string,
-  option: AxiosRequestConfig<unknown>
-) => (await instance.get(path, option)).data;
+export const getDataWithHeader = async (path: string, option: AxiosRequestConfig<unknown>) =>
+  (await instance.get(path, option)).data;
 
 export const getDataWithPagination = async (path: string) => {
   const res = await instance.get(path);
@@ -27,8 +25,7 @@ export const getDataWithPagination = async (path: string) => {
   };
 };
 
-export const postData = async (path: string, { arg }: { arg: unknown }) =>
-  (await instance.post(path, arg)).data;
+export const postData = async (path: string, { arg }: { arg: unknown }) => (await instance.post(path, arg)).data;
 
 type Params = {
   searchString?: string;
@@ -63,6 +60,8 @@ export const orderApis = {
       .join("")}`,
   create: "/orders/save",
   update: (id: string) => `/orders/save/${id}`,
+  cancelByAdmin: (id: string) => `/orders/cancelByAdmin/${id}`,
+  cancelByUser: (id: string) => `/orders/cancelByUser/${id}`,
 };
 
 export const catalogApis = {

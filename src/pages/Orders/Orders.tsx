@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./Orders.scss";
-import useSWR from "swr";
+import useSWR, { KeyedMutator } from "swr";
 import { DataTable } from "@/components/ui/data-table";
 import { ordersColumns } from "./components/ordersColumns";
 import { Order, DataWithPagination, BodyType } from "@/types";
@@ -18,6 +18,22 @@ import useOutSideClick from "@/hooks/useOutSideClick";
 import dayjs from "dayjs";
 import { DateRange, DayPicker } from "react-day-picker";
 import Loading from "@/components/Loading";
+import { create } from "zustand";
+
+interface OrderState {
+  cancelModal: boolean;
+  setCancelModal: (newCancelModal: boolean) => void;
+  mutator: KeyedMutator<DataWithPagination<Order[]>> | KeyedMutator<null>;
+  setMutator: (newMutator: KeyedMutator<DataWithPagination<Order[]>>) => void;
+}
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const useOrderStore = create<OrderState>()((set) => ({
+  cancelModal: false,
+  setCancelModal: (newCancelModal) => set(() => ({ cancelModal: newCancelModal })),
+  mutator: async () => null,
+  setMutator: (newMutator) => set(() => ({ mutator: newMutator })),
+}));
 
 const getOrderExcelJson = (res: Order[]) => {
   const orders: any[] = [];
@@ -34,9 +50,7 @@ const getOrderExcelJson = (res: Order[]) => {
         order[header] = value;
         console.log(value, order);
       } else if (accessorKey === "carType") {
-        const value = enumToMap(BodyType).find(
-          ([key]) => key == r?.catalog?.bodyType?.toString()
-        )?.[1];
+        const value = enumToMap(BodyType).find(([key]) => key == r?.catalog?.bodyType?.toString())?.[1];
         order[header] = value;
       } else if (accessorKey === "startDate") {
         const startDate = r?.startDate;
@@ -60,6 +74,7 @@ const getOrderExcelJson = (res: Order[]) => {
 };
 
 const Orders = () => {
+  const { setMutator } = useOrderStore();
   const [searchString, setSearchString] = useState("");
   const [value, setValue] = useState<DateRange | undefined>();
   const ref = useRef(null);
@@ -71,6 +86,7 @@ const Orders = () => {
     data: orderData,
     isLoading,
     isValidating,
+    mutate,
     error,
   } = useSWR<DataWithPagination<Order[]>>(
     orderApis.search({
@@ -81,13 +97,15 @@ const Orders = () => {
       maxActionDate,
       searchString,
     }),
-    getDataWithPagination
+    getDataWithPagination,
+    { revalidateOnFocus: false },
   );
 
-  const { trigger } = useSWRMutation<Order[]>(
-    orderApis.search({ includeCatalog: true }),
-    getData
-  );
+  useEffect(() => {
+    setMutator(mutate);
+  }, []);
+
+  const { trigger } = useSWRMutation<Order[]>(orderApis.search({ includeCatalog: true }), getData);
 
   const handleExcelDownload = async () => {
     const res = (await defaultToast(trigger())) as Order[];
@@ -103,13 +121,9 @@ const Orders = () => {
   };
 
   const handleDateSelect = (newValue: DateRange | undefined) => {
-    newValue?.from !== undefined
-      ? setMinActionDate(newValue?.from.toISOString())
-      : setMinActionDate("");
+    newValue?.from !== undefined ? setMinActionDate(newValue?.from.toISOString()) : setMinActionDate("");
 
-    newValue?.to !== undefined
-      ? setMaxActionDate(newValue?.to.toISOString())
-      : setMaxActionDate("");
+    newValue?.to !== undefined ? setMaxActionDate(newValue?.to.toISOString()) : setMaxActionDate("");
 
     setValue({ from: newValue?.from, to: newValue?.to });
   };
@@ -122,10 +136,7 @@ const Orders = () => {
       <div className="subHeader">
         <SearchElement onChange={handleSearch} />
 
-        <div
-          ref={ref}
-          style={{ position: "relative", display: "flex", gap: 10 }}
-        >
+        <div ref={ref} style={{ position: "relative", display: "flex", gap: 10 }}>
           <FilledButton
             icon={download}
             text={"Download Excel"}

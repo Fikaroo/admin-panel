@@ -1,6 +1,9 @@
-import { BodyType, Order } from "@/types";
-import { enumToMap } from "@/utils";
+import { getData, orderApis } from "@/api";
+import Dialog from "@/components/Dialog/Dialog";
+import { BodyType, Order, Status } from "@/types";
+import { defaultToast, enumToMap } from "@/utils";
 import { ColumnDef } from "@tanstack/react-table";
+import { useOrderStore } from "../Orders";
 
 export const ordersColumns: ColumnDef<Order>[] = [
   { accessorKey: "ip", header: "IP АДРЕС" },
@@ -35,9 +38,7 @@ export const ordersColumns: ColumnDef<Order>[] = [
     header: "ТИП АВТО",
     cell: ({ row }) => {
       const catalog = row?.original?.catalog;
-      return enumToMap(BodyType).find(
-        ([key]) => key == catalog?.bodyType.toString()
-      )?.[1];
+      return enumToMap(BodyType).find(([key]) => key == catalog?.bodyType.toString())?.[1];
     },
   },
   {
@@ -83,5 +84,41 @@ export const ordersColumns: ColumnDef<Order>[] = [
   {
     accessorKey: "calculatedPrice",
     header: "ЦЕНА",
+  },
+  {
+    accessorKey: "status",
+    header: "СТАТУС",
+    cell: ({ row }) => {
+      const data = row.original;
+
+      return enumToMap(Status)?.find(([key]) => Number(key) === data?.status)?.[1];
+    },
+  },
+
+  {
+    id: "action",
+    cell: ({ row }) => {
+      const id = row.original?.catalogId;
+
+      const handleCancelOrder = async () => {
+        defaultToast(getData(orderApis.cancelByAdmin(id || "")))
+          .then((res) => {
+            res && useOrderStore.getState().mutator();
+          })
+          .finally(() => {
+            useOrderStore.getState().setCancelModal(false);
+          });
+      };
+
+      return (
+        <Dialog>
+          <h2>Вы абсолютно уверены?</h2>
+          <p>Это действие не может быть отменено.</p>
+          <button className="dialog-action-btn" onClick={handleCancelOrder}>
+            отменить заказ
+          </button>
+        </Dialog>
+      );
+    },
   },
 ];
