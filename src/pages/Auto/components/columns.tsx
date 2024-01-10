@@ -22,24 +22,17 @@ export const columns: ColumnDef<Catalog>[] = [
   {
     accessorKey: "gearType",
     header: "КОРОБКА ПЕРЕДАЧ",
-    cell: ({ row }) =>
-      enumToMap(TransmissionType).find(
-        ([key]) => key == row.getValue("gearType")
-      )?.[1],
+    cell: ({ row }) => enumToMap(TransmissionType).find(([key]) => key == row.getValue("gearType"))?.[1],
   },
   {
     accessorKey: "bodyType",
     header: "КАТЕГОРИЯ",
-    cell: ({ row }) =>
-      enumToMap(BodyType).find(([key]) => key == row.getValue("bodyType"))?.[1],
+    cell: ({ row }) => enumToMap(BodyType).find(([key]) => key == row.getValue("bodyType"))?.[1],
   },
   {
     accessorKey: "seatMaterialType",
     header: "САЛОН",
-    cell: ({ row }) =>
-      enumToMap(SeatMaterialType).find(
-        ([key]) => key == row.getValue("seatMaterialType")
-      )?.[1],
+    cell: ({ row }) => enumToMap(SeatMaterialType).find(([key]) => key == row.getValue("seatMaterialType"))?.[1],
   },
   {
     accessorKey: "seatCount",
@@ -59,7 +52,7 @@ export const columns: ColumnDef<Catalog>[] = [
         defaultToast(
           postData(catalogApis.update(car?.id), {
             arg: { ...car, isActive: props },
-          })
+          }),
         )
           .then((res) => {
             res && useAutoStore.getState().mutator();
