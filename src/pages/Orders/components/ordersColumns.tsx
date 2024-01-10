@@ -98,12 +98,12 @@ export const ordersColumns: ColumnDef<Order>[] = [
   {
     id: "action",
     cell: ({ row }) => {
-      const id = row.original?.catalogId;
+      const id = row.original?.system_id;
 
       const handleCancelOrder = async () => {
         defaultToast(getData(orderApis.cancelByAdmin(id || "")))
           .then((res) => {
-            res && useOrderStore.getState().mutator();
+            !res && useOrderStore.getState().mutator();
           })
           .finally(() => {
             useOrderStore.getState().setCancelModal(false);
