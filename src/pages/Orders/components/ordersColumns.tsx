@@ -103,10 +103,10 @@ export const ordersColumns: ColumnDef<Order>[] = [
       const handleCancelOrder = async () => {
         defaultToast(getData(orderApis.cancelByAdmin(id || "")))
           .then((res) => {
-            !res && useOrderStore.getState().mutator();
+            res === "" && useOrderStore.getState().mutator();
           })
           .finally(() => {
-            useOrderStore.getState().setCancelModal(false);
+            useOrderStore.getState().cancelModal();
           });
       };
 

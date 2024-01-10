@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Close, Cancel } from "@mui/icons-material";
 
 import "./Dialog.scss";
@@ -10,15 +10,20 @@ interface DialogProps {
 }
 
 const Dialog = ({ title, children }: DialogProps) => {
-  const { cancelModal, setCancelModal } = useOrderStore();
+  const { setCancelModal } = useOrderStore();
+  const [openModal, setOpenModal] = React.useState(false);
 
   const handleOpen = () => {
-    setCancelModal(true);
+    setOpenModal(true);
   };
 
   const handleClose = () => {
-    setCancelModal(false);
+    setOpenModal(false);
   };
+
+  useEffect(() => {
+    setCancelModal(handleClose);
+  }, []);
 
   return (
     <>
@@ -27,7 +32,7 @@ const Dialog = ({ title, children }: DialogProps) => {
         Отмена
       </button>
 
-      {cancelModal ? (
+      {openModal ? (
         <div className="dialog">
           <div className="dialog-overlay" onClick={handleClose} />
           <div className="dialog-content">

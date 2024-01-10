@@ -21,15 +21,15 @@ import Loading from "@/components/Loading";
 import { create } from "zustand";
 
 interface OrderState {
-  cancelModal: boolean;
-  setCancelModal: (newCancelModal: boolean) => void;
+  cancelModal: () => void;
+  setCancelModal: (newCancelModal: () => void) => void;
   mutator: KeyedMutator<DataWithPagination<Order[]>> | KeyedMutator<null>;
   setMutator: (newMutator: KeyedMutator<DataWithPagination<Order[]>>) => void;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useOrderStore = create<OrderState>()((set) => ({
-  cancelModal: false,
+  cancelModal: () => "",
   setCancelModal: (newCancelModal) => set(() => ({ cancelModal: newCancelModal })),
   mutator: async () => null,
   setMutator: (newMutator) => set(() => ({ mutator: newMutator })),
