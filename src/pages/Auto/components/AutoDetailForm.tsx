@@ -685,8 +685,9 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
             className="btn btn_outline"
             style={{ width: "fit-content", marginTop: 12 }}
             onClick={() => {
+              const pricePerPeriods = form.watch("pricePerPeriods")?.length > 0 ? form.watch("pricePerPeriods") : [];
               form.setValue("pricePerPeriods", [
-                ...form.watch("pricePerPeriods"),
+                ...pricePerPeriods,
                 {
                   startDate: "",
                   endDate: "",
@@ -793,8 +794,10 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
             className="btn btn_outline"
             style={{ width: "fit-content", marginTop: 12 }}
             onClick={() => {
+              const inactivePeriods = form.watch("inactivePeriods")?.length > 0 ? form.watch("inactivePeriods") : [];
+
               form.setValue("inactivePeriods", [
-                ...form.watch("inactivePeriods"),
+                ...inactivePeriods,
                 {
                   startDate: "",
                   endDate: "",
