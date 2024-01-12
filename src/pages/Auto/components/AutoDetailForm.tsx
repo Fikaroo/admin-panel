@@ -43,7 +43,6 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
       res && navigate("/auto");
     }, 1000);
   }
-  console.log(form.formState.errors, form.watch());
 
   async function handleDelete() {
     await defaultToast(removeCatalog());
@@ -487,7 +486,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                         className="startDate"
                         onChange={(event) => {
                           const dateString = dayjs(event.target.value).toJSON();
-                          const periods = form.watch("pricePerPeriods");
+                          const periods = form.watch("pricePerPeriods") || [];
                           periods[index].startDate = dateString;
                           const newPeriods = changeArrayByIndex(periods, index, periods[index]);
                           form.setValue("pricePerPeriods", newPeriods);
@@ -507,7 +506,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                         value={dayjs(item.endDate).format("YYYY-MM-DD")}
                         onChange={(event) => {
                           const dateString = dayjs(event.target.value).toJSON();
-                          const periods = form.watch("pricePerPeriods");
+                          const periods = form.watch("pricePerPeriods") || [];
                           periods[index].endDate = dateString;
                           const newPeriods = changeArrayByIndex(periods, index, periods[index]);
                           form.setValue("pricePerPeriods", newPeriods);
@@ -551,7 +550,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                                   },
                                 ];
 
-                                const periods = form.watch("pricePerPeriods");
+                                const periods = form.watch("pricePerPeriods") || [];
                                 periods[index].prices = [current, ...right];
                                 form.setValue("pricePerPeriods", periods);
                               }}
@@ -596,7 +595,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                                     pricePerDay: 0,
                                   },
                                 ];
-                                const periods = form.watch("pricePerPeriods");
+                                const periods = form.watch("pricePerPeriods") || [];
                                 periods[index].prices = [...left, current, ...right];
                                 form.setValue("pricePerPeriods", periods);
                               }}
@@ -639,7 +638,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                                     .replace(/₼/, "")
                                     .replace(/[^\d]+/, ""),
                                 };
-                                const periods = form.watch("pricePerPeriods");
+                                const periods = form.watch("pricePerPeriods") || [];
                                 periods[index].prices = [...left, current];
                                 form.setValue("pricePerPeriods", periods);
                               }}
@@ -658,7 +657,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                   className="btn"
                   style={{ width: "fit-content", height: "fit-content", margin: "auto" }}
                   onClick={() => {
-                    const periods = form.watch("pricePerPeriods");
+                    const periods = form.watch("pricePerPeriods") || [];
                     periods.splice(index, 1);
                     form.setValue("pricePerPeriods", periods);
                   }}>
@@ -685,7 +684,9 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
             className="btn btn_outline"
             style={{ width: "fit-content", marginTop: 12 }}
             onClick={() => {
-              const pricePerPeriods = form.watch("pricePerPeriods")?.length > 0 ? form.watch("pricePerPeriods") : [];
+              const pricePerPeriods = Array.isArray(form.watch("pricePerPeriods"))
+                ? (form.watch("pricePerPeriods") as [])
+                : [];
               form.setValue("pricePerPeriods", [
                 ...pricePerPeriods,
                 {
@@ -730,7 +731,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                         className="startDate"
                         onChange={(event) => {
                           const dateString = dayjs(event.target.value).toJSON();
-                          const periods = form.watch("inactivePeriods");
+                          const periods = form.watch("inactivePeriods") || [];
                           periods[index].startDate = dateString;
                           const newPeriods = changeArrayByIndex(periods, index, periods[index]);
                           form.setValue("inactivePeriods", newPeriods);
@@ -750,7 +751,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                         value={dayjs(item.endDate).format("YYYY-MM-DD")}
                         onChange={(event) => {
                           const dateString = dayjs(event.target.value).toJSON();
-                          const periods = form.watch("inactivePeriods");
+                          const periods = form.watch("inactivePeriods") || [];
                           periods[index].endDate = dateString;
                           const newPeriods = changeArrayByIndex(periods, index, periods[index]);
                           form.setValue("inactivePeriods", newPeriods);
@@ -767,7 +768,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                   className="btn"
                   style={{ width: "fit-content", height: "fit-content", margin: "auto" }}
                   onClick={() => {
-                    const periods = form.watch("inactivePeriods");
+                    const periods = form.watch("inactivePeriods") || [];
                     periods.splice(index, 1);
                     form.setValue("inactivePeriods", periods);
                   }}>
@@ -794,7 +795,9 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
             className="btn btn_outline"
             style={{ width: "fit-content", marginTop: 12 }}
             onClick={() => {
-              const inactivePeriods = form.watch("inactivePeriods")?.length > 0 ? form.watch("inactivePeriods") : [];
+              const inactivePeriods = Array.isArray(form.watch("inactivePeriods"))
+                ? (form.watch("inactivePeriods") as [])
+                : [];
 
               form.setValue("inactivePeriods", [
                 ...inactivePeriods,
