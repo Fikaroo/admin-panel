@@ -43,7 +43,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
       res && navigate("/auto");
     }, 1000);
   }
-  console.log(form.watch());
+  console.log(form.formState.errors, form.watch());
 
   async function handleDelete() {
     await defaultToast(removeCatalog());

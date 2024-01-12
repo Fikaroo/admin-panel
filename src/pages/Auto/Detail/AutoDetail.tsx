@@ -30,24 +30,30 @@ const formSchema = z.object({
       pricePerDay: z.number().min(1),
     }),
   ),
-  pricePerPeriods: z.array(
-    z.object({
-      startDate: z.string(),
-      endDate: z.string(),
-      prices: z.array(
-        z.object({
-          minDays: z.number().min(1),
-          maxDays: z.number().optional(),
-          pricePerDay: z.number().min(1),
-        }),
-      ),
-    }),
+  pricePerPeriods: z.nullable(
+    z.array(
+      z.object({
+        startDate: z.string(),
+        endDate: z.string(),
+        prices: z
+          .array(
+            z.object({
+              minDays: z.number().min(1),
+              maxDays: z.number().optional(),
+              pricePerDay: z.number().min(1),
+            }),
+          )
+          .optional(),
+      }),
+    ),
   ),
-  inactivePeriods: z.array(
-    z.object({
-      startDate: z.string(),
-      endDate: z.string(),
-    }),
+  inactivePeriods: z.nullable(
+    z.array(
+      z.object({
+        startDate: z.string(),
+        endDate: z.string(),
+      }),
+    ),
   ),
   makeName: z.string(),
   makeImageBase64: z.string(),
