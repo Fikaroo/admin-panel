@@ -28,7 +28,32 @@ const formSchema = z.object({
       minDays: z.number().min(1),
       maxDays: z.number().optional(),
       pricePerDay: z.number().min(1),
-    })
+    }),
+  ),
+  pricePerPeriods: z.nullable(
+    z.array(
+      z.object({
+        startDate: z.string(),
+        endDate: z.string(),
+        prices: z
+          .array(
+            z.object({
+              minDays: z.number().min(1),
+              maxDays: z.number().optional(),
+              pricePerDay: z.number().min(1),
+            }),
+          )
+          .optional(),
+      }),
+    ),
+  ),
+  inactivePeriods: z.nullable(
+    z.array(
+      z.object({
+        startDate: z.string(),
+        endDate: z.string(),
+      }),
+    ),
   ),
   makeName: z.string(),
   makeImageBase64: z.string(),
@@ -39,10 +64,7 @@ export type AutoDetailFormSchema = z.infer<typeof formSchema>;
 
 const AutoDetail = () => {
   const { id } = useParams();
-  const { data, isLoading, error } = useSWR<AutoDetailFormSchema>(
-    id && catalogApis.getById(id),
-    getData
-  );
+  const { data, isLoading, error } = useSWR<AutoDetailFormSchema>(id && catalogApis.getById(id), getData);
 
   const navigate = useNavigate();
 
@@ -70,6 +92,8 @@ const AutoDetail = () => {
           pricePerDay: 0,
         },
       ],
+      pricePerPeriods: [],
+      inactivePeriods: [],
     },
     values: data,
   });
@@ -87,9 +111,7 @@ const AutoDetail = () => {
           <p>Назад</p>
         </button>
 
-        <h1 className="header__title">
-          {id ? "Карточка авто" : "Добавить авто"}
-        </h1>
+        <h1 className="header__title">{id ? "Карточка авто" : "Добавить авто"}</h1>
 
         <div className="form__container">
           <AutoDetailForm id={id} />

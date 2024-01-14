@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./Login.scss";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/AuthProvider";
 import Loading from "@/components/Loading";
 
 const Login = () => {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const { state } = useLocation();
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -37,7 +38,7 @@ const Login = () => {
     setTimeout(() => {
       setIsLoading(false);
 
-      isAuthenticated && navigate("/");
+      isAuthenticated && navigate(state || "/");
     }, 1000);
   }, [isAuthenticated, navigate]);
 
@@ -57,12 +58,7 @@ const Login = () => {
         </label>
 
         <label htmlFor="">
-          <input
-            className="loginPassword"
-            type="password"
-            onChange={(e) => changePassword(e)}
-            placeholder="Пароль"
-          />
+          <input className="loginPassword" type="password" onChange={(e) => changePassword(e)} placeholder="Пароль" />
           <p className="errorInvalid">{errorPassword}</p>
         </label>
         <button type="submit" className="loginButton">
