@@ -17,12 +17,10 @@ import photoHertz from "@/assets/HertzNotebook.png";
 
 const NewDiscountPrice = ({ data }: { data?: Discount }) => {
   const navigate = useNavigate();
-  const { trigger, isMutating } = useSWRMutation<
-    Discount,
-    unknown,
-    string,
-    Partial<Discount>
-  >(data ? discountApis.update(data?.id) : discountApis.create, postData);
+  const { trigger, isMutating } = useSWRMutation<Discount, unknown, string, Partial<Discount>>(
+    data ? discountApis.update(data?.id) : discountApis.create,
+    postData,
+  );
 
   const {
     trigger: removeTrigger,
@@ -31,43 +29,29 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
   } = useSWRMutation(data ? discountApis.delete(data?.id) : null, getData);
   const [aksiyaName, setAksiyaName] = useState(data?.name || "");
   const [headingValueRu, setHeadingValueRu] = useState(data?.captionRu || "");
-  const [subHeadingValueRu, setSubHeadingValueRu] = useState(
-    data?.descriptionRu || ""
-  );
+  const [subHeadingValueRu, setSubHeadingValueRu] = useState(data?.descriptionRu || "");
   const [headingValueAz, setHeadingValueAz] = useState(data?.captionAz || "");
-  const [subHeadingValueAz, setSubHeadingValueAz] = useState(
-    data?.descriptionAz || ""
-  );
+  const [subHeadingValueAz, setSubHeadingValueAz] = useState(data?.descriptionAz || "");
   const [headingValueEn, setHeadingValueEn] = useState(data?.captionEn || "");
-  const [subHeadingValueEn, setSubHeadingValueEn] = useState(
-    data?.descriptionEn || ""
-  );
+  const [subHeadingValueEn, setSubHeadingValueEn] = useState(data?.descriptionEn || "");
   const [catalogId, setCatalogId] = useState(data?.catalogId || "");
   const { currentLanguage } = useContext(LocalizationContext);
   const [img, setImg] = useState(data?.imageBase64 || "");
   const [srok, setSrok] = useState(data?.priceSettings?.[0].minDays || 0);
-  const [periodPrice, setPeriodPrice] = useState(
-    data?.priceSettings?.[0].pricePerDay || 0
-  );
+  const [periodPrice, setPeriodPrice] = useState(data?.priceSettings?.[0].pricePerDay || 0);
   const [startAksiyaDate, setStartAksiyaDate] = useState(data?.startDate || "");
   const [endAksiyaDate, setEndAksiyaDate] = useState(data?.endDate || "");
-  const [buttonActive, setButtonActive] = useState(
-    data?.enableBookButton || false
-  );
-  const [promotionActive, setPromotionActive] = useState(
-    data?.isActive || false
-  );
+  const [buttonActive, setButtonActive] = useState(data?.enableBookButton || false);
+  const [promotionActive, setPromotionActive] = useState(data?.isActive || false);
 
   const uploadImage = (...event: unknown[]) => {
     setImg(event?.[0] as string);
   };
 
-  const { data: catalogData, isLoading } = useSWR<Catalog[]>(
-    catalogApis.search({ isActive: true }),
-    getData
-  );
+  const { data: catalogData, isLoading } = useSWR<Catalog[]>(catalogApis.search({ isActive: true }), getData);
 
   const handleSubmit = async () => {
+    console.log(catalogId);
     const res = await defaultToast(
       trigger(
         catalogId
@@ -113,8 +97,8 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
                   pricePerDay: periodPrice,
                 },
               ],
-            }
-      )
+            },
+      ),
     );
     setTimeout(async () => {
       res && navigate("/discounts");
@@ -163,9 +147,8 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
               setCatalogId(e.target.value);
             }}
             value={catalogId}
-            required
-          >
-            <option hidden selected>
+            required>
+            <option value={""} selected>
               Марка
             </option>
             {catalogData?.map(({ id, nameEn }) => (
@@ -235,19 +218,12 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
           )}
         </LaguageSwitcher>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div
-            className="select__group discnt-name"
-            style={{ marginRight: 10 }}
-          >
+          <div className="select__group discnt-name" style={{ marginRight: 10 }}>
             <label>Срок аренды</label>
             <input
               className="input"
               value={srok}
-              onChange={(e) =>
-                setSrok(
-                  Number(e.target.value.replace(/^0/, "").replace(/[^\d]+/, ""))
-                )
-              }
+              onChange={(e) => setSrok(Number(e.target.value.replace(/^0/, "").replace(/[^\d]+/, "")))}
               type="text"
             />
             <label>Начало срока</label>
@@ -257,9 +233,7 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
               id=""
               value={dayjs(startAksiyaDate).format("YYYY-MM-DD")}
               className="startDate"
-              onChange={(event) =>
-                setStartAksiyaDate(dayjs(event.target.value).toJSON())
-              }
+              onChange={(event) => setStartAksiyaDate(dayjs(event.target.value).toJSON())}
               min={dayjs().format("YYYY-MM-DD")}
               required
             />
@@ -280,11 +254,7 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
             <input
               className="input"
               value={periodPrice}
-              onChange={(e) =>
-                setPeriodPrice(
-                  Number(e.target.value.replace(/^0/, "").replace(/[^\d]+/, ""))
-                )
-              }
+              onChange={(e) => setPeriodPrice(Number(e.target.value.replace(/^0/, "").replace(/[^\d]+/, "")))}
               type="text"
             />
             <label>Конец срока</label>
@@ -294,9 +264,7 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
               id=""
               className="endDate"
               value={dayjs(endAksiyaDate).format("YYYY-MM-DD")}
-              onChange={(event) =>
-                setEndAksiyaDate(dayjs(event.target.value).toJSON())
-              }
+              onChange={(event) => setEndAksiyaDate(dayjs(event.target.value).toJSON())}
               min={dayjs(startAksiyaDate).format("YYYY-MM-DD")}
               required
             />
@@ -318,12 +286,7 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
         </div>
         {data ? (
           <div className="btn_group">
-            <OutlinedButton
-              full
-              text={"Удалить"}
-              onClick={handleDelete}
-              disabled={isMutating || removeIsMutation}
-            />
+            <OutlinedButton full text={"Удалить"} onClick={handleDelete} disabled={isMutating || removeIsMutation} />
             <FilledButton
               full
               text={"Сохранить изменения"}
@@ -332,11 +295,7 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
             />
           </div>
         ) : (
-          <FilledButton
-            text={"Сохранить изменения"}
-            onClick={handleSubmit}
-            disabled={isMutating || removeIsMutation}
-          />
+          <FilledButton text={"Сохранить изменения"} onClick={handleSubmit} disabled={isMutating || removeIsMutation} />
         )}
       </div>
       <div className="right-disc-price-block">

@@ -99,6 +99,7 @@ export const ordersColumns: ColumnDef<Order>[] = [
     id: "action",
     cell: ({ row }) => {
       const id = row.original?.system_id;
+      const status = row.original?.status;
 
       const handleCancelOrder = async () => {
         defaultToast(getData(orderApis.cancelByAdmin(id || "")))
@@ -110,7 +111,7 @@ export const ordersColumns: ColumnDef<Order>[] = [
           });
       };
 
-      return (
+      return status === 1 ? (
         <Dialog>
           <h2>Вы абсолютно уверены?</h2>
           <p>Это действие не может быть отменено.</p>
@@ -118,7 +119,7 @@ export const ordersColumns: ColumnDef<Order>[] = [
             отменить заказ
           </button>
         </Dialog>
-      );
+      ) : null;
     },
   },
 ];
