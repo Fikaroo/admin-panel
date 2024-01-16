@@ -1,4 +1,4 @@
-import { getData, orderApis } from "@/api";
+import { dynamicContentApis, getData, orderApis, postData } from "@/api";
 import Dialog from "@/components/Dialog/Dialog";
 import { BodyType, Order, Status } from "@/types";
 import { defaultToast, enumToMap } from "@/utils";
@@ -90,7 +90,7 @@ export const ordersColumns: ColumnDef<Order>[] = [
     header: "СТАТУС",
     cell: ({ row }) => {
       const data = row.original;
-
+      console.log(data);
       return enumToMap(Status)?.find(([key]) => Number(key) === data?.status)?.[1];
     },
   },
@@ -100,9 +100,18 @@ export const ordersColumns: ColumnDef<Order>[] = [
     cell: ({ row }) => {
       const id = row.original?.system_id;
       const status = row.original?.status;
-
+      const getMails = async () => {
+        return await getData(dynamicContentApis.getArrayByCode("orderMail"));
+      };
       const handleCancelOrder = async () => {
-        defaultToast(getData(orderApis.cancelByAdmin(id || "")))
+        const mails = await getMails();
+        defaultToast(
+          postData(orderApis.cancelByAdmin(id || ""), {
+            arg: {
+              emailTo: mails.map((mail: { data: unknown }) => mail.data),
+            },
+          }),
+        )
           .then((res) => {
             res === "" && useOrderStore.getState().mutator();
           })
