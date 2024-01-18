@@ -96,7 +96,7 @@ const Orders = () => {
       searchString,
     }),
     getDataWithPagination,
-    { revalidateOnFocus: false },
+    { revalidateOnFocus: false, refreshInterval: 300000 },
   );
 
   useEffect(() => {
