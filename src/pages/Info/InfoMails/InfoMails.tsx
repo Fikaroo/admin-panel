@@ -9,10 +9,7 @@ import Loading from "@/components/Loading";
 import MailItem from "./components/MailItem";
 
 const InfoMails = () => {
-  const { trigger: createMail, isMutating } = useSWRMutation(
-    dynamicContentApis.create,
-    postData
-  );
+  const { trigger: createMail, isMutating } = useSWRMutation(dynamicContentApis.create, postData);
 
   const {
     data: orderMails,
@@ -20,10 +17,7 @@ const InfoMails = () => {
     isValidating: orderIsValidating,
     error: orderError,
     mutate: orderMutate,
-  } = useSWRImmutable<DynamicContent[]>(
-    dynamicContentApis.getArrayByCode("orderMail"),
-    getData
-  );
+  } = useSWRImmutable<DynamicContent[]>(dynamicContentApis.getArrayByCode("orderMail"), getData);
 
   const {
     data: b2BMails,
@@ -31,15 +25,10 @@ const InfoMails = () => {
     isValidating: b2BIsValidating,
     error: b2BError,
     mutate: b2BMutate,
-  } = useSWRImmutable<DynamicContent[]>(
-    dynamicContentApis.getArrayByCode("b2bMail"),
-    getData
-  );
+  } = useSWRImmutable<DynamicContent[]>(dynamicContentApis.getArrayByCode("b2bMail"), getData);
 
   const [updateItemsOrderIds, setUpdateItemsOrderIds] = useState<string[]>([]);
-  const [orderMailList, setOrderMailList] = useState<Partial<DynamicContent>[]>(
-    []
-  );
+  const [orderMailList, setOrderMailList] = useState<Partial<DynamicContent>[]>([]);
   const [updateItemsB2BIds, setUpdateItemsB2BIds] = useState<string[]>([]);
   const [b2bMailList, setB2BMailList] = useState<Partial<DynamicContent>[]>([]);
 
@@ -55,19 +44,15 @@ const InfoMails = () => {
   };
 
   const handleSaveOrderMail = () => {
-    console.log(updateItemsOrderIds);
     orderMailList
       ?.filter(({ id }) => (id ? updateItemsOrderIds.includes(id) : false))
       ?.map(({ id, ...item }) => {
-        console.log(id);
-        id &&
-          defaultToast(postData(dynamicContentApis.update(id), { arg: item }));
+        id && defaultToast(postData(dynamicContentApis.update(id), { arg: item }));
       });
 
     orderMailList
       ?.filter(({ id }) => !id)
       ?.map((item) => {
-        console.log(item);
         item.data && defaultToast(createMail(item));
       });
 
@@ -78,9 +63,7 @@ const InfoMails = () => {
   };
 
   const handleRemoveByIndexOrder = (deletedIndex: number) => {
-    setOrderMailList((prev) =>
-      prev.filter((_, index) => index !== deletedIndex)
-    );
+    setOrderMailList((prev) => prev.filter((_, index) => index !== deletedIndex));
     setTimeout(() => {
       orderMutate();
     }, 1000);
@@ -91,7 +74,6 @@ const InfoMails = () => {
 
     setB2BMailList(changeArrayByIndex(b2bMailList, index, current));
     id && setUpdateItemsB2BIds((prev) => [...prev, id]);
-    console.log(updateItemsB2BIds, updateItemsOrderIds);
   };
 
   const addB2BMail = () => {
@@ -102,13 +84,10 @@ const InfoMails = () => {
     b2bMailList
       ?.filter(({ id }) => (id ? updateItemsB2BIds.includes(id) : false))
       ?.map(({ id, ...item }) => {
-        id &&
-          defaultToast(postData(dynamicContentApis.update(id), { arg: item }));
+        id && defaultToast(postData(dynamicContentApis.update(id), { arg: item }));
       });
 
-    b2bMailList
-      ?.filter(({ id }) => !id)
-      ?.map((item) => item.data && defaultToast(createMail(item)));
+    b2bMailList?.filter(({ id }) => !id)?.map((item) => item.data && defaultToast(createMail(item)));
 
     setTimeout(() => {
       setUpdateItemsB2BIds([]);
@@ -126,18 +105,9 @@ const InfoMails = () => {
   useEffect(() => {
     orderMails && setOrderMailList(orderMails);
     b2BMails && setB2BMailList(b2BMails);
-  }, [
-    orderMails,
-    orderIsLoading,
-    orderIsValidating,
-    b2BMails,
-    b2BIsLoading,
-    b2BIsValidating,
-    isMutating,
-  ]);
+  }, [orderMails, orderIsLoading, orderIsValidating, b2BMails, b2BIsLoading, b2BIsValidating, isMutating]);
 
-  if (orderIsLoading || orderIsValidating || b2BIsValidating || b2BIsLoading)
-    return <Loading />;
+  if (orderIsLoading || orderIsValidating || b2BIsValidating || b2BIsLoading) return <Loading />;
 
   if (orderError || b2BError) return "No result";
 
@@ -158,18 +128,8 @@ const InfoMails = () => {
           ))}
         </div>
 
-        <button
-          className="btn btn_add"
-          disabled={isMutating}
-          onClick={addOrderMail}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-          >
+        <button className="btn btn_add" disabled={isMutating} onClick={addOrderMail}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
             <path
               d="M9.99984 4.16699V15.8337M4.1665 10.0003H15.8332"
               stroke="#141414"
@@ -181,11 +141,7 @@ const InfoMails = () => {
           Добавить партнера
         </button>
 
-        <button
-          onClick={handleSaveOrderMail}
-          className="btn btn_primary"
-          disabled={isMutating}
-        >
+        <button onClick={handleSaveOrderMail} className="btn btn_primary" disabled={isMutating}>
           Сохранить изменения
         </button>
       </div>
@@ -205,18 +161,8 @@ const InfoMails = () => {
           ))}
         </div>
 
-        <button
-          className="btn btn_add"
-          disabled={isMutating}
-          onClick={addB2BMail}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-          >
+        <button className="btn btn_add" disabled={isMutating} onClick={addB2BMail}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
             <path
               d="M9.99984 4.16699V15.8337M4.1665 10.0003H15.8332"
               stroke="#141414"
@@ -228,11 +174,7 @@ const InfoMails = () => {
           Добавить партнера
         </button>
 
-        <button
-          onClick={handleSaveB2BMail}
-          className="btn btn_primary"
-          disabled={isMutating}
-        >
+        <button onClick={handleSaveB2BMail} className="btn btn_primary" disabled={isMutating}>
           Сохранить изменения
         </button>
       </div>

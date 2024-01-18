@@ -48,7 +48,6 @@ const getOrderExcelJson = (res: Order[]) => {
       } else if (accessorKey === "carName") {
         const value = `${r?.catalog?.makeName} ${r?.catalog?.modelName}`;
         order[header] = value;
-        console.log(value, order);
       } else if (accessorKey === "carType") {
         const value = enumToMap(BodyType).find(([key]) => key == r?.catalog?.bodyType?.toString())?.[1];
         order[header] = value;
@@ -69,7 +68,6 @@ const getOrderExcelJson = (res: Order[]) => {
 
     orders.push(order);
   });
-  console.log(orders);
   return orders;
 };
 

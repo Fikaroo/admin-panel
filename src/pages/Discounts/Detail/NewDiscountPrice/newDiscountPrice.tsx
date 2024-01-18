@@ -51,7 +51,6 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
   const { data: catalogData, isLoading } = useSWR<Catalog[]>(catalogApis.search({ isActive: true }), getData);
 
   const handleSubmit = async () => {
-    console.log(catalogId);
     const res = await defaultToast(
       trigger(
         catalogId

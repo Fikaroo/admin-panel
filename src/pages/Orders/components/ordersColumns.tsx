@@ -90,7 +90,6 @@ export const ordersColumns: ColumnDef<Order>[] = [
     header: "СТАТУС",
     cell: ({ row }) => {
       const data = row.original;
-      console.log(data);
       return enumToMap(Status)?.find(([key]) => Number(key) === data?.status)?.[1];
     },
   },

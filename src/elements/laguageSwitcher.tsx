@@ -5,12 +5,10 @@ import { Lang } from "@/types";
 
 const LaguageSwitcher = ({ children }: { children: React.ReactNode }) => {
   // const [language, setLanguage] = useState<Laguage>("RU");
-  const { currentLanguage, setCurrentLanguage } =
-    useContext(LocalizationContext);
+  const { currentLanguage, setCurrentLanguage } = useContext(LocalizationContext);
   const handleLanguageSwitch = (lang: Lang) => {
     setCurrentLanguage(lang);
   };
-  console.log();
   return (
     <Fragment>
       <div className="languages">
@@ -18,12 +16,7 @@ const LaguageSwitcher = ({ children }: { children: React.ReactNode }) => {
           <button
             key={key}
             onClick={() => handleLanguageSwitch(value)}
-            className={
-              currentLanguage === value
-                ? "language language__active"
-                : "language"
-            }
-          >
+            className={currentLanguage === value ? "language language__active" : "language"}>
             {key}
           </button>
         ))}
