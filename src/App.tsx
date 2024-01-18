@@ -137,7 +137,7 @@ const App = () => {
   return (
     <AuthProvider>
       <RouterProvider router={router} />
-      <ToastContainer />
+      <ToastContainer autoClose={12000} style={{ fontWeight: 700, fontSize: 16 }} />
     </AuthProvider>
   );
 };
