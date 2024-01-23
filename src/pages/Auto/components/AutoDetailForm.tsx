@@ -711,7 +711,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                 },
               ]);
             }}>
-            Добавить периоды цена
+            Добавить периоды цен
           </button>
         </div>
 
@@ -807,7 +807,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                 },
               ]);
             }}>
-            добавить неактивный период
+            Добавить неактивный период
           </button>
         </div>
 
