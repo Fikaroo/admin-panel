@@ -117,7 +117,7 @@ export interface Discount {
   name: string;
   type: number;
   isActive: boolean;
-  imageBase64?: string;
+  imageBase64?: string | null;
   enableBookButton: boolean;
   catalogId: string;
   startDate: string;

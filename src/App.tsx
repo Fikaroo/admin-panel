@@ -12,8 +12,8 @@ import InfoFaq from "./pages/Info/InfoFaq/InfoFaq";
 import InfoPartners from "./pages/Info/InfoPartners/InfoPartners";
 import Discounts from "./pages/Discounts/Discounts";
 import DiscountsDetail from "./pages/Discounts/Detail/DiscountsDetail";
-import NewDiscountPrice from "./pages/Discounts/Detail/newDiscountPrice/newDiscountPrice";
-import NewDiscountDays from "./pages/Discounts/Detail/newDiscountDays/newDiscountDays";
+import NewDiscountPrice from "./pages/Discounts/Detail/NewDiscountPrice/NewDiscountPrice";
+import NewDiscountDays from "./pages/Discounts/Detail/NewDiscountDays/NewDiscountDays";
 import Login from "./pages/Login/Login";
 
 import { ToastContainer } from "react-toastify";

@@ -37,7 +37,7 @@ const NewDiscountDays = ({ data }: { data?: Discount }) => {
   const [subHeadingValueEn, setSubHeadingValueEn] = useState(data?.descriptionEn || "");
   const [catalogId, setCatalogId] = useState(data?.catalogId || "");
   const { currentLanguage } = useContext(LocalizationContext);
-  const [img, setImg] = useState(data?.imageBase64 || "");
+  const [img, setImg] = useState(data?.imageBase64 || null);
 
   const [startAksiyaDate, setStartAksiyaDate] = useState(data?.startDate || "");
   const [endAksiyaDate, setEndAksiyaDate] = useState(data?.endDate || "");

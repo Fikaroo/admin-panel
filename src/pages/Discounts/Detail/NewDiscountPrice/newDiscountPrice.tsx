@@ -36,7 +36,7 @@ const NewDiscountPrice = ({ data }: { data?: Discount }) => {
   const [subHeadingValueEn, setSubHeadingValueEn] = useState(data?.descriptionEn || "");
   const [catalogId, setCatalogId] = useState(data?.catalogId || "");
   const { currentLanguage } = useContext(LocalizationContext);
-  const [img, setImg] = useState(data?.imageBase64 || "");
+  const [img, setImg] = useState(data?.imageBase64 || null);
   const [srok, setSrok] = useState(data?.priceSettings?.[0].minDays || 0);
   const [periodPrice, setPeriodPrice] = useState(data?.priceSettings?.[0].pricePerDay || 0);
   const [startAksiyaDate, setStartAksiyaDate] = useState(data?.startDate || "");

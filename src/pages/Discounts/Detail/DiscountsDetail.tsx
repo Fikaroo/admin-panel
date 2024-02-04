@@ -2,8 +2,8 @@ import ArrowLeft from "@/assets/arrow-narrow-left.svg?react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import "./DiscountsDetail.scss";
 import Tab from "@/elements/tab";
-import NewDiscountPrice from "./newDiscountPrice/newDiscountPrice";
-import NewDiscountDays from "./newDiscountDays/newDiscountDays";
+import NewDiscountDays from "./NewDiscountDays/NewDiscountDays";
+import NewDiscountPrice from "./NewDiscountPrice/NewDiscountPrice";
 import { discountApis, getData } from "@/api";
 import useSWR from "swr";
 import { Discount } from "@/types";
@@ -12,11 +12,9 @@ import Loading from "@/components/Loading";
 
 const DiscountsDetail = () => {
   const { id } = useParams();
-  const { data, isLoading, error, isValidating } = useSWR<Discount>(
-    id && discountApis.getById(id),
-    getData,
-    { revalidateOnFocus: false }
-  );
+  const { data, isLoading, error, isValidating } = useSWR<Discount>(id && discountApis.getById(id), getData, {
+    revalidateOnFocus: false,
+  });
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const array = [
@@ -46,16 +44,10 @@ const DiscountsDetail = () => {
         <ArrowLeft className="left__arrow" />
         <p>Назад</p>
       </button>
-      <h1 className="header__title">
-        {id ? `${data?.name} акция` : "Новая акция"}
-      </h1>
+      <h1 className="header__title">{id ? `${data?.name} акция` : "Новая акция"}</h1>
       <Tab links={data?.type ? [array?.[data?.type - 1]] : array}>
-        {pathname.includes("newDiscountDays") && (
-          <NewDiscountDays data={data} />
-        )}
-        {pathname.includes("newDiscountPrice") && (
-          <NewDiscountPrice data={data} />
-        )}
+        {pathname.includes("newDiscountDays") && <NewDiscountDays data={data} />}
+        {pathname.includes("newDiscountPrice") && <NewDiscountPrice data={data} />}
       </Tab>
     </div>
   );
