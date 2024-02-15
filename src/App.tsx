@@ -2,28 +2,25 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { Suspense, lazy } from "react";
-
 import { AuthProvider } from "./AuthProvider";
 import PrivateRoute from "./components/PrivateRoute";
-import Loading from "./components/Loading";
 
-const Layout = lazy(() => import("./components/Layout/Layout"));
-const Orders = lazy(() => import("./pages/Orders/Orders"));
-const Auto = lazy(() => import("./pages/Auto/Auto"));
-const AutoDetail = lazy(() => import("./pages/Auto/Detail/AutoDetail"));
-const Analytics = lazy(() => import("./pages/Analytics/Analytics"));
-const Info = lazy(() => import("./pages/Info/Info"));
-const InfoMain = lazy(() => import("./pages/Info/InfoMain/InfoMain"));
-const InfoAbout = lazy(() => import("./pages/Info/InfoAbout/InfoAbout"));
-const InfoFaq = lazy(() => import("./pages/Info/InfoFaq/InfoFaq"));
-const InfoPartners = lazy(() => import("./pages/Info/InfoPartners/InfoPartners"));
-const Discounts = lazy(() => import("./pages/Discounts/Discounts"));
-const DiscountsDetail = lazy(() => import("./pages/Discounts/Detail/DiscountsDetail"));
-const NewDiscountPrice = lazy(() => import("./pages/Discounts/Detail/NewDiscountPrice/NewDiscountPrice"));
-const NewDiscountDays = lazy(() => import("./pages/Discounts/Detail/NewDiscountDays/NewDiscountDays"));
-const Login = lazy(() => import("./pages/Login/Login"));
-const InfoMails = lazy(() => import("./pages/Info/InfoMails/InfoMails"));
+import Layout from "./components/Layout/Layout";
+import Orders from "./pages/Orders/Orders";
+import Auto from "./pages/Auto/Auto";
+import AutoDetail from "./pages/Auto/Detail/AutoDetail";
+import Analytics from "./pages/Analytics/Analytics";
+import Info from "./pages/Info/Info";
+import InfoMain from "./pages/Info/InfoMain/InfoMain";
+import InfoAbout from "./pages/Info/InfoAbout/InfoAbout";
+import InfoFaq from "./pages/Info/InfoFaq/InfoFaq";
+import InfoPartners from "./pages/Info/InfoPartners/InfoPartners";
+import Discounts from "./pages/Discounts/Discounts";
+import DiscountsDetail from "./pages/Discounts/Detail/DiscountsDetail";
+import NewDiscountPrice from "./pages/Discounts/Detail/NewDiscountPrice/NewDiscountPrice";
+import NewDiscountDays from "./pages/Discounts/Detail/NewDiscountDays/NewDiscountDays";
+import Login from "./pages/Login/Login";
+import InfoMails from "./pages/Info/InfoMails/InfoMails";
 
 const router = createBrowserRouter([
   {
@@ -140,9 +137,7 @@ const router = createBrowserRouter([
 const App = () => {
   return (
     <AuthProvider>
-      <Suspense fallback={<Loading />}>
-        <RouterProvider router={router} />
-      </Suspense>
+      <RouterProvider router={router} />
       <ToastContainer autoClose={12000} style={{ fontWeight: 700, fontSize: 16 }} />
     </AuthProvider>
   );
