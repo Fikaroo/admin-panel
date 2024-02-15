@@ -6,21 +6,20 @@ import transmissionIcon from "@/assets/transmission.svg";
 import luggageIcon from "@/assets/luggage.svg";
 import ImageIcon from "@/assets/image-icon.svg?react";
 import "./Card.scss";
-import { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useMemo, useState } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
 import { AutoDetailFormSchema } from "@/pages/Auto/Detail/AutoDetail";
 import { enumToMap } from "@/utils";
 import { BodyType, SeatMaterialType, TransmissionType } from "@/types";
-
+import { dataURLToBlob } from "blob-util";
 const findEnumNameForId = (id: number, enumType: object) => {
   return enumToMap(enumType).find(([key]) => Number(key) === id)?.[1];
 };
 
 const Card = () => {
   const { watch } = useFormContext<AutoDetailFormSchema>();
-  const [details, setDetails] = useState<
-    { id: string; icon: string; title: string | number }[][]
-  >([
+  const value = useWatch();
+  const [details, setDetails] = useState<{ id: string; icon: string; title: string | number }[][]>([
     [
       {
         id: "yearOfManufacture",
@@ -78,104 +77,77 @@ const Card = () => {
     },
   ]);
 
-  useEffect(() => {
-    setDetails(() => {
-      const updatedData = [
-        [
-          {
-            id: "yearOfManufacture",
-            icon: calendartIcon,
-            title:
-              (Number(watch().yearOfManufacture) === -1 && "-") ||
-              watch().yearOfManufacture ||
-              "-",
-          },
-          {
-            id: "bodyType",
-            icon: carIcon,
-            title:
-              findEnumNameForId(Number(watch().bodyType), BodyType) ||
-              "-" ||
-              watch().bodyType ||
-              "-",
-          },
-        ],
-        [
-          {
-            id: "seatCount",
-            icon: userIcon,
-            title:
-              (Number(watch().seatCount) === -1 && "-") ||
-              watch().seatCount ||
-              "-",
-          },
-          {
-            id: "luggageCount",
-            icon: luggageIcon,
-            title:
-              (Number(watch().luggageCount) === -1 && "-") ||
-              watch().luggageCount ||
-              "-",
-          },
-        ],
-        [
-          {
-            id: "seatMaterialType",
-            icon: carSeatIcon,
-            title:
-              findEnumNameForId(
-                Number(watch().seatMaterialType),
-                SeatMaterialType
-              ) || "-",
-          },
-
-          {
-            id: "gearType",
-            icon: transmissionIcon,
-            title:
-              findEnumNameForId(Number(watch().gearType), TransmissionType) ||
-              "-",
-          },
-        ],
-      ];
-
-      return updatedData;
-    });
-
-    setPrices(() => {
-      const updatedData = [
+  useMemo(() => {
+    const updatedData = [
+      [
         {
-          id: "firstPrice",
-          subtitle: `${watch()?.priceSettings?.[0].minDays}-${
-            watch()?.priceSettings?.[0].maxDays
-          }  дней`,
-          title: watch().priceSettings?.[0]?.pricePerDay || 0,
+          id: "yearOfManufacture",
+          icon: calendartIcon,
+          title: (Number(value.yearOfManufacture) === -1 && "-") || value.yearOfManufacture || "-",
         },
         {
-          id: "secondPrice",
-          subtitle: `${watch()?.priceSettings?.[1].minDays}-${
-            watch()?.priceSettings?.[1].maxDays
-          }  дней`,
-          title: watch().priceSettings?.[1]?.pricePerDay || 0,
+          id: "bodyType",
+          icon: carIcon,
+          title: findEnumNameForId(Number(value.bodyType), BodyType) || "-" || value.bodyType || "-",
+        },
+      ],
+      [
+        {
+          id: "seatCount",
+          icon: userIcon,
+          title: (Number(value.seatCount) === -1 && "-") || value.seatCount || "-",
         },
         {
-          id: "thirdPrice",
-          subtitle: `${watch()?.priceSettings?.[2].minDays}+  дней`,
-          title: watch().priceSettings?.[2]?.pricePerDay || 0,
+          id: "luggageCount",
+          icon: luggageIcon,
+          title: (Number(value.luggageCount) === -1 && "-") || value.luggageCount || "-",
         },
-      ];
+      ],
+      [
+        {
+          id: "seatMaterialType",
+          icon: carSeatIcon,
+          title: findEnumNameForId(Number(value.seatMaterialType), SeatMaterialType) || "-",
+        },
 
-      return updatedData;
-    });
+        {
+          id: "gearType",
+          icon: transmissionIcon,
+          title: findEnumNameForId(Number(value.gearType), TransmissionType) || "-",
+        },
+      ],
+    ];
+    setDetails(updatedData);
   }, [
-    watch().yearOfManufacture,
-    watch().bodyType,
-    watch().priceSettings,
-    watch().seatCount,
-    watch().luggageCount,
-    watch().seatMaterialType,
-    watch().gearType,
+    value.bodyType,
+    value.gearType,
+    value.luggageCount,
+    value.seatCount,
+    value.seatMaterialType,
+    value.yearOfManufacture,
   ]);
+
+  useMemo(() => {
+    const updatedData = [
+      {
+        id: "firstPrice",
+        subtitle: `${value.priceSettings?.at(0)?.minDays}-${value?.priceSettings?.at(0)?.maxDays}  дней`,
+        title: value.priceSettings?.[0]?.pricePerDay || 0,
+      },
+      {
+        id: "secondPrice",
+        subtitle: `${value?.priceSettings?.at(1)?.minDays}-${value?.priceSettings?.at(1)?.maxDays}  дней`,
+        title: value.priceSettings?.[1]?.pricePerDay || 0,
+      },
+      {
+        id: "thirdPrice",
+        subtitle: `${value?.priceSettings?.at(2)?.minDays}+  дней`,
+        title: value.priceSettings?.[2]?.pricePerDay || 0,
+      },
+    ];
+
+    setPrices(updatedData);
+  }, [value.priceSettings]);
 
   return (
     <div className="card">
@@ -183,11 +155,7 @@ const Card = () => {
       <div className="card-wrapper">
         <div className="card-header">
           {watch().makeImageBase64 ? (
-            <img
-              className="car-logo"
-              src={watch()?.makeImageBase64 || ""}
-              alt="card-logo"
-            />
+            <img className="car-logo" src={watch()?.makeImageBase64 || ""} alt="card-logo" />
           ) : (
             <div className="car-logo">
               <ImageIcon />
@@ -200,7 +168,7 @@ const Card = () => {
         {watch().imageBase64 ? (
           <img
             className="car-image"
-            src={watch()?.imageBase64 || ""}
+            src={watch()?.imageBase64 ? URL.createObjectURL(dataURLToBlob(watch()?.imageBase64)) : ""}
             alt="car-image"
           />
         ) : (
@@ -213,11 +181,7 @@ const Card = () => {
             <div className="detail-container" key={index}>
               {detail.map(({ icon, title }, index) => (
                 <div className="detail" key={index}>
-                  <img
-                    className="detail-icon"
-                    src={icon}
-                    alt={title.toString()}
-                  />
+                  <img className="detail-icon" src={icon} alt={title.toString()} />
                   <p className="detail-title">{title}</p>
                 </div>
               ))}

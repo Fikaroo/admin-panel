@@ -60,7 +60,8 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
               control={form.control}
               name="imageBase64"
               rules={{ required: true }}
-              render={({ field }) => (
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              render={({ field: { ref, ...field } }) => (
                 <FormItem>
                   <FormControl>
                     <ImageUpload
@@ -82,7 +83,8 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
               control={form.control}
               name="makeImageBase64"
               rules={{ required: true }}
-              render={({ field }) => (
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              render={({ field: { ref, ...field } }) => (
                 <FormItem>
                   <FormControl>
                     <ImageUpload
@@ -120,8 +122,9 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                         "makeImageBase64",
                         makeData?.find(({ id }) => id === e.target.value)?.imageBase64 || "",
                       );
-                    }}>
-                    <option value="" disabled selected hidden>
+                    }}
+                    defaultValue={""}>
+                    <option value="" disabled hidden>
                       Марка
                     </option>
                     {makeData?.map(({ id, name }) => (
@@ -151,7 +154,7 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                       field.onChange(e);
                       customOnChange(e, "modelName");
                     }}>
-                    <option value="" disabled selected hidden>
+                    <option value="" disabled hidden>
                       Модель
                     </option>
                     {modelData?.map(({ id, name }) => (
@@ -175,8 +178,12 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
               <FormItem className="select__group">
                 <FormLabel>Год выпуска</FormLabel>
                 <FormControl>
-                  <select className="select" {...field} onChange={(e) => field.onChange(Number(e.target.value))}>
-                    <option value={-1} disabled selected hidden>
+                  <select
+                    className="select"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    defaultValue={-1}>
+                    <option value={-1} disabled hidden>
                       Год выпуска
                     </option>
                     {yearsList?.map((year) => (
@@ -203,8 +210,9 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                     {...field}
                     onChange={(e) => {
                       field.onChange(Number(e.target.value));
-                    }}>
-                    <option value={-1} disabled selected hidden>
+                    }}
+                    defaultValue={-1}>
+                    <option value={-1} disabled hidden>
                       Коробка передач
                     </option>
                     {enumToMap(TransmissionType).map(([key, value]) => (
@@ -233,8 +241,9 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                     {...field}
                     onChange={(e) => {
                       field.onChange(Number(e.target.value));
-                    }}>
-                    <option value={-1} disabled selected hidden>
+                    }}
+                    defaultValue={-1}>
+                    <option value={-1} disabled hidden>
                       Категория
                     </option>
                     {enumToMap(BodyType)?.map(([key, value]) => (
@@ -261,8 +270,9 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                     {...field}
                     onChange={(e) => {
                       field.onChange(Number(e.target.value));
-                    }}>
-                    <option value={-1} disabled selected hidden>
+                    }}
+                    defaultValue={-1}>
+                    <option value={-1} disabled hidden>
                       Салон
                     </option>
                     {enumToMap(SeatMaterialType)?.map(([key, value]) => (
@@ -294,8 +304,9 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                         const seats = e.target.value.split("+");
                         field.onChange(Number(seats[0]));
                         form.setValue("extraSeatCount", 1);
-                      }}>
-                      <option value={-1} disabled selected hidden>
+                      }}
+                      defaultValue={-1}>
+                      <option value={-1} disabled hidden>
                         Кол-во пассажиров
                       </option>
                       {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
@@ -328,12 +339,18 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
               <FormItem className="select__group">
                 <FormLabel>Кол-во багажа</FormLabel>
                 <FormControl>
-                  <select className="select" {...field} onChange={(e) => field.onChange(Number(e.target.value))}>
-                    <option value={-1} disabled selected hidden>
+                  <select
+                    className="select"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    defaultValue={-1}>
+                    <option value={-1} disabled hidden>
                       Кол-во багажа
                     </option>
                     {[1, 2, 3, 4].map((item) => (
-                      <option value={item}>{item}</option>
+                      <option value={item} key={item}>
+                        {item}
+                      </option>
                     ))}
                   </select>
                 </FormControl>

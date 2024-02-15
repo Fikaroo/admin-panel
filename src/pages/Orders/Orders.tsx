@@ -19,6 +19,7 @@ import dayjs from "dayjs";
 import { DateRange, DayPicker } from "react-day-picker";
 import Loading from "@/components/Loading";
 import { create } from "zustand";
+import { format } from "date-fns";
 
 interface OrderState {
   cancelModal: () => void;
@@ -42,6 +43,7 @@ const getOrderExcelJson = (res: Order[]) => {
 
     ordersColumns?.map(({ accessorKey, header }: any) => {
       const rowVal = r?.[accessorKey];
+
       if (accessorKey === "phoneNumber") {
         const value = `${r?.phoneNumber} \n ${r?.email}`;
         order[header] = value;
@@ -60,6 +62,9 @@ const getOrderExcelJson = (res: Order[]) => {
         const endDate = r?.endDate;
         const endTime = r?.endTime;
         const value = `${endDate} ${endTime}`;
+        order[header] = value;
+      } else if (accessorKey === "createdAt") {
+        const value = format(new Date(r.createdAt), "yyyy-MM-dd hh:mm:ss");
         order[header] = value;
       } else {
         order[header] = rowVal;
@@ -99,11 +104,10 @@ const Orders = () => {
     { revalidateOnFocus: false, refreshInterval: 300000 },
   );
 
-  useEffect(() => {
-    setMutator(mutate);
-  }, []);
-
-  const { trigger } = useSWRMutation<Order[]>(orderApis.search({ includeCatalog: true }), getData);
+  const { trigger } = useSWRMutation<Order[]>(
+    orderApis.search({ includeCatalog: true, minActionDate, maxActionDate, searchString }),
+    getData,
+  );
 
   const handleExcelDownload = async () => {
     const res = (await defaultToast(trigger())) as Order[];
@@ -127,6 +131,10 @@ const Orders = () => {
   };
 
   const handleSearch = (str: string) => setSearchString(str);
+
+  useEffect(() => {
+    setMutator(mutate);
+  }, [mutate, setMutator]);
 
   return (
     <div>

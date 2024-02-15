@@ -4,6 +4,7 @@ import { BodyType, Order, Status } from "@/types";
 import { defaultToast, enumToMap } from "@/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { useOrderStore } from "../Orders";
+import { format } from "date-fns";
 
 export const ordersColumns: ColumnDef<Order>[] = [
   { accessorKey: "ip", header: "IP АДРЕС" },
@@ -80,6 +81,22 @@ export const ordersColumns: ColumnDef<Order>[] = [
   {
     accessorKey: "comment",
     header: "КОММЕНТАРИЙ",
+  },
+  {
+    accessorKey: "createdAt",
+    header: "ДАТА ЗАКАЗА",
+    cell: ({ row }) => {
+      const date = row.getValue("createdAt") as Date;
+      return format(new Date(date), "yyyy-MM-dd hh:mm:ss");
+    },
+  },
+  {
+    accessorKey: "",
+    header: "СТАТУС",
+    cell: ({ row }) => {
+      const data = row.original;
+      return enumToMap(Status)?.find(([key]) => Number(key) === data?.status)?.[1];
+    },
   },
   {
     accessorKey: "calculatedPrice",

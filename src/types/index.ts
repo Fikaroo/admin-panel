@@ -133,6 +133,7 @@ export interface Discount {
   catalog?: Catalog;
 }
 export interface Order {
+  createdAt: Date;
   id?: string;
   placeOfReceipt: string;
   placeOfHandover: string;
