@@ -148,7 +148,6 @@ const Card = () => {
 
     setPrices(updatedData);
   }, [value.priceSettings]);
-
   return (
     <div className="card">
       {/* {isPromo && <div className="card-promo">АКЦИЯ</div>} */}
@@ -166,11 +165,7 @@ const Card = () => {
           </p>
         </div>
         {watch().imageBase64 ? (
-          <img
-            className="car-image"
-            src={watch()?.imageBase64 ? URL.createObjectURL(dataURLToBlob(watch()?.imageBase64)) : ""}
-            alt="car-image"
-          />
+          <img className="car-image" src={watch()?.imageBase64} alt="car-image" />
         ) : (
           <div className="car-image" style={{ background: "#f5f5f5" }}>
             <ImageIcon />
