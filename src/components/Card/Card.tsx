@@ -11,7 +11,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { AutoDetailFormSchema } from "@/pages/Auto/Detail/AutoDetail";
 import { enumToMap } from "@/utils";
 import { BodyType, SeatMaterialType, TransmissionType } from "@/types";
-import { dataURLToBlob } from "blob-util";
+
 const findEnumNameForId = (id: number, enumType: object) => {
   return enumToMap(enumType).find(([key]) => Number(key) === id)?.[1];
 };

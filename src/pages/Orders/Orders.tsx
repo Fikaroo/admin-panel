@@ -15,7 +15,6 @@ import { defaultToast, enumToMap } from "@/utils";
 import OutlinedButton from "@/elements/outlinedButton";
 import calendarLogo from "@/assets/calendarIcon.svg";
 import useOutSideClick from "@/hooks/useOutSideClick";
-import dayjs from "dayjs";
 import { DateRange, DayPicker } from "react-day-picker";
 import Loading from "@/components/Loading";
 import { create } from "zustand";
@@ -82,8 +81,8 @@ const Orders = () => {
   const [value, setValue] = useState<DateRange | undefined>();
   const ref = useRef(null);
   const { isOpen: show, setIsOpen: setShow } = useOutSideClick(ref);
-  const [minActionDate, setMinActionDate] = useState(dayjs(1997).toISOString());
-  const [maxActionDate, setMaxActionDate] = useState(dayjs().toISOString());
+  const [minActionDate, setMinActionDate] = useState("");
+  const [maxActionDate, setMaxActionDate] = useState("");
   const [pageNum, setPageNum] = useState(1);
   const {
     data: orderData,
