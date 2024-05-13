@@ -18,7 +18,7 @@ import useOutSideClick from "@/hooks/useOutSideClick";
 import { DateRange, DayPicker } from "react-day-picker";
 import Loading from "@/components/Loading";
 import { create } from "zustand";
-import { format } from "date-fns";
+import { addMinutes, differenceInDays, format, parseISO } from "date-fns";
 
 interface OrderState {
   cancelModal: () => void;
@@ -40,35 +40,41 @@ const getOrderExcelJson = (res: Order[]) => {
   res.map((r: any) => {
     const order: Record<any, any> = {};
 
-    ordersColumns?.map(({ accessorKey, header }: any) => {
-      const rowVal = r?.[accessorKey];
-
-      if (accessorKey === "phoneNumber") {
-        const value = `${r?.phoneNumber} \n ${r?.email}`;
-        order[header] = value;
-      } else if (accessorKey === "carName") {
-        const value = `${r?.catalog?.makeName} ${r?.catalog?.modelName}`;
-        order[header] = value;
-      } else if (accessorKey === "carType") {
-        const value = enumToMap(BodyType).find(([key]) => key == r?.catalog?.bodyType?.toString())?.[1];
-        order[header] = value;
-      } else if (accessorKey === "startDate") {
-        const startDate = r?.startDate;
-        const startTime = r?.startTime;
-        const value = `${startDate} ${startTime}`;
-        order[header] = value;
-      } else if (accessorKey === "endDate") {
-        const endDate = r?.endDate;
-        const endTime = r?.endTime;
-        const value = `${endDate} ${endTime}`;
-        order[header] = value;
-      } else if (accessorKey === "createdAt") {
-        const value = format(new Date(r.createdAt), "yyyy-MM-dd hh:mm:ss");
-        order[header] = value;
-      } else {
-        order[header] = rowVal;
-      }
-    });
+    ordersColumns
+      .filter(({ accessorKey }: any) => accessorKey)
+      ?.map(({ accessorKey, header }: any) => {
+        const rowVal = r?.[accessorKey];
+        console.log(accessorKey);
+        if (accessorKey === "phoneNumber") {
+          const value = `${r?.phoneNumber} \n ${r?.email}`;
+          order[header] = value;
+        } else if (accessorKey === "carName") {
+          const value = `${r?.catalog?.makeName} ${r?.catalog?.modelName}`;
+          order[header] = value;
+        } else if (accessorKey === "carType") {
+          const value = enumToMap(BodyType).find(([key]) => key == r?.catalog?.bodyType?.toString())?.[1];
+          order[header] = value;
+        } else if (accessorKey === "startDate") {
+          const startDate = r?.startDate;
+          const startTime = r?.startTime;
+          const value = `${startDate} ${startTime}`;
+          order[header] = value;
+        } else if (accessorKey === "endDate") {
+          const endDate = r?.endDate;
+          const endTime = r?.endTime;
+          const value = `${endDate} ${endTime}`;
+          order[header] = value;
+        } else if (accessorKey === "createdAt") {
+          const value = format(new Date(r.createdAt), "yyyy-MM-dd hh:mm:ss");
+          order[header] = value;
+        } else if (accessorKey === "diffDays") {
+          const startDateTime = addMinutes(parseISO(r.startDate + "T" + r.startTime), -new Date().getTimezoneOffset());
+          const endDateTime = addMinutes(parseISO(r.endDate + "T" + r.endTime), -new Date().getTimezoneOffset());
+          return (order[header] = differenceInDays(endDateTime, startDateTime));
+        } else {
+          order[header] = rowVal;
+        }
+      });
 
     orders.push(order);
   });

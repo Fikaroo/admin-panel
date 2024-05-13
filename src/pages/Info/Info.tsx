@@ -1,11 +1,6 @@
 import Tab from "@/elements/tab";
-import InfoMain from "./InfoMain/InfoMain";
-import InfoAbout from "./InfoAbout/InfoAbout";
-import InfoFaq from "./InfoFaq/InfoFaq";
-import InfoPartners from "./InfoPartners/InfoPartners";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import InfoMails from "./InfoMails/InfoMails";
 
 const Info = () => {
   const array = [
@@ -14,23 +9,20 @@ const Info = () => {
     { name: "FAQ", to: "/info/faq" },
     { name: "Партнеры", to: "/info/partners" },
     { name: "E-mails", to: "/info/emails" },
+    { name: "Minimum Book Days", to: "/info/min-book-days" },
   ];
 
   const { pathname } = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
     pathname === "/info" && navigate("detail");
-  }, [pathname]);
+  }, [navigate, pathname]);
 
   return (
     <div>
       <div className="headerTitle">Информация о сайте</div>
       <Tab links={array}>
-        {pathname === "/info/detail" && <InfoMain />}
-        {pathname === "/info/about" && <InfoAbout />}
-        {pathname === "/info/faq" && <InfoFaq />}
-        {pathname === "/info/partners" && <InfoPartners />}
-        {pathname === "/info/emails" && <InfoMails />}
+        <Outlet />
       </Tab>
     </div>
   );

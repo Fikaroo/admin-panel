@@ -4,7 +4,7 @@ import { BodyType, Order, Status } from "@/types";
 import { defaultToast, enumToMap } from "@/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { useOrderStore } from "../Orders";
-import { format } from "date-fns";
+import { addMinutes, differenceInDays, format, parseISO } from "date-fns";
 
 export const ordersColumns: ColumnDef<Order>[] = [
   { accessorKey: "ip", header: "IP АДРЕС" },
@@ -91,16 +91,23 @@ export const ordersColumns: ColumnDef<Order>[] = [
     },
   },
   {
-    accessorKey: "",
-    header: "СТАТУС",
-    cell: ({ row }) => {
-      const data = row.original;
-      return enumToMap(Status)?.find(([key]) => Number(key) === data?.status)?.[1];
-    },
-  },
-  {
     accessorKey: "calculatedPrice",
     header: "ЦЕНА",
+  },
+  {
+    accessorKey: "diffDays",
+    header: "РАЗНИЦА В ДНЯХ",
+    cell: ({ row }) => {
+      const startDateTime = addMinutes(
+        parseISO(row.original.startDate + "T" + row.original.startTime),
+        -new Date().getTimezoneOffset(),
+      );
+      const endDateTime = addMinutes(
+        parseISO(row.original.endDate + "T" + row.original.endTime),
+        -new Date().getTimezoneOffset(),
+      );
+      return differenceInDays(endDateTime, startDateTime);
+    },
   },
   {
     accessorKey: "status",
