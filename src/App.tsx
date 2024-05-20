@@ -21,7 +21,7 @@ import NewDiscountPrice from "./pages/Discounts/Detail/NewDiscountPrice/NewDisco
 import NewDiscountDays from "./pages/Discounts/Detail/NewDiscountDays/NewDiscountDays";
 import Login from "./pages/Login/Login";
 import InfoMails from "./pages/Info/InfoMails/InfoMails";
-import InfoMinBookDays from "./pages/Info/InfoMinBookDays";
+import InfoMinBookHours from "./pages/Info/InfoMinBookHours";
 
 const router = createBrowserRouter([
   {
@@ -118,7 +118,7 @@ const router = createBrowserRouter([
                 path: "emails",
                 element: <InfoMails />,
               },
-              { path: "min-book-days", element: <InfoMinBookDays /> },
+              { path: "min-book-hours", element: <InfoMinBookHours /> },
             ],
           },
           {

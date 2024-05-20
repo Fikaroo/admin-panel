@@ -16,111 +16,75 @@ const InfoMain = () => {
     isLoading: phoneNumberLoading,
     isValidating: phoneNumberValidationg,
     mutate: phoneNumberMutate,
-  } = useSWRImmutable<DynamicContent>(
-    dynamicContentApis.getSingleByCode("phoneNumber"),
-    (path: string) =>
-      getDataWithHeader(path, { headers: { "Accept-Language": "" } })
+  } = useSWRImmutable<DynamicContent>(dynamicContentApis.getSingleByCode("phoneNumber"), (path: string) =>
+    getDataWithHeader(path, { headers: { "Accept-Language": "" } }),
   );
-  const { trigger: savePhoneNumber, isMutating: phoneNumberMutating } =
-    useSWRMutation<DynamicContent, null, string, Partial<DynamicContent>>(
-      phoneNumber?.id
-        ? dynamicContentApis.update(phoneNumber.id)
-        : dynamicContentApis.create,
-      postData
-    );
+  const { trigger: savePhoneNumber, isMutating: phoneNumberMutating } = useSWRMutation<
+    DynamicContent,
+    null,
+    string,
+    Partial<DynamicContent>
+  >(phoneNumber?.id ? dynamicContentApis.update(phoneNumber.id) : dynamicContentApis.create, postData);
 
   const {
     data: email,
     isLoading: emailLoading,
     isValidating: emailValidationg,
     mutate: emailMutate,
-  } = useSWRImmutable<DynamicContent>(
-    dynamicContentApis.getSingleByCode("email"),
-    (path: string) =>
-      getDataWithHeader(path, { headers: { "Accept-Language": "" } })
+  } = useSWRImmutable<DynamicContent>(dynamicContentApis.getSingleByCode("email"), (path: string) =>
+    getDataWithHeader(path, { headers: { "Accept-Language": "" } }),
   );
   const { trigger: saveEmail, isMutating: emailMutating } = useSWRMutation<
     DynamicContent,
     null,
     string,
     Partial<DynamicContent>
-  >(
-    email?.id ? dynamicContentApis.update(email.id) : dynamicContentApis.create,
-    postData
-  );
+  >(email?.id ? dynamicContentApis.update(email.id) : dynamicContentApis.create, postData);
 
   const {
     data: mainBranch,
     isLoading: mainBranchLoading,
     isValidating: mainBranchValidationg,
     mutate: mainBranchMutate,
-  } = useSWRImmutable<DynamicContent>(
-    dynamicContentApis.getSingleByCode("mainBranch"),
-    (path: string) =>
-      getDataWithHeader(path, { headers: { "Accept-Language": "" } })
+  } = useSWRImmutable<DynamicContent>(dynamicContentApis.getSingleByCode("mainBranch"), (path: string) =>
+    getDataWithHeader(path, { headers: { "Accept-Language": "" } }),
   );
-  const { trigger: saveMainBranch, isMutating: mainBranchMutating } =
-    useSWRMutation<DynamicContent, null, string, Partial<DynamicContent>>(
-      mainBranch?.id
-        ? dynamicContentApis.update(mainBranch.id)
-        : dynamicContentApis.create,
-      postData
-    );
+  const { trigger: saveMainBranch, isMutating: mainBranchMutating } = useSWRMutation<
+    DynamicContent,
+    null,
+    string,
+    Partial<DynamicContent>
+  >(mainBranch?.id ? dynamicContentApis.update(mainBranch.id) : dynamicContentApis.create, postData);
 
   const {
     data: branch1,
     isLoading: branch1Loading,
     isValidating: branch1Validationg,
     mutate: branch1Mutate,
-  } = useSWRImmutable<DynamicContent>(
-    dynamicContentApis.getSingleByCode("branch1"),
-    (path: string) =>
-      getDataWithHeader(path, { headers: { "Accept-Language": "" } })
+  } = useSWRImmutable<DynamicContent>(dynamicContentApis.getSingleByCode("branch1"), (path: string) =>
+    getDataWithHeader(path, { headers: { "Accept-Language": "" } }),
   );
   const { trigger: saveBranch1, isMutating: branch1Mutating } = useSWRMutation<
     DynamicContent,
     null,
     string,
     Partial<DynamicContent>
-  >(
-    branch1?.id
-      ? dynamicContentApis.update(branch1.id)
-      : dynamicContentApis.create,
-    postData
-  );
+  >(branch1?.id ? dynamicContentApis.update(branch1.id) : dynamicContentApis.create, postData);
 
-  const [phoneValueRu, setPhoneValueRu] = useState(
-    phoneNumber?.contentRu || ""
-  );
+  const [phoneValueRu, setPhoneValueRu] = useState(phoneNumber?.contentRu || "");
   const [emailValueRu, setEmailValueRu] = useState(email?.contentRu || "");
-  const [adressMainValueRu, setAdressMainValueRu] = useState(
-    mainBranch?.contentRu || ""
-  );
-  const [adressBranchValueRu, setAdressBranchValueRu] = useState(
-    branch1?.contentRu || ""
-  );
+  const [adressMainValueRu, setAdressMainValueRu] = useState(mainBranch?.contentRu || "");
+  const [adressBranchValueRu, setAdressBranchValueRu] = useState(branch1?.contentRu || "");
 
-  const [phoneValueAz, setPhoneValueAz] = useState(
-    phoneNumber?.contentAz || ""
-  );
+  const [phoneValueAz, setPhoneValueAz] = useState(phoneNumber?.contentAz || "");
   const [emailValueAz, setEmailValueAz] = useState(email?.contentAz || "");
-  const [adressMainValueAz, setAdressMainValueAz] = useState(
-    mainBranch?.contentAz || ""
-  );
-  const [adressBranchValueAz, setAdressBranchValueAz] = useState(
-    branch1?.contentAz || ""
-  );
+  const [adressMainValueAz, setAdressMainValueAz] = useState(mainBranch?.contentAz || "");
+  const [adressBranchValueAz, setAdressBranchValueAz] = useState(branch1?.contentAz || "");
 
-  const [phoneValueEn, setPhoneValueEn] = useState(
-    phoneNumber?.contentEn || ""
-  );
+  const [phoneValueEn, setPhoneValueEn] = useState(phoneNumber?.contentEn || "");
   const [emailValueEn, setEmailValueEn] = useState(email?.contentEn || "");
-  const [adressMainValueEn, setAdressMainValueEn] = useState(
-    mainBranch?.contentEn || ""
-  );
-  const [adressBranchValueEn, setAdressBranchValueEn] = useState(
-    branch1?.contentEn || ""
-  );
+  const [adressMainValueEn, setAdressMainValueEn] = useState(mainBranch?.contentEn || "");
+  const [adressBranchValueEn, setAdressBranchValueEn] = useState(branch1?.contentEn || "");
 
   const { currentLanguage } = useContext(LocalizationContext);
 
@@ -131,7 +95,7 @@ const InfoMain = () => {
           savePhoneNumber({
             code: "phoneNumber",
             contentAz: phoneValueAz,
-          })
+          }),
         );
 
       emailValueAz !== email?.contentAz &&
@@ -139,7 +103,7 @@ const InfoMain = () => {
           saveEmail({
             code: "email",
             contentAz: emailValueAz,
-          })
+          }),
         );
 
       adressMainValueAz !== mainBranch?.contentAz &&
@@ -147,7 +111,7 @@ const InfoMain = () => {
           saveMainBranch({
             code: "mainBranch",
             contentAz: adressMainValueAz,
-          })
+          }),
         );
 
       adressBranchValueAz !== branch1?.contentAz &&
@@ -155,7 +119,7 @@ const InfoMain = () => {
           saveBranch1({
             code: "branch1",
             contentAz: adressBranchValueAz,
-          })
+          }),
         );
     } else if (currentLanguage === "en") {
       phoneValueEn !== phoneNumber?.contentEn &&
@@ -163,7 +127,7 @@ const InfoMain = () => {
           savePhoneNumber({
             code: "phoneNumber",
             contentEn: phoneValueEn,
-          })
+          }),
         );
 
       emailValueEn !== email?.contentEn &&
@@ -171,7 +135,7 @@ const InfoMain = () => {
           saveEmail({
             code: "email",
             contentEn: emailValueEn,
-          })
+          }),
         );
 
       adressMainValueEn !== mainBranch?.contentEn &&
@@ -179,7 +143,7 @@ const InfoMain = () => {
           saveMainBranch({
             code: "mainBranch",
             contentEn: adressMainValueEn,
-          })
+          }),
         );
 
       adressBranchValueEn !== branch1?.contentEn &&
@@ -187,7 +151,7 @@ const InfoMain = () => {
           saveBranch1({
             code: "branch1",
             contentEn: adressBranchValueEn,
-          })
+          }),
         );
     } else if (currentLanguage === "ru") {
       phoneValueRu !== phoneNumber?.contentRu &&
@@ -195,7 +159,7 @@ const InfoMain = () => {
           savePhoneNumber({
             code: "phoneNumber",
             contentRu: phoneValueRu,
-          })
+          }),
         );
 
       emailValueRu !== email?.contentRu &&
@@ -203,7 +167,7 @@ const InfoMain = () => {
           saveEmail({
             code: "email",
             contentRu: emailValueRu,
-          })
+          }),
         );
 
       adressMainValueRu !== mainBranch?.contentRu &&
@@ -211,25 +175,20 @@ const InfoMain = () => {
           saveMainBranch({
             code: "mainBranch",
             contentRu: adressMainValueRu,
-          })
+          }),
         );
 
       adressBranchValueRu !== branch1?.contentRu &&
         defaultToast(
           saveBranch1({
-            code: "branch1",
+            code: "branch1zz",
             contentRu: adressBranchValueRu,
-          })
+          }),
         );
     }
 
     setTimeout(() => {
-      if (
-        phoneNumberMutating ||
-        emailMutating ||
-        mainBranchMutating ||
-        branch1Mutating
-      ) {
+      if (phoneNumberMutating || emailMutating || mainBranchMutating || branch1Mutating) {
         phoneNumberMutate();
         emailMutate();
         mainBranchMutate();
@@ -366,12 +325,7 @@ const InfoMain = () => {
             : "Сохранить изменения"
         }
         onClick={() => handleSave()}
-        disabled={
-          phoneNumberMutating ||
-          emailMutating ||
-          mainBranchMutating ||
-          branch1Mutating
-        }
+        disabled={phoneNumberMutating || emailMutating || mainBranchMutating || branch1Mutating}
       />
     </div>
   );

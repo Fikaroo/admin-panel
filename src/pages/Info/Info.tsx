@@ -9,7 +9,7 @@ const Info = () => {
     { name: "FAQ", to: "/info/faq" },
     { name: "Партнеры", to: "/info/partners" },
     { name: "E-mails", to: "/info/emails" },
-    { name: "Minimum Book Days", to: "/info/min-book-days" },
+    { name: "Minimum Book Hours", to: "/info/min-book-hours" },
   ];
 
   const { pathname } = useLocation();

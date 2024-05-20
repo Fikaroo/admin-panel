@@ -1,0 +1,43 @@
+.min_book_days {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  .btn {
+    cursor: pointer;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    width: 240px;
+    padding: 8px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: var(--gray-200, #e5e5e5);
+
+    color: var(--gray-700, #424242);
+    text-align: center;
+
+    /* Body text xl/Semibold */
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 30px; /* 150% */
+
+    &:disabled {
+      background: var(--gray-200, #e5e5e5);
+    }
+  }
+
+  .btn_add {
+    background: var(--gray-200, #fff);
+    padding: 8px 30px;
+    justify-content: start;
+    margin: 8px 0;
+  }
+
+  .btn_primary {
+    width: 300px;
+    background: var(--Hertz-yellow, #fc0);
+  }
+}

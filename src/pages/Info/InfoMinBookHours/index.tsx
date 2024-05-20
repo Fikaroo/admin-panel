@@ -9,14 +9,14 @@ import { dynamicContentApis, getData, postData } from "@/api";
 import useSWRImmutable from "swr/immutable";
 import Loading from "@/components/Loading";
 
-import "./InfoMinBookDays.scss";
+import "./InfoMinBookHours.scss";
 
 const FormSchema = z.object({
   data: z.string().min(1),
 });
 
-const InfoMinBookDays = () => {
-  const { data, isLoading, error } = useSWRImmutable(dynamicContentApis.getSingleByCode("min_book_days"), getData);
+const InfoMinBookHours = () => {
+  const { data, isLoading, error } = useSWRImmutable(dynamicContentApis.getSingleByCode("min_book_hours"), getData);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     values: { data: data?.data },
@@ -67,4 +67,4 @@ const InfoMinBookDays = () => {
   );
 };
 
-export default InfoMinBookDays;
+export default InfoMinBookHours;
