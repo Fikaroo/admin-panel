@@ -43,7 +43,7 @@ const InfoMinBookHours = () => {
           name="data"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Минимальное количество дней бронирования</FormLabel>
+              <FormLabel>Минимальное количество часов бронирования</FormLabel>
               <FormControl>
                 <input
                   className="input"
