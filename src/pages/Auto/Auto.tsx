@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef, useState } from "react";
-import "./Auto.scss";
-import useSWR, { KeyedMutator } from "swr";
-import { DataTable } from "@/components/ui/data-table";
-import { columns } from "./components/columns";
 import { catalogApis, getDataWithPagination } from "@/api";
-import { Catalog, DataWithPagination } from "@/types";
-import SearchElement from "@/elements/search";
-import FilledButton from "@/elements/filledButton";
 import plusLogo from "@/assets/plusIcon.svg";
-import { useNavigate } from "react-router-dom";
 import Loading from "@/components/Loading";
+import { DataTable } from "@/components/ui/data-table";
+import FilledButton from "@/elements/filledButton";
+import SearchElement from "@/elements/search";
+import { Catalog, DataWithPagination } from "@/types";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useSWR, { KeyedMutator } from "swr";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
+import "./Auto.scss";
+import { CarDateDisable } from "./components/car-date-disable";
+import { columns } from "./components/columns";
 
 interface AutoState {
   disabled: boolean;
@@ -69,6 +70,9 @@ const Auto = () => {
   return (
     <div>
       <div className="headerTitle">Автомобили</div>
+
+      <CarDateDisable />
+
       <div className="subHeader">
         <SearchElement onChange={handleSearch} />
 

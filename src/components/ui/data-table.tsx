@@ -17,8 +17,10 @@ import {
 } from "../ui/table/table";
 
 import ArrowLeft from "@/assets/arrow-narrow-left.svg?react";
+import { usePagination } from "@/hooks/usePagination";
 import { Pagination } from "@/types";
 import { useNavigate } from "react-router-dom";
+import PaginationButton from "../pagination-button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -37,6 +39,12 @@ export function DataTable<TData, TValue>({
   setPageNum,
   rowLink,
 }: DataTableProps<TData, TValue>) {
+  const paginationRange = usePagination({
+    totalCount: pagination.total_pages,
+    siblingCount: 2,
+    pageSize: 1,
+    currentPage: pageNum,
+  });
   const navigate = useNavigate();
 
   const table = useReactTable({
@@ -122,18 +130,14 @@ export function DataTable<TData, TValue>({
                   Пред.
                 </div>
                 <div className="center">
-                  {Array.from({ length: pagination.total_pages }).map(
-                    (_, index) => (
-                      <div
-                        data-state={pageNum === index + 1}
-                        className="number"
-                        key={index}
-                        onClick={() => handleToPage(index + 1)}
-                      >
-                        {index + 1}
-                      </div>
-                    )
-                  )}
+                  {paginationRange?.map((pageNumber, index) => (
+                    <PaginationButton
+                      key={index}
+                      pageNumber={pageNumber}
+                      page={pageNum}
+                      handlePageChange={handleToPage}
+                    />
+                  ))}
                 </div>
                 <div
                   data-state={pagination.next_page}

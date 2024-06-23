@@ -1,24 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef, useState } from "react";
-import "./Orders.scss";
-import useSWR, { KeyedMutator } from "swr";
-import { DataTable } from "@/components/ui/data-table";
-import { ordersColumns } from "./components/ordersColumns";
-import { Order, DataWithPagination, BodyType } from "@/types";
-import SearchElement from "@/elements/search";
-import download from "@/assets/download.svg";
 import { getData, getDataWithPagination, orderApis } from "@/api";
+import calendarLogo from "@/assets/calendarIcon.svg";
+import download from "@/assets/download.svg";
+import Loading from "@/components/Loading";
+import { DataTable } from "@/components/ui/data-table";
 import FilledButton from "@/elements/filledButton";
+import OutlinedButton from "@/elements/outlinedButton";
+import SearchElement from "@/elements/search";
+import useOutSideClick from "@/hooks/useOutSideClick";
+import { BodyType, DataWithPagination, Order } from "@/types";
+import { defaultToast, enumToMap } from "@/utils";
+import { addMinutes, differenceInDays, format, parseISO } from "date-fns";
+import { useEffect, useRef, useState } from "react";
+import { DateRange, DayPicker } from "react-day-picker";
+import useSWR, { KeyedMutator } from "swr";
 import useSWRMutation from "swr/mutation";
 import * as xlsx from "xlsx";
-import { defaultToast, enumToMap } from "@/utils";
-import OutlinedButton from "@/elements/outlinedButton";
-import calendarLogo from "@/assets/calendarIcon.svg";
-import useOutSideClick from "@/hooks/useOutSideClick";
-import { DateRange, DayPicker } from "react-day-picker";
-import Loading from "@/components/Loading";
 import { create } from "zustand";
-import { addMinutes, differenceInDays, format, parseISO } from "date-fns";
+import "./Orders.scss";
+import { ordersColumns } from "./components/ordersColumns";
 
 interface OrderState {
   cancelModal: () => void;
@@ -30,7 +30,8 @@ interface OrderState {
 // eslint-disable-next-line react-refresh/only-export-components
 export const useOrderStore = create<OrderState>()((set) => ({
   cancelModal: () => "",
-  setCancelModal: (newCancelModal) => set(() => ({ cancelModal: newCancelModal })),
+  setCancelModal: (newCancelModal) =>
+    set(() => ({ cancelModal: newCancelModal })),
   mutator: async () => null,
   setMutator: (newMutator) => set(() => ({ mutator: newMutator })),
 }));
@@ -44,7 +45,6 @@ const getOrderExcelJson = (res: Order[]) => {
       .filter(({ accessorKey }: any) => accessorKey)
       ?.map(({ accessorKey, header }: any) => {
         const rowVal = r?.[accessorKey];
-        console.log(accessorKey);
         if (accessorKey === "phoneNumber") {
           const value = `${r?.phoneNumber} \n ${r?.email}`;
           order[header] = value;
@@ -52,7 +52,9 @@ const getOrderExcelJson = (res: Order[]) => {
           const value = `${r?.catalog?.makeName} ${r?.catalog?.modelName}`;
           order[header] = value;
         } else if (accessorKey === "carType") {
-          const value = enumToMap(BodyType).find(([key]) => key == r?.catalog?.bodyType?.toString())?.[1];
+          const value = enumToMap(BodyType).find(
+            ([key]) => key == r?.catalog?.bodyType?.toString()
+          )?.[1];
           order[header] = value;
         } else if (accessorKey === "startDate") {
           const startDate = r?.startDate;
@@ -68,8 +70,14 @@ const getOrderExcelJson = (res: Order[]) => {
           const value = format(new Date(r.createdAt), "yyyy-MM-dd hh:mm:ss");
           order[header] = value;
         } else if (accessorKey === "diffDays") {
-          const startDateTime = addMinutes(parseISO(r.startDate + "T" + r.startTime), -new Date().getTimezoneOffset());
-          const endDateTime = addMinutes(parseISO(r.endDate + "T" + r.endTime), -new Date().getTimezoneOffset());
+          const startDateTime = addMinutes(
+            parseISO(r.startDate + "T" + r.startTime),
+            -new Date().getTimezoneOffset()
+          );
+          const endDateTime = addMinutes(
+            parseISO(r.endDate + "T" + r.endTime),
+            -new Date().getTimezoneOffset()
+          );
           return (order[header] = differenceInDays(endDateTime, startDateTime));
         } else {
           order[header] = rowVal;
@@ -106,12 +114,17 @@ const Orders = () => {
       searchString,
     }),
     getDataWithPagination,
-    { revalidateOnFocus: false, refreshInterval: 300000 },
+    { revalidateOnFocus: false, refreshInterval: 300000 }
   );
 
   const { trigger } = useSWRMutation<Order[]>(
-    orderApis.search({ includeCatalog: true, minActionDate, maxActionDate, searchString }),
-    getData,
+    orderApis.search({
+      includeCatalog: true,
+      minActionDate,
+      maxActionDate,
+      searchString,
+    }),
+    getData
   );
 
   const handleExcelDownload = async () => {
@@ -128,9 +141,13 @@ const Orders = () => {
   };
 
   const handleDateSelect = (newValue: DateRange | undefined) => {
-    newValue?.from !== undefined ? setMinActionDate(newValue?.from.toISOString()) : setMinActionDate("");
+    newValue?.from !== undefined
+      ? setMinActionDate(newValue?.from.toISOString())
+      : setMinActionDate("");
 
-    newValue?.to !== undefined ? setMaxActionDate(newValue?.to.toISOString()) : setMaxActionDate("");
+    newValue?.to !== undefined
+      ? setMaxActionDate(newValue?.to.toISOString())
+      : setMaxActionDate("");
 
     setValue({ from: newValue?.from, to: newValue?.to });
   };
@@ -147,7 +164,10 @@ const Orders = () => {
       <div className="subHeader">
         <SearchElement onChange={handleSearch} />
 
-        <div ref={ref} style={{ position: "relative", display: "flex", gap: 10 }}>
+        <div
+          ref={ref}
+          style={{ position: "relative", display: "flex", gap: 10 }}
+        >
           <FilledButton
             icon={download}
             text={"Download Excel"}

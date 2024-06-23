@@ -1,14 +1,14 @@
-import ArrowLeft from "@/assets/arrow-narrow-left.svg?react";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
-import "./DiscountsDetail.scss";
-import Tab from "@/elements/tab";
-import NewDiscountDays from "./NewDiscountDays/NewDiscountDays";
-import NewDiscountPrice from "./NewDiscountPrice/NewDiscountPrice";
 import { discountApis, getData } from "@/api";
-import useSWR from "swr";
+import ArrowLeft from "@/assets/arrow-narrow-left.svg?react";
+import Loading from "@/components/Loading";
+import Tab from "@/elements/tab";
 import { Discount } from "@/types";
 import { useEffect } from "react";
-import Loading from "@/components/Loading";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import useSWR from "swr";
+import "./DiscountsDetail.scss";
+import NewDiscountPrice from "./NewDiscountPrice/newDiscountPrice";
+import NewDiscountDays from "./newDiscountDays/newDiscountDays";
 
 const DiscountsDetail = () => {
   const { id } = useParams();

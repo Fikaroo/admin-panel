@@ -3,30 +3,46 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { AuthProvider } from "./AuthProvider";
+import Layout from "./components/Layout/Layout";
 import PrivateRoute from "./components/PrivateRoute";
 
-import Layout from "./components/Layout/Layout";
-import Orders from "./pages/Orders/Orders";
-import Auto from "./pages/Auto/Auto";
-import AutoDetail from "./pages/Auto/Detail/AutoDetail";
-import Analytics from "./pages/Analytics/Analytics";
-import Info from "./pages/Info/Info";
-import InfoMain from "./pages/Info/InfoMain/InfoMain";
-import InfoAbout from "./pages/Info/InfoAbout/InfoAbout";
-import InfoFaq from "./pages/Info/InfoFaq/InfoFaq";
-import InfoPartners from "./pages/Info/InfoPartners/InfoPartners";
-import Discounts from "./pages/Discounts/Discounts";
-import DiscountsDetail from "./pages/Discounts/Detail/DiscountsDetail";
-import NewDiscountPrice from "./pages/Discounts/Detail/NewDiscountPrice/NewDiscountPrice";
-import NewDiscountDays from "./pages/Discounts/Detail/NewDiscountDays/NewDiscountDays";
-import Login from "./pages/Login/Login";
-import InfoMails from "./pages/Info/InfoMails/InfoMails";
-import InfoMinBookHours from "./pages/Info/InfoMinBookHours";
+// Lazy imports for pages
+import { Suspense, lazy } from "react";
+import Loading from "./components/Loading";
+
+const Analytics = lazy(() => import("./pages/Analytics/Analytics"));
+const Auto = lazy(() => import("./pages/Auto/Auto"));
+const AutoDetail = lazy(() => import("./pages/Auto/Detail/AutoDetail"));
+const DiscountsDetail = lazy(
+  () => import("./pages/Discounts/Detail/DiscountsDetail")
+);
+const NewDiscountPrice = lazy(
+  () => import("./pages/Discounts/Detail/NewDiscountPrice/newDiscountPrice")
+);
+const NewDiscountDays = lazy(
+  () => import("./pages/Discounts/Detail/newDiscountDays/newDiscountDays")
+);
+const Discounts = lazy(() => import("./pages/Discounts/Discounts"));
+const Info = lazy(() => import("./pages/Info/Info"));
+const InfoAbout = lazy(() => import("./pages/Info/InfoAbout/InfoAbout"));
+const InfoFaq = lazy(() => import("./pages/Info/InfoFaq/InfoFaq"));
+const InfoMails = lazy(() => import("./pages/Info/InfoMails/InfoMails"));
+const InfoMain = lazy(() => import("./pages/Info/InfoMain/InfoMain"));
+const InfoMinBookHours = lazy(() => import("./pages/Info/InfoMinBookHours"));
+const InfoPartners = lazy(
+  () => import("./pages/Info/InfoPartners/InfoPartners")
+);
+const Login = lazy(() => import("./pages/Login/Login"));
+const Orders = lazy(() => import("./pages/Orders/Orders"));
 
 const router = createBrowserRouter([
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <Suspense fallback={<Loading />}>
+        <Login />
+      </Suspense>
+    ),
   },
   {
     element: <PrivateRoute />,
@@ -37,23 +53,38 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Orders />,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <Orders />
+              </Suspense>
+            ),
           },
           {
             path: "auto",
             children: [
               {
                 index: true,
-                element: <Auto />,
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <Auto />
+                  </Suspense>
+                ),
               },
-
               {
                 path: "detail",
-                element: <AutoDetail />,
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <AutoDetail />
+                  </Suspense>
+                ),
               },
               {
                 path: "detail/:id",
-                element: <AutoDetail />,
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <AutoDetail />
+                  </Suspense>
+                ),
               },
             ],
           },
@@ -62,33 +93,61 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <Discounts />,
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <Discounts />
+                  </Suspense>
+                ),
               },
               {
                 path: "detail",
-                element: <DiscountsDetail />,
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <DiscountsDetail />
+                  </Suspense>
+                ),
                 children: [
                   {
                     path: "newDiscountPrice",
-                    element: <NewDiscountPrice />,
+                    element: (
+                      <Suspense fallback={<Loading />}>
+                        <NewDiscountPrice />
+                      </Suspense>
+                    ),
                   },
                   {
                     path: "newDiscountDays",
-                    element: <NewDiscountDays />,
+                    element: (
+                      <Suspense fallback={<Loading />}>
+                        <NewDiscountDays />
+                      </Suspense>
+                    ),
                   },
                 ],
               },
               {
                 path: "detail",
-                element: <DiscountsDetail />,
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <DiscountsDetail />
+                  </Suspense>
+                ),
                 children: [
                   {
                     path: "newDiscountPrice/:id",
-                    element: <NewDiscountPrice />,
+                    element: (
+                      <Suspense fallback={<Loading />}>
+                        <NewDiscountPrice />
+                      </Suspense>
+                    ),
                   },
                   {
                     path: "newDiscountDays/:id",
-                    element: <NewDiscountDays />,
+                    element: (
+                      <Suspense fallback={<Loading />}>
+                        <NewDiscountDays />
+                      </Suspense>
+                    ),
                   },
                 ],
               },
@@ -96,29 +155,60 @@ const router = createBrowserRouter([
           },
           {
             path: "info",
-            element: <Info />,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <Info />
+              </Suspense>
+            ),
             children: [
               {
                 path: "detail",
-                element: <InfoMain />,
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <InfoMain />
+                  </Suspense>
+                ),
               },
               {
                 path: "about",
-                element: <InfoAbout />,
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <InfoAbout />
+                  </Suspense>
+                ),
               },
               {
                 path: "faq",
-                element: <InfoFaq />,
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <InfoFaq />
+                  </Suspense>
+                ),
               },
               {
                 path: "partners",
-                element: <InfoPartners />,
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <InfoPartners />
+                  </Suspense>
+                ),
               },
               {
                 path: "emails",
-                element: <InfoMails />,
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <InfoMails />
+                  </Suspense>
+                ),
               },
-              { path: "min-book-hours", element: <InfoMinBookHours /> },
+              {
+                path: "min-book-hours",
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <InfoMinBookHours />
+                  </Suspense>
+                ),
+              },
             ],
           },
           {
@@ -126,7 +216,11 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <Analytics />,
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <Analytics />
+                  </Suspense>
+                ),
               },
             ],
           },
@@ -140,7 +234,10 @@ const App = () => {
   return (
     <AuthProvider>
       <RouterProvider router={router} />
-      <ToastContainer autoClose={12000} style={{ fontWeight: 700, fontSize: 16 }} />
+      <ToastContainer
+        autoClose={12000}
+        style={{ fontWeight: 700, fontSize: 16 }}
+      />
     </AuthProvider>
   );
 };

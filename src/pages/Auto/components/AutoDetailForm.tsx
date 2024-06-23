@@ -1,24 +1,46 @@
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form/form";
+import { catalogApis, getData, makeApis, modelApis, postData } from "@/api";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form/form";
 import ImageUpload from "@/components/ui/image-upload/image-upload";
-import { BodyType, Catalog, Make, Model, SeatMaterialType, TransmissionType } from "@/types";
-import { useFormContext } from "react-hook-form";
-import { changeArrayByIndex, defaultToast, enumToMap, getSelectAttr, yearsList } from "@/utils";
-import { AutoDetailFormSchema } from "../Detail/AutoDetail";
-import { makeApis, getData, modelApis, catalogApis, postData } from "@/api";
-import useSWR from "swr";
 import Switch from "@/components/ui/switch/switch";
-import useSWRMutation from "swr/mutation";
-import { useNavigate } from "react-router-dom";
+import {
+  BodyType,
+  Catalog,
+  Make,
+  Model,
+  SeatMaterialType,
+  TransmissionType,
+} from "@/types";
+import {
+  changeArrayByIndex,
+  defaultToast,
+  enumToMap,
+  getSelectAttr,
+  yearsList,
+} from "@/utils";
 import dayjs from "dayjs";
+import { useFormContext } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
+import { AutoDetailFormSchema } from "../Detail/AutoDetail";
 
 const AutoDetailForm = ({ id }: { id: string | undefined }) => {
   const navigate = useNavigate();
   const form = useFormContext<AutoDetailFormSchema>();
 
-  const { trigger: saveCatalog, isMutating } = useSWRMutation<Catalog, unknown, string, AutoDetailFormSchema>(
-    id ? catalogApis.update(id) : catalogApis.create,
-    postData,
-  );
+  const { trigger: saveCatalog, isMutating } = useSWRMutation<
+    Catalog,
+    unknown,
+    string,
+    AutoDetailFormSchema
+  >(id ? catalogApis.update(id) : catalogApis.create, postData);
 
   const {
     trigger: removeCatalog,
@@ -26,14 +48,22 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
     error,
   } = useSWRMutation(id ? catalogApis.delete(id) : null, getData);
 
-  const { data: makeData, isLoading: makesLoading } = useSWR<Make[]>(makeApis.getAll, getData);
-
-  const { data: modelData, isLoading: modelLoading } = useSWR<Model[]>(
-    form.watch("makeId") ? modelApis.search({ makeIds: form.watch("makeId") }) : null,
-    getData,
+  const { data: makeData, isLoading: makesLoading } = useSWR<Make[]>(
+    makeApis.getAll,
+    getData
   );
 
-  const customOnChange = (e: React.ChangeEvent<HTMLSelectElement>, fieldName: keyof AutoDetailFormSchema) => {
+  const { data: modelData, isLoading: modelLoading } = useSWR<Model[]>(
+    form.watch("makeId")
+      ? modelApis.search({ makeIds: form.watch("makeId") })
+      : null,
+    getData
+  );
+
+  const customOnChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+    fieldName: keyof AutoDetailFormSchema
+  ) => {
     form.setValue(fieldName, getSelectAttr(e));
   };
 
@@ -120,10 +150,12 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                       form.setValue("modelId", "");
                       form.setValue(
                         "makeImageBase64",
-                        makeData?.find(({ id }) => id === e.target.value)?.imageBase64 || "",
+                        makeData?.find(({ id }) => id === e.target.value)
+                          ?.imageBase64 || ""
                       );
                     }}
-                    defaultValue={""}>
+                    defaultValue={""}
+                  >
                     <option value="" disabled hidden>
                       Марка
                     </option>
@@ -153,7 +185,8 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                     onChange={(e) => {
                       field.onChange(e);
                       customOnChange(e, "modelName");
-                    }}>
+                    }}
+                  >
                     <option value="" disabled hidden>
                       Модель
                     </option>
@@ -182,7 +215,8 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                     className="select"
                     {...field}
                     onChange={(e) => field.onChange(Number(e.target.value))}
-                    defaultValue={-1}>
+                    defaultValue={-1}
+                  >
                     <option value={-1} disabled hidden>
                       Год выпуска
                     </option>
@@ -211,7 +245,8 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                     onChange={(e) => {
                       field.onChange(Number(e.target.value));
                     }}
-                    defaultValue={-1}>
+                    defaultValue={-1}
+                  >
                     <option value={-1} disabled hidden>
                       Коробка передач
                     </option>
@@ -242,7 +277,8 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                     onChange={(e) => {
                       field.onChange(Number(e.target.value));
                     }}
-                    defaultValue={-1}>
+                    defaultValue={-1}
+                  >
                     <option value={-1} disabled hidden>
                       Категория
                     </option>
@@ -271,7 +307,8 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                     onChange={(e) => {
                       field.onChange(Number(e.target.value));
                     }}
-                    defaultValue={-1}>
+                    defaultValue={-1}
+                  >
                     <option value={-1} disabled hidden>
                       Салон
                     </option>
@@ -305,7 +342,8 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                         field.onChange(Number(seats[0]));
                         form.setValue("extraSeatCount", 1);
                       }}
-                      defaultValue={-1}>
+                      defaultValue={-1}
+                    >
                       <option value={-1} disabled hidden>
                         Кол-во пассажиров
                       </option>
@@ -343,7 +381,8 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                     className="select"
                     {...field}
                     onChange={(e) => field.onChange(Number(e.target.value))}
-                    defaultValue={-1}>
+                    defaultValue={-1}
+                  >
                     <option value={-1} disabled hidden>
                       Кол-во багажа
                     </option>
@@ -381,7 +420,9 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                           .replace(/₼/, "")
                           .replace(/[^\d]+/, ""),
                       };
-                      const right = form.watch("priceSettings")?.slice(1, 3) || [
+                      const right = form
+                        .watch("priceSettings")
+                        ?.slice(1, 3) || [
                         {
                           minDays: 8,
                           maxDays: 21,
@@ -429,13 +470,19 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                           .replace(/₼/, "")
                           .replace(/[^\d]+/, ""),
                       };
-                      const right = form.watch("priceSettings")?.slice(2, 3) || [
+                      const right = form
+                        .watch("priceSettings")
+                        ?.slice(2, 3) || [
                         {
                           minDays: 22,
                           pricePerDay: 0,
                         },
                       ];
-                      form.setValue("priceSettings", [...left, current, ...right]);
+                      form.setValue("priceSettings", [
+                        ...left,
+                        current,
+                        ...right,
+                      ]);
                     }}
                     type="text"
                   />
@@ -505,7 +552,11 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                           const dateString = dayjs(event.target.value).toJSON();
                           const periods = form.watch("pricePerPeriods") || [];
                           periods[index].startDate = dateString;
-                          const newPeriods = changeArrayByIndex(periods, index, periods[index]);
+                          const newPeriods = changeArrayByIndex(
+                            periods,
+                            index,
+                            periods[index]
+                          );
                           form.setValue("pricePerPeriods", newPeriods);
                         }}
                         min={dayjs().format("YYYY-MM-DD")}
@@ -525,7 +576,11 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                           const dateString = dayjs(event.target.value).toJSON();
                           const periods = form.watch("pricePerPeriods") || [];
                           periods[index].endDate = dateString;
-                          const newPeriods = changeArrayByIndex(periods, index, periods[index]);
+                          const newPeriods = changeArrayByIndex(
+                            periods,
+                            index,
+                            periods[index]
+                          );
                           form.setValue("pricePerPeriods", newPeriods);
                         }}
                         min={dayjs(item.startDate).format("YYYY-MM-DD")}
@@ -545,7 +600,10 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                             <input
                               className="input"
                               {...field}
-                              value={field.value?.[index]?.prices?.[0].pricePerDay + "₼"}
+                              value={
+                                field.value?.[index]?.prices?.[0].pricePerDay +
+                                "₼"
+                              }
                               onChange={(event) => {
                                 const current = {
                                   minDays: 2,
@@ -555,7 +613,9 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                                     .replace(/₼/, "")
                                     .replace(/[^\d]+/, ""),
                                 };
-                                const right = form.watch("pricePerPeriods")?.[index].prices?.slice(1, 3) || [
+                                const right = form
+                                  .watch("pricePerPeriods")
+                                  ?.[index].prices?.slice(1, 3) || [
                                   {
                                     minDays: 8,
                                     maxDays: 21,
@@ -567,7 +627,8 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                                   },
                                 ];
 
-                                const periods = form.watch("pricePerPeriods") || [];
+                                const periods =
+                                  form.watch("pricePerPeriods") || [];
                                 periods[index].prices = [current, ...right];
                                 form.setValue("pricePerPeriods", periods);
                               }}
@@ -589,9 +650,14 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                             <input
                               className="input"
                               {...field}
-                              value={field.value?.[index]?.prices?.[1].pricePerDay + "₼"}
+                              value={
+                                field.value?.[index]?.prices?.[1].pricePerDay +
+                                "₼"
+                              }
                               onChange={(event) => {
-                                const left = form.watch("pricePerPeriods")?.[index].prices?.slice(0, 1) || [
+                                const left = form
+                                  .watch("pricePerPeriods")
+                                  ?.[index].prices?.slice(0, 1) || [
                                   {
                                     minDays: 2,
                                     maxDays: 7,
@@ -606,14 +672,21 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                                     .replace(/₼/, "")
                                     .replace(/[^\d]+/, ""),
                                 };
-                                const right = form.watch("pricePerPeriods")?.[index].prices?.slice(2, 3) || [
+                                const right = form
+                                  .watch("pricePerPeriods")
+                                  ?.[index].prices?.slice(2, 3) || [
                                   {
                                     minDays: 22,
                                     pricePerDay: 0,
                                   },
                                 ];
-                                const periods = form.watch("pricePerPeriods") || [];
-                                periods[index].prices = [...left, current, ...right];
+                                const periods =
+                                  form.watch("pricePerPeriods") || [];
+                                periods[index].prices = [
+                                  ...left,
+                                  current,
+                                  ...right,
+                                ];
                                 form.setValue("pricePerPeriods", periods);
                               }}
                               type="text"
@@ -634,9 +707,14 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                             <input
                               className="input"
                               {...field}
-                              value={field.value?.[index]?.prices?.[2].pricePerDay + "₼"}
+                              value={
+                                field.value?.[index]?.prices?.[2].pricePerDay +
+                                "₼"
+                              }
                               onChange={(event) => {
-                                const left = form.watch("pricePerPeriods")?.[index].prices?.slice(0, 2) || [
+                                const left = form
+                                  .watch("pricePerPeriods")
+                                  ?.[index].prices?.slice(0, 2) || [
                                   {
                                     minDays: 2,
                                     maxDays: 7,
@@ -655,7 +733,8 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                                     .replace(/₼/, "")
                                     .replace(/[^\d]+/, ""),
                                 };
-                                const periods = form.watch("pricePerPeriods") || [];
+                                const periods =
+                                  form.watch("pricePerPeriods") || [];
                                 periods[index].prices = [...left, current];
                                 form.setValue("pricePerPeriods", periods);
                               }}
@@ -672,19 +751,25 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                 <button
                   type="button"
                   className="btn"
-                  style={{ width: "fit-content", height: "fit-content", margin: "auto" }}
+                  style={{
+                    width: "fit-content",
+                    height: "fit-content",
+                    margin: "auto",
+                  }}
                   onClick={() => {
                     const periods = form.watch("pricePerPeriods") || [];
                     periods.splice(index, 1);
                     form.setValue("pricePerPeriods", periods);
-                  }}>
+                  }}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    style={{ widows: 24, height: 24 }}>
+                    style={{ widows: 24, height: 24 }}
+                  >
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -701,7 +786,9 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
             className="btn btn_outline"
             style={{ width: "fit-content", marginTop: 12 }}
             onClick={() => {
-              const pricePerPeriods = Array.isArray(form.watch("pricePerPeriods"))
+              const pricePerPeriods = Array.isArray(
+                form.watch("pricePerPeriods")
+              )
                 ? (form.watch("pricePerPeriods") as [])
                 : [];
               form.setValue("pricePerPeriods", [
@@ -727,7 +814,8 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                   ],
                 },
               ]);
-            }}>
+            }}
+          >
             Добавить периоды цен
           </button>
         </div>
@@ -750,7 +838,11 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                           const dateString = dayjs(event.target.value).toJSON();
                           const periods = form.watch("inactivePeriods") || [];
                           periods[index].startDate = dateString;
-                          const newPeriods = changeArrayByIndex(periods, index, periods[index]);
+                          const newPeriods = changeArrayByIndex(
+                            periods,
+                            index,
+                            periods[index]
+                          );
                           form.setValue("inactivePeriods", newPeriods);
                         }}
                         min={dayjs().format("YYYY-MM-DD")}
@@ -770,7 +862,11 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                           const dateString = dayjs(event.target.value).toJSON();
                           const periods = form.watch("inactivePeriods") || [];
                           periods[index].endDate = dateString;
-                          const newPeriods = changeArrayByIndex(periods, index, periods[index]);
+                          const newPeriods = changeArrayByIndex(
+                            periods,
+                            index,
+                            periods[index]
+                          );
                           form.setValue("inactivePeriods", newPeriods);
                         }}
                         min={dayjs(item.startDate).format("YYYY-MM-DD")}
@@ -783,19 +879,25 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                 <button
                   type="button"
                   className="btn"
-                  style={{ width: "fit-content", height: "fit-content", margin: "auto" }}
+                  style={{
+                    width: "fit-content",
+                    height: "fit-content",
+                    margin: "auto",
+                  }}
                   onClick={() => {
                     const periods = form.watch("inactivePeriods") || [];
                     periods.splice(index, 1);
                     form.setValue("inactivePeriods", periods);
-                  }}>
+                  }}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    style={{ widows: 24, height: 24 }}>
+                    style={{ widows: 24, height: 24 }}
+                  >
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -812,7 +914,9 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
             className="btn btn_outline"
             style={{ width: "fit-content", marginTop: 12 }}
             onClick={() => {
-              const inactivePeriods = Array.isArray(form.watch("inactivePeriods"))
+              const inactivePeriods = Array.isArray(
+                form.watch("inactivePeriods")
+              )
                 ? (form.watch("inactivePeriods") as [])
                 : [];
 
@@ -823,7 +927,8 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
                   endDate: "",
                 },
               ]);
-            }}>
+            }}
+          >
             Добавить неактивный период
           </button>
         </div>
@@ -834,7 +939,11 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
           render={({ field }) => (
             <FormItem className="select__group">
               <FormControl>
-                <Switch isAcive={field.value} onChange={field.onChange} label="Активизировать карточку" />
+                <Switch
+                  isAcive={field.value}
+                  onChange={field.onChange}
+                  label="Активизировать карточку"
+                />
               </FormControl>
               <FormMessage className="error" />
             </FormItem>
@@ -847,15 +956,24 @@ const AutoDetailForm = ({ id }: { id: string | undefined }) => {
               type="button"
               onClick={handleDelete}
               className="btn btn_outline"
-              disabled={isMutating || removeIsMutation}>
+              disabled={isMutating || removeIsMutation}
+            >
               Удалить
             </button>
-            <button type="submit" className="btn btn_primary" disabled={isMutating || removeIsMutation}>
+            <button
+              type="submit"
+              className="btn btn_primary"
+              disabled={isMutating || removeIsMutation}
+            >
               Сохранить изменения
             </button>
           </div>
         ) : (
-          <button type="submit" className="btn btn_primary" disabled={isMutating || removeIsMutation}>
+          <button
+            type="submit"
+            className="btn btn_primary"
+            disabled={isMutating || removeIsMutation}
+          >
             Сохранить изменения
           </button>
         )}

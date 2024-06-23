@@ -17,7 +17,7 @@ export default function OutlinedButton({
   return (
     <button
       className="outline"
-      style={{ width: full ? "100%" : "auto" }}
+      style={{ width: full ? "100%" : "auto", justifyContent: "flex-start" }}
       onClick={onClick}
       disabled={disabled}
     >
